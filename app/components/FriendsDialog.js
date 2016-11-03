@@ -6,6 +6,7 @@ import {
   ScrollView
 } from 'react-native';
 
+import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 
 // Needs to keep track of which friend ids have been checked
@@ -19,31 +20,54 @@ import { MKCheckbox, MKButton } from 'react-native-material-kit';
 export default class FriendsDialog extends Component {
   static propTypes = {
     friends: PropTypes.array.isRequired,
-    // TODO mark as required
-    handleFriendsSubmit: PropTypes.func
+    handleFriendInvite: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props);
+
+    this.handleCheckedChange = this.handleCheckedChange.bind(this);
+  }
+
+  handleCheckedChange(e, friendId) {
+    if (e.checked) {
+      this.props.handleFriendInvite(friendId)
+    } else {
+      this.props.handleFriendInvite(friendId, true);
+    }
+  }
+
+  shouldComponentUpdate() {
+    // Without this lifecycle function, the modal (but not the overlay, strangely)
+    // disappears every time a friend invite status is changed/passed up
+    return false;
   }
 
   render() {
     return (
-      <View style={styles.friendsCheckGroup}>
+      <PopupDialog
+        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+        ref={this.props.itemRef}
+      >
+        <View style={styles.friendsCheckGroup}>
         <Text>Invite your friends!</Text>
         <ScrollView>
-          {
-            this.props.friends.map((friend, index) => (
-              <View style={styles.friendCheck} key={friend._id}>
-                <MKCheckbox
-                  checked={false} ref={'friend' + index} friendCheckId={friend._id}
-                />
-                <Text>{friend.firstName + ' ' + friend.lastName}</Text>
-              </View>
-            ))
-          }
+        {
+          this.props.friends.map((friend, index) => (
+            <View style={styles.friendCheck} key={friend._id}>
+            <MKCheckbox
+            checked={false}
+            ref={'friend' + index}
+            friendCheckId={friend._id}
+            onCheckedChange={e => this.handleCheckedChange(e, friend._id)}
+            />
+            <Text>{friend.firstName + ' ' + friend.lastName}</Text>
+            </View>
+          ))
+        }
         </ScrollView>
-      </View>
+        </View>
+      </PopupDialog>
     );
   }
 }

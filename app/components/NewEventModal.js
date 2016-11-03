@@ -15,7 +15,6 @@ import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
 import FriendsDialog from './FriendsDialog';
-import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 
 export default class NewEventModal extends Component {
   static propTypes = {
@@ -40,6 +39,8 @@ export default class NewEventModal extends Component {
       newEventTags: '',
       errorText: ''
     };
+
+    this.handleFriendInvite = this.handleFriendInvite.bind(this);
   }
 
   componentWillMount () {
@@ -61,6 +62,23 @@ export default class NewEventModal extends Component {
     });
   }
 
+  // The second, optional, uninvite argument is a bool that specifies whether
+  // the friend is being UNinvited
+  handleFriendInvite(friendId, uninvite) {
+    console.log('handling friend invite');
+    if (uninvite) {
+      this.setState({
+        invitedFriends: this.state.invitedFriends.filter(id =>
+          id !== friendId
+        )
+      });
+    } else {
+      this.setState({
+        invitedFriends: this.state.invitedFriends.concat(friendId)
+      });
+    }
+  }
+
   handleSubmit () {
     let context = this;
 
@@ -77,7 +95,7 @@ export default class NewEventModal extends Component {
       startTime: this.state.newEventStartTime,
       image: 'http://blogs-images.forbes.com/steveolenski/files/2015/07/Messe_Luzern_Corporate_Event.jpg',
       tags: [],
-      invitedUsers: [],
+      invitedUsers: this.state.invitedFriends,
       visibility: ''
     };
 
@@ -92,17 +110,7 @@ export default class NewEventModal extends Component {
 
     eventToBePosted.tags = this.state.newEventTags.split(' ');
 
-    // Wtf is friendCheckId?
-    // Find out what format things should be added to state.invitedFriends
-    this.state.friends.forEach((friend, index) => {
-      if(this.refs['friend' + index].state.checked){
-        eventToBePosted.invitedUsers.push(this.refs['friend' + index].props.friendCheckId);
-      }
-    });
-
-    console.log(eventToBePosted.invitedUsers);
-
-    fetch(configURL.getEvents,{
+    fetch(configURL.getEvents, {
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify(eventToBePosted)
@@ -206,15 +214,11 @@ export default class NewEventModal extends Component {
 
         </View>
 
-        <PopupDialog
-          ref={popupDialog => this.popupDialog = popupDialog}
-          dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
-        >
-          <FriendsDialog
-            friends={this.state.friends}
-
-          />
-        </PopupDialog>
+        <FriendsDialog
+          friends={this.state.friends}
+          handleFriendInvite={this.handleFriendInvite}
+          itemRef={popupDialog => this.popupDialog = popupDialog}
+        />
       </Modal>
     )
   }
