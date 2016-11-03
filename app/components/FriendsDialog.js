@@ -6,7 +6,6 @@ import {
   ScrollView
 } from 'react-native';
 
-import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 
 // Needs to keep track of which friend ids have been checked
@@ -53,20 +52,9 @@ export default class FriendsDialog extends Component {
     this.props.handleFriendsInvite(this.state.friendsToInvite);
   }
 
-  // shouldComponentUpdate() {
-  //   // Without this lifecycle function, the modal (but not the overlay, strangely)
-  //   // disappears every time a friend invite status is changed/passed up
-  //   return false;
-  // }
-
   render() {
     return (
-      <PopupDialog
-        dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
-        ref={this.props.itemRef}
-        onClosed={this.handleDone}
-      >
-        <View style={styles.friendsCheckGroup}>
+      <View style={styles.friendsCheckGroup}>
         <Text>Invite your friends!</Text>
         <ScrollView>
         {
@@ -87,14 +75,26 @@ export default class FriendsDialog extends Component {
             </View>
           ))
         }
-        {
-          this.props.initialInvitedFriends.map(friend => (
-            <Text key={friend}>invited friend id: {friend}</Text>
-          ))
-        }
         </ScrollView>
-        </View>
-      </PopupDialog>
+        <MKButton
+          style={styles.createEventButton}
+          shadowRadius={2}
+          shadowOffset={{width:0, height:2}}
+          shadowOpacity={.7}
+          shadowColor="black"
+          onPress={() => {
+            this.handleDone();
+            this.props.navigator.pop();
+          }}
+        >
+          <Text
+            pointerEvents="none"
+            style={{color: 'white', fontWeight: 'bold'}}
+          >
+            DONE
+          </Text>
+        </MKButton>
+      </View>
     );
   }
 }
@@ -113,6 +113,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'flex-start'
+  },
+  createEventButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#F44336',
+    width: 150,
+    height: 40,
   }
 });
 

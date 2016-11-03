@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   TextInput,
   DatePickerIOS
@@ -15,6 +16,7 @@ import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
 import FriendsDialog from './FriendsDialog';
+import _navigate from '../config/navigateConfig.js';
 
 export default class NewEventModal extends Component {
   static propTypes = {
@@ -37,7 +39,8 @@ export default class NewEventModal extends Component {
       newEventName: '',
       newEventStartTime: new Date(),
       newEventTags: '',
-      errorText: ''
+      errorText: '',
+      modalVisible: false
     };
 
     this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
@@ -172,10 +175,21 @@ export default class NewEventModal extends Component {
               shadowOffset={{width:0, height:2}}
               shadowOpacity={.7}
               shadowColor="black"
-              onPress={() => this.popupDialog.openDialog()}
+              onPress={() => {
+                this.props.navigator.push({
+                  name: 'InviteFriends',
+                  passedProps: {
+                    friends: this.state.friends,
+                    initialInvitedFriends: this.state.invitedFriends,
+                    handleFriendsInvite: this.handleFriendsInvite
+                  }
+                });
+              }}
+            >
+              <Text
+                pointerEvents="none"
+                style={{color: 'white', fontWeight: 'bold'}}
               >
-              <Text pointerEvents="none"
-                    style={{color: 'white', fontWeight: 'bold',}}>
                 Choose Friends
               </Text>
             </MKButton>
@@ -203,17 +217,21 @@ export default class NewEventModal extends Component {
           </View>
 
         </View>
-
-        <FriendsDialog
-          friends={this.state.friends}
-          initialInvitedFriends={this.state.invitedFriends}
-          handleFriendsInvite={this.handleFriendsInvite}
-          itemRef={popupDialog => this.popupDialog = popupDialog}
-        />
       </Modal>
-    )
+    );
   }
 }
+
+/*
+onPress={() => this.popupDialog.openDialog()}
+
+<FriendsDialog
+  friends={this.state.friends}
+  initialInvitedFriends={this.state.invitedFriends}
+  handleFriendsInvite={this.handleFriendsInvite}
+  itemRef={popupDialog => this.popupDialog = popupDialog}
+/>
+*/
 
 
 const styles = StyleSheet.create({
