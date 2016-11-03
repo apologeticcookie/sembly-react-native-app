@@ -1,0 +1,47 @@
+index.ios.js
+  Renders an <App>
+
+<App>
+  Has some methods to get current location (geographically), set a user, and render a scene. renderScene is basically one big series of ifs, and depending on the route argument given to it, renders different components (such as <LoginPage>, or <Profile>, or <Map>, etc). The only thing that <App> actually renders is a <Navigator>.
+
+<LoginPage>
+  Has a _navigate method that navigates to map by passing an object to this.props.navigator. Calls this.props.getLocation on mount. Has a login method that sets loading in this.state to true, and makes a POST request using fetch to log the user in, and calls _navigate when done. In the render method, if loading is true, display a loading <Spinner>, else render some login button that calls the login method.
+
+<Spinner>
+  Looks like it uses some loader from react-native-material-kit, defines some custom styles for it, and exports it.
+
+<Profile>
+  Maintains a bunch of state. Some of the items in state (friendS, userS, and requestS) for some reason have a capital S in them. When mounting, calls getFriends and getNewRequests methods. Basically seems to just have a bunch of methods for getting and filtering friends and users. Renders a giant <OurDrawer> that contains a bunch of different <View>s with clickable stuff.
+
+<OurDrawer>
+  Renders a <Drawer> from react-native-drawer and passes it some props, and children also as {this.props.children}. Also renders a <TopBar>. Not sure why <TopBar> is included as part of <OurDrawer>.
+
+<TopBar>
+  Renders the top red bar in the app that displays the left button (to open the drawer), the title of the current view (or whatever is passed down as a prop to <TopBar>), and the filter button in the top right.
+
+<Menu>
+  Renders a bunch of buttons for the menu; looks like clicking a button calls a _navigate prop (which probably comes from <App>) that handles the actual navigation to different views.
+
+<Map>
+  Has some methods for fetching events, setting coordinates of a new event, and opening the modal. If state.loading is true, renders a spinner. Otherwise: renders an <OurDrawer>, and a <MapView> (from react-native-maps package) with a <MapView.Marker> for every marker in state.markers. Also has a button and modal for adding a new event.
+
+<EventModal>
+  Has a helper method for formatting dates. Has other methods for getting events, saving events, changing the users filter (invited vs saved vs anything else), getting users, checking in. Otherwise it looks to just render a <Modal> that makes use of all those methods.
+
+<EventCard>
+  Looks to just render a small <View> of an event based on data the component receives as props. Also has the same date formatting matehod as <EventModal>; that should be refactored out to a util file probably to prevent code duplication.
+
+<Main>
+  Seems to be some sort of test view; just renders a button with some text that reads MAIN TEST.
+
+<Feed>
+  Has a bunch of methods for getting events, and some stuff related to getting modals as well. Renders a <Spinner> if loading, otherwise renders <OurDrawer> along with a <NewEventFab> and a <NewEventModal>.
+
+<NewEventFab>
+  Looks to basically just be a slightly customized button imported from react-native-material-kit.
+
+<NewEventModal>
+  Has a rather large method for handling POSTing new event data to the server. Also has a large render method that uses a bunch of components from react-native-material-kit.
+
+<UserCard>
+  Has methods for adding/removing/accepting/rejecting friends and friend requests. Renders some simple <View>s, filling in user data from this.props.
