@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -16,6 +16,18 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
 
 export default class NewEventModal extends Component {
+  static propTypes = {
+    userId: PropTypes.string.isRequired,
+    // Marking these as non-required for now; <Feed> doesn't seem to pass these
+    // props down to it, and no errors seem to be present without these props
+    // In other words, in the place where <NewEventModal> is used without
+    // receiving the below props, <NewEventModal> seems to not need them anyway
+    eventCoords: PropTypes.object,
+    resetPin: PropTypes.func,
+    fetchEvents: PropTypes.func,
+    modalVisibility: PropTypes.bool
+  }
+
   constructor (props) {
     super(props);
     this.state = {
@@ -34,7 +46,6 @@ export default class NewEventModal extends Component {
       body: JSON.stringify({userId: this.props.userId, search: ''})
     })
     .then(response => {
-      console.log('get friends response is', response);
       return response.json();
     })
     .then(friends => {
@@ -228,8 +239,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     flex: 4,
     fontSize: 18,
-    // borderWidth: 1,
-    // borderColor: 'grey',
     textAlign: 'left'
   },
   friendsCheckGroup: {
