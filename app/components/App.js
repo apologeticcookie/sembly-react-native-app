@@ -26,7 +26,10 @@ export default class App extends Component {
 
   getLocation() {
     navigator.geolocation.getCurrentPosition(data => {
-      this.setState({currentLoc: [data.coords.latitude, data.coords.longitude], mongoLocation: [data.coords.longitude, data.coords.latitude]});
+      this.setState({
+        currentLoc: [data.coords.latitude, data.coords.longitude],
+        mongoLocation: [data.coords.longitude, data.coords.latitude]
+      });
     });
   }
 
@@ -36,26 +39,65 @@ export default class App extends Component {
 
   renderScene(route, navigator) {
     if (route.name === 'LoginPage') {
-      return <LoginPage getLocation={this.getLocation} setUser={this.setUser} navigator={navigator}/>;
+      return (
+        <LoginPage
+          getLocation={this.getLocation}
+          setUser={this.setUser}
+          navigator={navigator}
+        />
+      );
     }
     if (route.name === 'Profile') {
-      return <Profile user={this.state.user} navigator={navigator}/>;
+      return (
+        <Profile
+          user={this.state.user}
+          navigator={navigator}
+        />
+      );
     }
     if (route.name === 'Map') {
-      return <Map user={this.state.user} mongoLocation={this.state.mongoLocation} navigator={navigator}/>;
+      return (
+        <Map
+          user={this.state.user}
+          mongoLocation={this.state.mongoLocation}
+          navigator={navigator}
+        />
+      );
     }
     if (route.name === 'Feed') {
-      return <Feed name={route.name} user={this.state.user} mongoLocation={this.state.mongoLocation} page={'bundle'} navigator={navigator}/>;
+      return (
+        <Feed
+          name={route.name}
+          user={this.state.user}
+          mongoLocation={this.state.mongoLocation}
+          page={'bundle'}
+          navigator={navigator}
+        />
+      );
     }
     if (route.name === 'Invites') {
-      return <Feed name={'Invited To'} user={this.state.user} page={'invited'} navigator={navigator}/>;
+      return (
+        <Feed
+          name={'Invited To'}
+          user={this.state.user}
+          page={'invited'}
+          navigator={navigator}
+        />
+      );
     }
     if (route.name === 'Saved') {
-      return <Feed name={route.name} user={this.state.user} page={'saved'} navigator={navigator}/>;
+      return (
+        <Feed
+          name={route.name}
+          user={this.state.user}
+          page={'saved'}
+          navigator={navigator}
+        />
+      );
     }
   }
 
-  configureScene(route, routeStack){
+  configureScene(route, routeStack) {
    return Navigator.SceneConfigs.FadeAndroid;
   }
 
