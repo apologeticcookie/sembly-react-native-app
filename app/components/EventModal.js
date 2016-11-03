@@ -15,6 +15,7 @@ import Spinner from './Spinner.js';
 import UserCard from './UserCard.js';
 import Modal from 'react-native-modalbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import configURL from './../config/config.js';
 
 const styles = StyleSheet.create({
   modal: {
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center',
-  },  
+  },
   actionButton: {
   	margin: 10,
     height: 36,
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   image: {
-    height:200, 
+    height:200,
     width: Dimensions.get('window').width,
     marginBottom: 20,
     zIndex: 1
@@ -154,7 +155,7 @@ export default class EventModal extends Component {
     return day + part1 + part2 + hour + ':' + part4 + amOrPm;
   }
   getEvent() {
-  	fetch('http://localhost:3000/api/events/' + this.props.event)
+  	fetch(configURL.getEvents + this.props.event)
     .then(response => {
       return response.json();
     })
@@ -190,7 +191,7 @@ export default class EventModal extends Component {
   	}
   }
   saveEvent() {
-  	fetch('http://localhost:3000/api/events/saveEvent', {
+  	fetch(configURL.saveEvent, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -205,7 +206,7 @@ export default class EventModal extends Component {
     });
   }
   checkIn() {
-  	fetch('http://localhost:3000/api/events/checkIn', {
+  	fetch(configURL.checkinEvent, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -272,5 +273,3 @@ export default class EventModal extends Component {
     );
   }
 }
-
-

@@ -14,6 +14,7 @@ import {
 } from 'react-native-material-kit';
 
 import Spinner from './Spinner.js';
+import configURL from './../config/config.js';
 
 import MapView from 'react-native-maps';
 import NewEventModal from './NewEventModal.js';
@@ -54,8 +55,8 @@ export default class Map extends Component {
     });
   }
 
-  fetchEvents() {
-    fetch('http://localhost:3000/api/events/bundle', {
+  fetchEvents () {
+    fetch(configURL.eventBundle, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

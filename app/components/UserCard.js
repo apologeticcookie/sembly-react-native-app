@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import configURL from './../config/config.js';
 
 export default class UserCard extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class UserCard extends Component {
   }
 
   addFriend() {
-    fetch('http://localhost:3000/api/friends/friendRequest',{
+    fetch(configURL.getFriendRequest,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.currentUserId, friendId: this.props.user._id})
@@ -39,7 +40,7 @@ export default class UserCard extends Component {
     // alert('removeFriend')
     // alert(this.props.user.firstName + this.props.user._id)
     // alert(this.props.currentUserId)
-    fetch('http://localhost:3000/api/friends/removeFriend',{
+    fetch(configURL.removeFriend,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.currentUserId, friendId: this.props.user._id})
@@ -53,10 +54,10 @@ export default class UserCard extends Component {
       console.log(error);
     });
   }
- 
+
   acceptRequest() {
   	// alert('acceptRequest')
-    fetch('http://localhost:3000/api/friends/acceptRequest',{
+    fetch(configURL.acceptRequest,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.currentUserId, friendId: this.props.user._id})
@@ -70,11 +71,11 @@ export default class UserCard extends Component {
     .catch( error => {
       console.log(error);
     });
-  } 
+  }
 
   rejectRequest(){
     // alert('rejectRequest')
-    fetch('http://localhost:3000/api/friends/rejectRequest',{
+    fetch(configURL.rejectRequest,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.currentUserId, friendId: this.props.user._id})
@@ -162,8 +163,8 @@ const styles = StyleSheet.create({
   },
   image: {
   	borderRadius: 25,
-  	height: 50, 
-  	width: 50, 
+  	height: 50,
+  	width: 50,
   	marginRight:10
   },
   buttons: {
