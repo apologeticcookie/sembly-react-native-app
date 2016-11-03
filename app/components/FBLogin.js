@@ -17,14 +17,8 @@ FBLoginManager.loginWithPermissions(['email','user_friends'], function(error, da
   }
 });
 
-// var subscriber = RCTDeviceEventEmitter.addListener(
-//   FBLoginManager.Events['Login'],
-//   (eventData) => {
-//     console.log('[Login]', eventData);
-//   }
-// );
-
-// subscriber.remove();
+//user: `https://graph.facebook.com/v2.8/${userId}?access_token=${accessToken}`
+//friends: `https://graph.facebook.com/v2.8/${userId}/friends?access_token=${accessToken}`
 
 class Login extends Component {
 
@@ -33,7 +27,7 @@ class Login extends Component {
     return (
       <FBLogin style={{ marginBottom: 10, }}
         ref={(fbLogin) => { this.fbLogin = fbLogin; }}
-        permissions={['email','user_friends']}
+        permissions={['email', 'user_location', 'user_birthday', 'user_photos', 'user_friends']}
         loginBehavior={FBLoginManager.LoginBehaviors.Native}
         onLogin={function(data){
           console.log('Logged in!');
