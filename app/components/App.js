@@ -104,7 +104,7 @@ export default class App extends Component {
   render () {
     return (
       <Navigator
-        configureScene={this.configureScene }
+        configureScene={this.configureScene}
         style={styles.container}
         initialRoute={{ name: 'LoginPage'} }
         renderScene={this.renderScene}
