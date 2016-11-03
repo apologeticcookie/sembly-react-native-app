@@ -11,6 +11,8 @@ import {
 import Spinner from './Spinner.js';
 import configURL from './../config/config.js';
 
+import FBLogin from './FBLogin';
+
 const styles = StyleSheet.create({
 container: {
   padding: 30,
@@ -79,7 +81,8 @@ export default class LoginPage extends Component {
         <View>
           <View style={styles.container}>
             <TouchableOpacity onPress={(e)=>{this.login()}} style={styles.button}>
-              <Text style={styles.buttonText}>Log</Text>
+              <Text style={styles.buttonText}>Login</Text>
+              <FBLogin />
             </TouchableOpacity>
           </View>
         </View>
