@@ -14,6 +14,8 @@ import Modal from 'react-native-modalbox';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
+import FriendsDialog from './FriendsDialog';
+import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 
 export default class NewEventModal extends Component {
   static propTypes = {
@@ -57,8 +59,8 @@ export default class NewEventModal extends Component {
       console.log(error);
     });
   }
-  handleSubmit () {
 
+  handleSubmit () {
     let context = this;
     if(this.state.newEventName === ''){
       this.setState({errorText: 'Please enter an event name!'});
@@ -117,6 +119,7 @@ export default class NewEventModal extends Component {
       console.log(error);
     });
   }
+
   render () {
     let context = this;
     return (
@@ -156,18 +159,20 @@ export default class NewEventModal extends Component {
             />
           </View>
 
-          <View style={styles.friendsCheckGroup}>
-            <Text>Invite your friends!</Text>
-            {this.state.friends.map((friend, index) => {
-              return (
-                <View style={styles.friendCheck} key={friend._id}>
-                  <MKCheckbox
-                    checked={false} ref={'friend' + index} friendCheckId={friend._id}
-                  />
-                  <Text>{friend.firstName + ' ' + friend.lastName}</Text>
-                </View>
-              )
-            })}
+          <View style={styles.createEventButtonContainer}>
+            <MKButton
+              style={styles.createEventButton}
+              shadowRadius={2}
+              shadowOffset={{width:0, height:2}}
+              shadowOpacity={.7}
+              shadowColor="black"
+              onPress={() => this.popupDialog.openDialog()}
+              >
+              <Text pointerEvents="none"
+                    style={{color: 'white', fontWeight: 'bold',}}>
+                Choose Friends
+              </Text>
+            </MKButton>
           </View>
 
           <View style={styles.visibilityCheck}>
@@ -192,6 +197,14 @@ export default class NewEventModal extends Component {
           </View>
 
         </View>
+
+
+        <PopupDialog
+          ref={popupDialog => this.popupDialog = popupDialog}
+          dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
+        >
+          <FriendsDialog friends={this.state.friends} />
+        </PopupDialog>
       </Modal>
     )
   }
@@ -240,20 +253,6 @@ const styles = StyleSheet.create({
     flex: 4,
     fontSize: 18,
     textAlign: 'left'
-  },
-  friendsCheckGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 5,
-    alignItems: 'center',
-  },
-  friendCheck: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
   },
   visibilityCheck:{
     paddingLeft: 10,
