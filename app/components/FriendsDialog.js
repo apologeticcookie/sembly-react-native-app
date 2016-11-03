@@ -20,34 +20,51 @@ import { MKCheckbox, MKButton } from 'react-native-material-kit';
 export default class FriendsDialog extends Component {
   static propTypes = {
     friends: PropTypes.array.isRequired,
-    handleFriendInvite: PropTypes.func.isRequired
+    initialInvitedFriends: PropTypes.array.isRequired,
+    handleFriendsInvite: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props);
 
+    this.state = {
+      friendsToInvite: props.initialInvitedFriends
+    };
+
     this.handleCheckedChange = this.handleCheckedChange.bind(this);
+    this.handleDone = this.handleDone.bind(this);
   }
 
   handleCheckedChange(e, friendId) {
     if (e.checked) {
-      this.props.handleFriendInvite(friendId)
+      this.setState({
+        friendsToInvite: this.state.friendsToInvite.concat(friendId)
+      });
     } else {
-      this.props.handleFriendInvite(friendId, true);
+      this.setState({
+        friendsToInvite: this.state.friendsToInvite.filter(id =>
+          id !== friendId
+        )
+      });
     }
   }
 
-  shouldComponentUpdate() {
-    // Without this lifecycle function, the modal (but not the overlay, strangely)
-    // disappears every time a friend invite status is changed/passed up
-    return false;
+  handleDone() {
+    this.props.handleFriendsInvite(this.state.friendsToInvite);
   }
+
+  // shouldComponentUpdate() {
+  //   // Without this lifecycle function, the modal (but not the overlay, strangely)
+  //   // disappears every time a friend invite status is changed/passed up
+  //   return false;
+  // }
 
   render() {
     return (
       <PopupDialog
         dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
         ref={this.props.itemRef}
+        onClosed={this.handleDone}
       >
         <View style={styles.friendsCheckGroup}>
         <Text>Invite your friends!</Text>
@@ -55,14 +72,24 @@ export default class FriendsDialog extends Component {
         {
           this.props.friends.map((friend, index) => (
             <View style={styles.friendCheck} key={friend._id}>
-            <MKCheckbox
-            checked={false}
-            ref={'friend' + index}
-            friendCheckId={friend._id}
-            onCheckedChange={e => this.handleCheckedChange(e, friend._id)}
-            />
-            <Text>{friend.firstName + ' ' + friend.lastName}</Text>
+              <MKCheckbox
+                checked={
+                  this.state.friendsToInvite.indexOf(friend._id) === -1 ?
+                  false :
+                  true
+                }
+                ref={'friend' + index}
+                friendCheckId={friend._id}
+                onCheckedChange={e => this.handleCheckedChange(e, friend._id)}
+              />
+              <Text>{friend.firstName + ' ' + friend.lastName}</Text>
+              <Text>{this.state.friendsToInvite.indexOf(friend._id)}</Text>
             </View>
+          ))
+        }
+        {
+          this.props.initialInvitedFriends.map(friend => (
+            <Text key={friend}>invited friend id: {friend}</Text>
           ))
         }
         </ScrollView>

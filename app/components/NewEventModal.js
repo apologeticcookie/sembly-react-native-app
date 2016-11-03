@@ -40,7 +40,7 @@ export default class NewEventModal extends Component {
       errorText: ''
     };
 
-    this.handleFriendInvite = this.handleFriendInvite.bind(this);
+    this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
   }
 
   componentWillMount () {
@@ -62,21 +62,11 @@ export default class NewEventModal extends Component {
     });
   }
 
-  // The second, optional, uninvite argument is a bool that specifies whether
-  // the friend is being UNinvited
-  handleFriendInvite(friendId, uninvite) {
-    console.log('handling friend invite');
-    if (uninvite) {
-      this.setState({
-        invitedFriends: this.state.invitedFriends.filter(id =>
-          id !== friendId
-        )
-      });
-    } else {
-      this.setState({
-        invitedFriends: this.state.invitedFriends.concat(friendId)
-      });
-    }
+  handleFriendsInvite(invitedFriends) {
+    console.log('calling handleFriendsInvite with', invitedFriends);
+    this.setState({
+      invitedFriends
+    });
   }
 
   handleSubmit () {
@@ -216,7 +206,8 @@ export default class NewEventModal extends Component {
 
         <FriendsDialog
           friends={this.state.friends}
-          handleFriendInvite={this.handleFriendInvite}
+          initialInvitedFriends={this.state.invitedFriends}
+          handleFriendsInvite={this.handleFriendsInvite}
           itemRef={popupDialog => this.popupDialog = popupDialog}
         />
       </Modal>
