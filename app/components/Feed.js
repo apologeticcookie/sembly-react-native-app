@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -22,11 +22,19 @@ import Menu from './Menu.js';
 import EventCard from './EventCard';
 import configURL from './../config/config.js';
 
-import _navigate from './navigateConfig.js';
+import _navigate from '../config/navigateConfig.js';
 
 
 export default class Feed extends Component {
-  constructor(props){
+  static propTypes = {
+    page: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
+    mongoLocation: PropTypes.array.isRequired,
+    name: PropTypes.string.isRequired,
+    navigator: PropTypes.object.isRequired
+  }
+
+  constructor(props) {
     super(props);
     this.state = {
       loading: true,
@@ -34,6 +42,7 @@ export default class Feed extends Component {
       addEventModal: false
     };
   }
+
   componentWillMount() {
     if (this.props.page === 'bundle') {
       this.getBundle();
@@ -43,6 +52,7 @@ export default class Feed extends Component {
       this.getSaved();
     }
   }
+
   openEvent(eventId) {
     this.setState({eventModal: true, eventId: eventId, addEventModal: false});
   }
@@ -77,10 +87,10 @@ export default class Feed extends Component {
     .then(response => {
       return response.json();
     })
-    .then( events => {
+    .then(events => {
       this.setState({events: events, loading: false});
     })
-    .catch( error => {
+    .catch(error => {
       console.log(error);
     });
   }
@@ -131,7 +141,10 @@ export default class Feed extends Component {
           }
         }/>
         {this.getModal()}
-        <NewEventModal visibility={this.state.addEventModal}/>
+        <NewEventModal
+          visibility={this.state.addEventModal}
+          userId={this.props.user._id}
+        />
       </OurDrawer>
     );
   }
