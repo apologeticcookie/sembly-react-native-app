@@ -34,6 +34,7 @@ export default class NewEventModal extends Component {
     super(props);
     this.state = {
       friends: [],
+      invitedFriends: [],
       newEventName: '',
       newEventStartTime: new Date(),
       newEventTags: '',
@@ -62,8 +63,11 @@ export default class NewEventModal extends Component {
 
   handleSubmit () {
     let context = this;
-    if(this.state.newEventName === ''){
-      this.setState({errorText: 'Please enter an event name!'});
+
+    if(this.state.newEventName === '') {
+      this.setState({
+        errorText: 'Please enter an event name!'
+      });
       return;
     }
 
@@ -88,11 +92,15 @@ export default class NewEventModal extends Component {
 
     eventToBePosted.tags = this.state.newEventTags.split(' ');
 
+    // Wtf is friendCheckId?
+    // Find out what format things should be added to state.invitedFriends
     this.state.friends.forEach((friend, index) => {
       if(this.refs['friend' + index].state.checked){
         eventToBePosted.invitedUsers.push(this.refs['friend' + index].props.friendCheckId);
       }
     });
+
+    console.log(eventToBePosted.invitedUsers);
 
     fetch(configURL.getEvents,{
       method: 'POST',
@@ -198,12 +206,14 @@ export default class NewEventModal extends Component {
 
         </View>
 
-
         <PopupDialog
           ref={popupDialog => this.popupDialog = popupDialog}
           dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}
         >
-          <FriendsDialog friends={this.state.friends} />
+          <FriendsDialog
+            friends={this.state.friends}
+
+          />
         </PopupDialog>
       </Modal>
     )
