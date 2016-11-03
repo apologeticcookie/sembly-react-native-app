@@ -28,20 +28,21 @@ export default class NewEventModal extends Component {
   }
 
   componentWillMount () {
-    fetch(configURL.getFriends,{
+    fetch(configURL.getFriends, {
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.userId, search: ''})
     })
     .then(response => {
+      console.log('get friends response is', response);
       return response.json();
     })
-    .then( friends => {
+    .then(friends => {
       this.setState({
         friends: friends
       });
     })
-    .catch( error => {
+    .catch(error => {
       console.log(error);
     });
   }

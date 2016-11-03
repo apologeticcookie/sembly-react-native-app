@@ -20,7 +20,7 @@ import MapView from 'react-native-maps';
 import NewEventModal from './NewEventModal.js';
 import EventModal from './EventModal';
 import OurDrawer from './OurDrawer.js';
-import _navigate from './navigateConfig.js';
+import _navigate from '../config/navigateConfig.js';
 import NewEventFab from './NewEventFab.js';
 
 export default class Map extends Component {
