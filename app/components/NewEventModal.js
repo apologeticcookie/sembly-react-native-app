@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -13,8 +13,21 @@ import {
 import Modal from 'react-native-modalbox';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import configURL from './../config/config.js';
 
 export default class NewEventModal extends Component {
+  static propTypes = {
+    userId: PropTypes.string.isRequired,
+    // Marking these as non-required for now; <Feed> doesn't seem to pass these
+    // props down to it, and no errors seem to be present without these props
+    // In other words, in the place where <NewEventModal> is used without
+    // receiving the below props, <NewEventModal> seems to not need them anyway
+    eventCoords: PropTypes.object,
+    resetPin: PropTypes.func,
+    fetchEvents: PropTypes.func,
+    modalVisibility: PropTypes.bool
+  }
+
   constructor (props) {
     super(props);
     this.state = {
@@ -27,7 +40,7 @@ export default class NewEventModal extends Component {
   }
 
   componentWillMount () {
-    fetch('http://localhost:3000/api/friends/getFriends',{
+    fetch(configURL.getFriends, {
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.userId, search: ''})
@@ -35,12 +48,12 @@ export default class NewEventModal extends Component {
     .then(response => {
       return response.json();
     })
-    .then( friends => {
+    .then(friends => {
       this.setState({
         friends: friends
       });
     })
-    .catch( error => {
+    .catch(error => {
       console.log(error);
     });
   }
@@ -79,7 +92,7 @@ export default class NewEventModal extends Component {
       }
     });
 
-    fetch('http://localhost:3000/api/events',{
+    fetch(configURL.getEvents,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify(eventToBePosted)
@@ -226,8 +239,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     flex: 4,
     fontSize: 18,
-    // borderWidth: 1,
-    // borderColor: 'grey',
     textAlign: 'left'
   },
   friendsCheckGroup: {

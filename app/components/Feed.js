@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -20,12 +20,21 @@ import TopBar from './TopBar.js';
 import OurDrawer from './OurDrawer.js';
 import Menu from './Menu.js';
 import EventCard from './EventCard';
+import configURL from './../config/config.js';
 
-import _navigate from './navigateConfig.js';
+import _navigate from '../config/navigateConfig.js';
 
 
 export default class Feed extends Component {
-  constructor(props){
+  static propTypes = {
+    page: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
+    mongoLocation: PropTypes.array.isRequired,
+    name: PropTypes.string.isRequired,
+    navigator: PropTypes.object.isRequired
+  }
+
+  constructor(props) {
     super(props);
     this.state = {
       loading: true,
@@ -33,6 +42,7 @@ export default class Feed extends Component {
       addEventModal: false
     };
   }
+
   componentWillMount() {
     if (this.props.page === 'bundle') {
       this.getBundle();
@@ -42,6 +52,7 @@ export default class Feed extends Component {
       this.getSaved();
     }
   }
+
   openEvent(eventId) {
     this.setState({eventModal: true, eventId: eventId, addEventModal: false});
   }
@@ -52,7 +63,7 @@ export default class Feed extends Component {
     this.setState({addEventModal: true, eventModal:false});
   }
   getInvited() {
-    fetch('http://localhost:3000/api/events/invited',{
+    fetch(configURL.eventsInvited,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.user._id})
@@ -68,7 +79,7 @@ export default class Feed extends Component {
     });
   }
   getSaved() {
-    fetch('http://localhost:3000/api/events/saved',{
+    fetch(configURL.savedEvents,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.user._id})
@@ -76,15 +87,15 @@ export default class Feed extends Component {
     .then(response => {
       return response.json();
     })
-    .then( events => {
+    .then(events => {
       this.setState({events: events, loading: false});
     })
-    .catch( error => {
+    .catch(error => {
       console.log(error);
     });
   }
   getBundle() {
-    fetch('http://localhost:3000/api/events/bundle',{
+    fetch(configURL.eventBundle,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify({userId: this.props.user._id, location: this.props.mongoLocation})
@@ -130,7 +141,10 @@ export default class Feed extends Component {
           }
         }/>
         {this.getModal()}
-        <NewEventModal visibility={this.state.addEventModal}/>
+        <NewEventModal
+          visibility={this.state.addEventModal}
+          userId={this.props.user._id}
+        />
       </OurDrawer>
     );
   }

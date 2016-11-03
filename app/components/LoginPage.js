@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import Spinner from './Spinner.js';
+import configURL from './../config/config.js';
 
 import FBLogin from './FBLogin';
 
@@ -55,10 +56,12 @@ export default class LoginPage extends Component {
 
   login() {
     this.setState({loading: true});
-     fetch('http://localhost:3000/api/users/login',{
+
+     fetch(configURL.loginURL,{
+    // fetch('http://localhost:3000/api/users/login',{
        method: 'POST',
        headers: { "Content-Type" : "application/json" },
-       body: JSON.stringify({email: 'spencer@test.com', password: 'test'})
+       body: JSON.stringify({email: 'spencer@test.com', password: 'tewst'})
      })
      .then(response => {
        return response.json();
