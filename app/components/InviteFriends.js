@@ -9,8 +9,33 @@ import {
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import TopBar from './TopBar';
 
+const styles = StyleSheet.create({
+  friendsCheckGroup: {
+    flex: 1,
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    paddingBottom: 20,
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+  friendCheck: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  createEventButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#F44336',
+    width: 150,
+    height: 40,
+  }
+});
+
 export default class InviteFriends extends Component {
   static propTypes = {
+    navigator: PropTypes.object.isRequired,
     friends: PropTypes.array.isRequired,
     initialInvitedFriends: PropTypes.array.isRequired,
     handleFriendsInvite: PropTypes.func.isRequired
@@ -74,8 +99,8 @@ export default class InviteFriends extends Component {
         <MKButton
           style={styles.createEventButton}
           shadowRadius={2}
-          shadowOffset={{width:0, height:2}}
-          shadowOpacity={.7}
+          shadowOffset={{ width: 0, height: 2 }}
+          shadowOpacity={0.7}
           shadowColor="black"
           onPress={this.handleDone}
         >
@@ -90,27 +115,3 @@ export default class InviteFriends extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  friendsCheckGroup: {
-    flex: 1,
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    paddingBottom: 20,
-    alignItems: 'center',
-    backgroundColor: 'white'
-  },
-  friendCheck: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
-  },
-  createEventButton: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: '#F44336',
-    width: 150,
-    height: 40,
-  }
-});
