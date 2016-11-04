@@ -13,7 +13,7 @@ import Main from './Main.js';
 import Map from './Map.js';
 import Profile from './Profile.js';
 import Feed from './Feed.js';
-import FriendsDialog from './FriendsDialog';
+import InviteFriends from './InviteFriends';
 
 export default class App extends Component {
   constructor(props) {
@@ -98,7 +98,7 @@ export default class App extends Component {
     }
     if (route.name === 'InviteFriends') {
       return (
-        <FriendsDialog
+        <InviteFriends
           name={route.name}
           user={this.state.user}
           navigator={navigator}

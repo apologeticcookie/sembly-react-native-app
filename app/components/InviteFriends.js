@@ -9,15 +9,7 @@ import {
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import TopBar from './TopBar';
 
-// Needs to keep track of which friend ids have been checked
-// Then call some function (which is passed down as props) on submit, passing
-// the list of those ids up
-// That function could either be called once when the dialog is closed, or it
-// could be called each time, with the updated list of checked friends so far
-// The advantage of the latter is that if the dialog box is closed in a non-clean
-// way (ie if we somehow aren't able to tap into the close event), then there is
-// nothing to worry about
-export default class FriendsDialog extends Component {
+export default class InviteFriends extends Component {
   static propTypes = {
     friends: PropTypes.array.isRequired,
     initialInvitedFriends: PropTypes.array.isRequired,

@@ -15,7 +15,7 @@ import Modal from 'react-native-modalbox';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
-import FriendsDialog from './FriendsDialog';
+import InviteFriends from './InviteFriends';
 import _navigate from '../config/navigateConfig.js';
 
 export default class NewEventModal extends Component {
@@ -220,18 +220,6 @@ export default class NewEventModal extends Component {
     );
   }
 }
-
-/*
-onPress={() => this.popupDialog.openDialog()}
-
-<FriendsDialog
-  friends={this.state.friends}
-  initialInvitedFriends={this.state.invitedFriends}
-  handleFriendsInvite={this.handleFriendsInvite}
-  itemRef={popupDialog => this.popupDialog = popupDialog}
-/>
-*/
-
 
 const styles = StyleSheet.create({
   modal: {
