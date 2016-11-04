@@ -15,6 +15,7 @@ import Profile from './Profile';
 import Feed from './Feed';
 import InviteFriends from './InviteFriends';
 import NewEvent from './NewEvent';
+import ChooseLocation from './ChooseLocation';
 
 const styles = StyleSheet.create({
   container: {}
@@ -121,6 +122,17 @@ export default class App extends Component {
         />
       );
     }
+    if (route.name === 'ChooseLocation') {
+      return (
+        <ChooseLocation
+          name={route.name}
+          user={this.state.user}
+          navigator={navigator}
+          mongoLocation={this.state.mongoLocation}
+          {...route.passedProps}
+        />
+      );
+    }
   }
 
   configureScene(route, routeStack) {
@@ -129,6 +141,9 @@ export default class App extends Component {
     }
     if (route.name === 'NewEvent') {
       return Navigator.SceneConfigs.FloatFromBottom;
+    }
+    if (route.name === 'ChooseLocation') {
+      return Navigator.SceneConfigs.PushFromRight;
     }
     return Navigator.SceneConfigs.FadeAndroid;
   }
