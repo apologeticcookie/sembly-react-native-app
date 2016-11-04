@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -6,19 +6,26 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// <Text style={styles.menu}>Menu</Text>
+
 export default class TopBar extends Component {
-  constructor(props){
+  static propTypes = {
+    handleLeftPress: PropTypes.func.isRequired,
+    topBarFilterVisible: PropTypes.bool,
+    topBarName: PropTypes.string,
+    iconName: PropTypes.string
+  }
+
+  constructor(props) {
     super(props);
   }
 
   render () {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.props.openDrawer }>
-          <Icon name='menu' style={styles.content}></Icon>
+        <TouchableOpacity onPress={this.props.handleLeftPress}>
+          <Icon name={this.props.iconName || 'menu'} style={styles.content}></Icon>
         </TouchableOpacity>
-        <Text style={styles.logo}>{this.props.topBarName ? this.props.topBarName : 'Sembly'}</Text>
+        <Text style={styles.logo}>{this.props.topBarName || 'Sembly'}</Text>
         <TouchableOpacity>
           { this.props.topBarFilterVisible ? <Icon name='filter-list' style={styles.content}></Icon> : <Text></Text> }
         </TouchableOpacity>
@@ -36,7 +43,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     flexDirection: 'row',
     backgroundColor: '#F44336',
-    alignItems: 'center'
+    alignItems: 'center',
+    alignSelf: 'stretch'
   },
   content: {
     fontSize: 22,
