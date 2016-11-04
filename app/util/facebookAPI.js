@@ -1,4 +1,4 @@
-let fetch = require('node-fetch');
+// let fetch = require('node-fetch'); // uncomment when testing with Node in local terminal
 
 let User = {
   userId: '10107292935765083',
@@ -51,7 +51,7 @@ let fetchFromUrl = function(url) {
 
 /* Function to get name from Facebook Graph API */
 
-let getName = function(userId, token) {
+let getName = function(userId, token, callback) {
 
   fetchFromUrl(NameUrl(userId, token))
   .then(response => {
@@ -61,14 +61,14 @@ let getName = function(userId, token) {
     return data.name;
   })
   .then(name => {
-    console.log('name is', name);
+    callback(name);
   });
 
 };
 
 /* Function to get location from Facebook Graph API */
 
-let getLocation = function(userId, token) {
+let getLocation = function(userId, token, callback) {
 
   fetchFromUrl(LocationUrl(userId, token))
   .then(response => {
@@ -78,14 +78,14 @@ let getLocation = function(userId, token) {
     return data.location.name;
   })
   .then(location => {
-    console.log('location is', location);
+    callback(location);
   });
 
 };
 
 /* Function to get email from Facebook Graph API */
 
-let getEmail = function(userId, token) {
+let getEmail = function(userId, token, callback) {
 
   fetchFromUrl(EmailUrl(userId, token))
   .then(response => {
@@ -95,7 +95,7 @@ let getEmail = function(userId, token) {
     return data.email;
   })
   .then(email => {
-    console.log('email is', email);
+    callback(email);
   });
 
 };
@@ -155,7 +155,7 @@ let getUserData = function(userId, token, callback) {
   });
 
   getFriends(userId, token, friends => {
-    user.friends = friends;
+    //user.friends = friends;
     count++;
   });
 

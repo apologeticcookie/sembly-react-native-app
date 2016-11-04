@@ -14,10 +14,33 @@ const loginHandler = {
   loginBehavior: FBLoginManager.LoginBehaviors.Native,
 
   onLogin: (data) => { 
-    console.log('userid is', data.userId);
-    console.log('token is', data.token);
+    let userId = data.credentials.userId;
+    let token = data.credentials.token;
 
-    console.log(facebookAPI);
+    facebookAPI.getUserData(userId, token, function(userData) {
+
+      /* get lat and long coordinates from navigator */
+
+      navigator.geolocation.getCurrentPosition(latlong => {
+        userData.location = [latlong.coords.longitude, latlong.coords.latitude];
+        userData.password = 'test';
+
+        /* Do what you want to do with userData HERE */
+        console.log('User Data ',JSON.stringify(userData));
+        fetch('http://tranquil-garden-43561.herokuapp.com/api/users/signup', {
+          method: 'POST',
+          headers: { "Content-Type" : "application/json" },
+          body: JSON.stringify(userData)
+        })
+        .then(response => {
+          console.log('user signup success', response);
+        })
+        .catch(error => {
+           console.log(error);
+        });
+
+      });
+    });
   },
 
   onLogout: (data) => { console.log('logout', JSON.stringify(data)); },
