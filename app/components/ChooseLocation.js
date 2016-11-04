@@ -14,9 +14,10 @@ import {
 } from 'react-native-material-kit';
 
 import TopBar from './TopBar';
-import configURL from './../config/config.js';
-
 import MapView from 'react-native-maps';
+
+import configURL from './../config/config.js';
+import eventBus from '../util/eventBus';
 
 const styles = StyleSheet.create({
   map: {
@@ -37,6 +38,7 @@ export default class ChooseLocation extends Component {
     super(props);
     this.state = {
       markers: [],
+      loadReady: false,
       x: {
         latitude: this.props.mongoLocation[1] + 0.0005,
         longitude: this.props.mongoLocation[0] + 0.0005
@@ -45,6 +47,21 @@ export default class ChooseLocation extends Component {
 
     this.getPinCoords = this.getPinCoords.bind(this);
     this.handleDone = this.handleDone.bind(this);
+    this.loadMap = this.loadMap.bind(this);
+  }
+
+  componentWillMount() {
+    this.unsubscribeFocus = eventBus.on('navigatorFocus', this.loadMap);
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFocus();
+  }
+
+  loadMap() {
+    this.setState({
+      loadReady: true
+    });
   }
 
   getPinCoords() {
@@ -65,50 +82,55 @@ export default class ChooseLocation extends Component {
           handleLeftPress={this.handleDone}
           iconName="arrow-back"
         />
-        <MapView
-          showsUserLocation={true}
-          style={styles.map}
-          initialRegion={{
-            latitude: this.props.mongoLocation[1],
-            longitude: this.props.mongoLocation[0],
-            latitudeDelta: .04,
-            longitudeDelta: .02
-          }}
-        >
-        <MapView.Marker
-          draggable
-          coordinate={this.state.x}
-          pinColor='yellow'
-          title='The location of your next event!'
-          onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })}
-        />
-
         {
-          this.state.markers.map(marker => {
-            var tempLoc = {
-              latitude: marker.location[1],
-              longitude: marker.location[0]
-            };
+          this.state.loadReady ?
+          (<MapView
+            showsUserLocation={true}
+            style={styles.map}
+            initialRegion={{
+              latitude: this.props.mongoLocation[1],
+              longitude: this.props.mongoLocation[0],
+              latitudeDelta: .04,
+              longitudeDelta: .02
+            }}
+          >
+            <MapView.Marker
+              draggable
+              coordinate={this.state.x}
+              pinColor='yellow'
+              title='The location of your next event!'
+              onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })}
+            />
 
-            return (
-              <MapView.Marker
-                key={marker._id}
-                coordinate={tempLoc}
-                pinColor={MKColor.Indigo}
-              >
-                <MapView.Callout width={40} height={40} >
-                  <TouchableHighlight
-                    underlayColor="transparent"
-                    onPress={this.openEventModal.bind(this, marker._id)}
+            {
+              this.state.markers.map(marker => {
+                var tempLoc = {
+                  latitude: marker.location[1],
+                  longitude: marker.location[0]
+                };
+
+                return (
+                  <MapView.Marker
+                    key={marker._id}
+                    coordinate={tempLoc}
+                    pinColor={MKColor.Indigo}
                   >
-                    <Text>{marker.name}</Text>
-                  </TouchableHighlight>
-                </MapView.Callout>
-              </MapView.Marker>
-            );
-          })
+                    <MapView.Callout width={40} height={40} >
+                      <TouchableHighlight
+                        underlayColor="transparent"
+                        onPress={this.openEventModal.bind(this, marker._id)}
+                      >
+                        <Text>{marker.name}</Text>
+                      </TouchableHighlight>
+                    </MapView.Callout>
+                  </MapView.Marker>
+                );
+              })
+            }
+          </MapView> ) :
+          null
         }
-        </MapView>
+
       </View>
     );
   }

@@ -17,6 +17,8 @@ import InviteFriends from './InviteFriends';
 import NewEvent from './NewEvent';
 import ChooseLocation from './ChooseLocation';
 
+import eventBus from '../util/eventBus';
+
 const styles = StyleSheet.create({
   container: {}
 });
@@ -29,6 +31,7 @@ export default class App extends Component {
     this.setUser = this.setUser.bind(this);
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
+    this.onDidFocus = this.onDidFocus.bind(this);
   }
 
   getLocation() {
@@ -38,6 +41,10 @@ export default class App extends Component {
         mongoLocation: [data.coords.longitude, data.coords.latitude]
       });
     });
+  }
+
+  onDidFocus() {
+    eventBus.trigger('navigatorFocus');
   }
 
   setUser(user) {
@@ -151,6 +158,7 @@ export default class App extends Component {
   render () {
     return (
       <Navigator
+        onDidFocus={this.onDidFocus}
         configureScene={this.configureScene}
         style={styles.container}
         initialRoute={{ name: 'LoginPage'} }
