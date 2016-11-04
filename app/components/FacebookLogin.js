@@ -4,6 +4,8 @@ import React, { PropTypes, Component } from 'react';
 
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 
+import facebookAPI from './../util/facebookAPI';
+
 const loginHandler = {
   
   permissions: ['email', 'user_location', 'user_photos', 'user_friends'],
@@ -11,7 +13,12 @@ const loginHandler = {
   // Can choose from Browser, Native, SystemAccount, Web
   loginBehavior: FBLoginManager.LoginBehaviors.Native,
 
-  onLogin: (data) => { console.log('login', JSON.stringify(data)); },
+  onLogin: (data) => { 
+    console.log('userid is', data.userId);
+    console.log('token is', data.token);
+
+    console.log(facebookAPI);
+  },
 
   onLogout: (data) => { console.log('logout', JSON.stringify(data)); },
 
@@ -56,9 +63,3 @@ class FacebookLogin extends Component {
 }
 
 export default FacebookLogin;
-
-// ref={(fbLogin) => { this.fbLogin = fbLogin }}
-
-//user: `https://graph.facebook.com/v2.8/${userId}?access_token=${accessToken}`
-//friends: `https://graph.facebook.com/v2.8/${userId}/friends?access_token=${accessToken}`
-//email: `https://graph.facebook.com/v2.8/${userId}/email?access_token=${accessToken}`
