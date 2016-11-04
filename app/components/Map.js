@@ -17,7 +17,7 @@ import Spinner from './Spinner.js';
 import configURL from './../config/config.js';
 
 import MapView from 'react-native-maps';
-import NewEventModal from './NewEventModal.js';
+import NewEvent from './NewEvent.js';
 import EventModal from './EventModal';
 import OurDrawer from './OurDrawer.js';
 import _navigate from '../config/navigateConfig.js';
@@ -34,14 +34,14 @@ export default class Map extends Component {
     this.state = {
       loading: true,
       markers: null,
-      newEventModalVisible: false,
+      NewEventVisible: false,
       eventModalVisible: false,
       eventModalId: 0
     };
 
     this.setNewEventPinCoords = this.setNewEventPinCoords.bind(this);
     this.fetchEvents = this.fetchEvents.bind(this);
-    this.openNewEventModal = this.openNewEventModal.bind(this);
+    this.openNewEvent = this.openNewEvent.bind(this);
     this.openEventModal = this.openEventModal.bind(this);
     this.closeEventModal = this.closeEventModal.bind(this);
   }
@@ -85,9 +85,9 @@ export default class Map extends Component {
     this.fetchEvents();
   }
 
-  openNewEventModal() {
+  openNewEvent() {
     this.setState({
-      newEventModalVisible: true
+      NewEventVisible: true
     });
   }
 
@@ -185,14 +185,14 @@ export default class Map extends Component {
               })
             }
             </MapView>
-            <NewEventFab onPress={this.openNewEventModal} />
-            <NewEventModal
+            <NewEventFab onPress={this.openNewEvent} />
+            <NewEvent
               navigator={this.props.navigator}
               resetPin={this.setNewEventPinCoords}
               fetchNewEvents={this.fetchEvents}
               userId={this.props.user._id}
               eventCoords={this.state.x}
-              modalVisibility={this.state.newEventModalVisible}
+              modalVisibility={this.state.NewEventVisible}
             />
             {
               this.getEventModal()

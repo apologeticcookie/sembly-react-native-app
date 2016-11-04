@@ -86,14 +86,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class NewEventModal extends Component {
+export default class NewEvent extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
     navigator: PropTypes.object.isRequired,
     // Marking these as non-required for now; <Feed> doesn't seem to pass these
     // props down to it, and no errors seem to be present without these props
-    // In other words, in the place where <NewEventModal> is used without
-    // receiving the below props, <NewEventModal> seems to not need them anyway
+    // In other words, in the place where <NewEvent> is used without
+    // receiving the below props, <NewEvent> seems to not need them anyway
     eventCoords: PropTypes.object,
     resetPin: PropTypes.func,
     fetchNewEvents: PropTypes.func,
@@ -184,7 +184,7 @@ export default class NewEventModal extends Component {
         newEventTags: '',
       });
       setTimeout(() => {
-        context.refs.newEventModal.close();
+        context.refs.NewEvent.close();
         context.setState({
           errorText: ''
         });
@@ -200,11 +200,11 @@ export default class NewEventModal extends Component {
   render () {
     let context = this;
     return (
-      <Modal ref={'newEventModal'} style={styles.modal} isOpen={this.props.modalVisibility}>
+      <Modal ref={'NewEvent'} style={styles.modal} isOpen={this.props.modalVisibility}>
         <View>
           <View style={styles.closeButtonContainer}>
             <Text style={styles.errorText}>{this.state.errorText}</Text>
-            <TouchableOpacity onPress={() => context.refs.newEventModal.close()}>
+            <TouchableOpacity onPress={() => context.refs.NewEvent.close()}>
               <Icon style={styles.closeButton} name='close'/>
             </TouchableOpacity>
           </View>

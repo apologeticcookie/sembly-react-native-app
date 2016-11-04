@@ -71,7 +71,7 @@ export default class LoginPage extends Component {
      });
    }
 
-// onPress={(e)=>{this.login()}} 
+// onPress={(e)=>{this.login()}}
 
   render(){
     if (this.state.loading) {

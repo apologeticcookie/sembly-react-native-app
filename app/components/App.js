@@ -7,13 +7,14 @@ import {
   Navigator
 } from 'react-native';
 
-import TopBar from './TopBar.js';
-import LoginPage from './LoginPage.js';
-import Main from './Main.js';
-import Map from './Map.js';
-import Profile from './Profile.js';
-import Feed from './Feed.js';
+import TopBar from './TopBar';
+import LoginPage from './LoginPage';
+import Main from './Main';
+import Map from './Map';
+import Profile from './Profile';
+import Feed from './Feed';
 import InviteFriends from './InviteFriends';
+import NewEvent from './NewEvent';
 
 const styles = StyleSheet.create({
   container: {}
@@ -105,6 +106,16 @@ export default class App extends Component {
         <InviteFriends
           name={route.name}
           user={this.state.user}
+          navigator={navigator}
+          {...route.passedProps}
+        />
+      );
+    }
+    if (route.name === 'NewEvent') {
+      return (
+        <NewEvent
+          name={route.name}
+          userId={this.state.user._id}
           navigator={navigator}
           {...route.passedProps}
         />

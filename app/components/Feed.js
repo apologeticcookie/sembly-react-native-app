@@ -12,7 +12,7 @@ import {
 import Spinner from './Spinner.js';
 
 import Drawer from 'react-native-drawer';
-import NewEventModal from './NewEventModal.js';
+import NewEvent from './NewEvent.js';
 import EventModal from './EventModal.js';
 import NewEventFab from './NewEventFab.js';
 
@@ -190,7 +190,7 @@ export default class Feed extends Component {
           }
         }/>
         {this.getModal()}
-        <NewEventModal
+        <NewEvent
           visibility={this.state.addEventModal}
           userId={this.props.user._id}
         />
