@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "build": "node node_modules/react-native/local-cli/cli.js run-ios",
+    "lint": "eslint ./",
     "test": "jest"
   },
   "dependencies": {
@@ -24,8 +25,13 @@
     "preset": "jest-react-native"
   },
   "devDependencies": {
+    "babel-eslint": "^7.1.0",
     "babel-jest": "16.0.0",
     "babel-preset-react-native": "1.9.0",
+    "eslint": "^3.9.1",
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "eslint-plugin-react": "^6.5.0",
+    "eslint-plugin-react-native": "^2.0.0",
     "jest": "16.0.2",
     "jest-react-native": "16.0.0",
     "react-test-renderer": "15.3.2"
