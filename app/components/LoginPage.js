@@ -11,6 +11,8 @@ import {
 import Spinner from './Spinner.js';
 import configURL from './../config/config.js';
 
+import FacebookLogin from './FacebookLogin';
+
 const styles = StyleSheet.create({
 container: {
   padding: 30,
@@ -56,7 +58,6 @@ export default class LoginPage extends Component {
     this.setState({loading: true});
 
      fetch(configURL.loginURL,{
-    // fetch('http://localhost:3000/api/users/login',{
        method: 'POST',
        headers: { "Content-Type" : "application/json" },
        body: JSON.stringify({email: 'spencer@test.com', password: 'tewst'})
@@ -70,20 +71,26 @@ export default class LoginPage extends Component {
      });
    }
 
+// onPress={(e)=>{this.login()}} 
+
   render(){
     if (this.state.loading) {
-      return (<View style={styles.container}><Spinner/></View>);
-    }
-    else {
+      return (
+        <View style={styles.container}>
+          <Spinner/>
+        </View>);
+    } else {
       return (
         <View>
           <View style={styles.container}>
-            <TouchableOpacity onPress={(e)=>{this.login()}} style={styles.button}>
-              <Text style={styles.buttonText}>Log</Text>
-            </TouchableOpacity>
+            <FacebookLogin />
           </View>
         </View>
       );
     }
   }
 };
+
+// <TouchableOpacity onPress={(e)=>{this.login()}} style={styles.button}>
+//   <Text style={styles.buttonText}>Login</Text>
+// </TouchableOpacity>

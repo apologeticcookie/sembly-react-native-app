@@ -14,7 +14,7 @@
 
 //  AppDelegate.m
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @implementation AppDelegate
 
@@ -36,30 +36,52 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  
   // added in from https://developers.facebook.com/docs/ios/getting-started/
+  //  [[FBSDKApplicationDelegate sharedInstance] application:application
+  //                           didFinishLaunchingWithOptions:launchOptions];
   
-  [[FBSDKApplicationDelegate sharedInstance] application:application
+  // added from https://github.com/magus/react-native-facebook-login
+  return [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
   
-  return YES;
+  // return YES;
 }
 
 // added in from https://developers.facebook.com/docs/ios/getting-started/
   
+//- (BOOL)application:(UIApplication *)application
+//            openURL:(NSURL *)url
+//            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+//  
+//  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+//    openURL:url
+//    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+//    annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
+//  ];
+//  // Add any custom logic here.
+//  return handled;
+//}
+
+//- (void)applicationDidBecomeActive:(UIApplication *)application {
+//  [FBSDKAppEvents activateApp];
+//}
+
+
+// added from https://github.com/magus/react-native-facebook-login
+
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+            sourceApplication:(NSString *)sourceApplication
+            annotation:(id)annotation {
   
-  BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
-    openURL:url
-    sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-    annotation:options[UIApplicationOpenURLOptionsAnnotationKey]
-  ];
-  // Add any custom logic here.
-  return handled;
+  return [[FBSDKApplicationDelegate sharedInstance]
+          application:application
+          openURL:url
+          sourceApplication:sourceApplication
+          annotation:annotation
+        ];
 }
-  
+
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   [FBSDKAppEvents activateApp];
 }
