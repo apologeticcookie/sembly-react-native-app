@@ -115,7 +115,7 @@ export default class App extends Component {
       return (
         <NewEvent
           name={route.name}
-          userId={this.state.user._id}
+          user={this.state.user}
           navigator={navigator}
           {...route.passedProps}
         />
@@ -126,6 +126,9 @@ export default class App extends Component {
   configureScene(route, routeStack) {
     if (route.name === 'InviteFriends') {
       return Navigator.SceneConfigs.PushFromRight;
+    }
+    if (route.name === 'NewEvent') {
+      return Navigator.SceneConfigs.FloatFromBottom;
     }
     return Navigator.SceneConfigs.FadeAndroid;
   }
