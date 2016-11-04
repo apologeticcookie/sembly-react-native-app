@@ -55,10 +55,17 @@ export default class ChooseLocation extends Component {
   }
 
   componentWillMount() {
+    // This event is triggered every time Navigator.onDidFocus
+    // is called
     this.unsubscribeFocus = eventBus.on('navigatorFocus', this.loadMap);
   }
 
   componentWillUnmount() {
+    // Unsubscribe so that this.loadMap is not called every
+    // time in the future when the event we're interested in
+    // fires. Without an unsubscribe, we get an error because
+    // the function loadMap gets called after this component
+    // is erased, and thus the this context will be messed up
     this.unsubscribeFocus();
   }
 
