@@ -23,8 +23,20 @@ import OurDrawer from './OurDrawer.js';
 import _navigate from '../config/navigateConfig.js';
 import NewEventFab from './NewEventFab.js';
 
+const styles = StyleSheet.create({
+  map: {
+    height: Dimensions.get('window').height - 60,
+  },
+  spinner: {
+    padding: 30,
+    marginTop: 200,
+    alignItems: 'center'
+  }
+});
+
 export default class Map extends Component {
   static propTypes = {
+    navigator: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     mongoLocation: PropTypes.array.isRequired
   }
@@ -133,8 +145,7 @@ export default class Map extends Component {
           </View>
         </OurDrawer>
       );
-    }
-    else {
+    } else {
       return (
         <OurDrawer
           user={this.props.user}
@@ -151,7 +162,8 @@ export default class Map extends Component {
                 longitude: this.props.mongoLocation[0],
                 latitudeDelta: .04,
                 longitudeDelta: .02
-            }}>
+              }}
+            >
             <MapView.Marker
               draggable
               coordinate={this.state.x}
@@ -165,7 +177,8 @@ export default class Map extends Component {
                 var tempLoc = {
                   latitude: marker.location[1],
                   longitude: marker.location[0]
-                }
+                };
+
                 return (
                   <MapView.Marker
                     key={marker._id}
@@ -203,14 +216,3 @@ export default class Map extends Component {
     }
   }
 }
-
-const styles = StyleSheet.create({
-  map: {
-    height: Dimensions.get('window').height - 60,
-  },
-  spinner: {
-    padding: 30,
-    marginTop: 200,
-    alignItems: 'center'
-  }
-});
