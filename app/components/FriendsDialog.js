@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
+import TopBar from './TopBar';
 
 // Needs to keep track of which friend ids have been checked
 // Then call some function (which is passed down as props) on submit, passing
@@ -50,12 +51,17 @@ export default class FriendsDialog extends Component {
 
   handleDone() {
     this.props.handleFriendsInvite(this.state.friendsToInvite);
+    this.props.navigator.pop();
   }
 
   render() {
     return (
       <View style={styles.friendsCheckGroup}>
-        <Text>Invite your friends!</Text>
+        <TopBar
+          topBarName="Invite Friends"
+          handleLeftPress={this.handleDone}
+          iconName="arrow-back"
+        />
         <ScrollView>
         {
           this.props.friends.map((friend, index) => (
@@ -66,12 +72,9 @@ export default class FriendsDialog extends Component {
                   false :
                   true
                 }
-                ref={'friend' + index}
-                friendCheckId={friend._id}
                 onCheckedChange={e => this.handleCheckedChange(e, friend._id)}
               />
               <Text>{friend.firstName + ' ' + friend.lastName}</Text>
-              <Text>{this.state.friendsToInvite.indexOf(friend._id)}</Text>
             </View>
           ))
         }
@@ -82,10 +85,7 @@ export default class FriendsDialog extends Component {
           shadowOffset={{width:0, height:2}}
           shadowOpacity={.7}
           shadowColor="black"
-          onPress={() => {
-            this.handleDone();
-            this.props.navigator.pop();
-          }}
+          onPress={this.handleDone}
         >
           <Text
             pointerEvents="none"
@@ -101,13 +101,12 @@ export default class FriendsDialog extends Component {
 
 const styles = StyleSheet.create({
   friendsCheckGroup: {
-    flexDirection: 'row',
+    flex: 1,
     justifyContent: 'space-between',
     flexWrap: 'wrap',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 5,
+    paddingBottom: 20,
     alignItems: 'center',
+    backgroundColor: 'white'
   },
   friendCheck: {
     alignItems: 'center',
@@ -123,13 +122,3 @@ const styles = StyleSheet.create({
     height: 40,
   }
 });
-
-
-/*
-
-handlePress() {
-  this.dialogbox.alert('sup dawg lmao');
-}
-
-<DialogBox ref={ dialogbox => this.dialogbox = dialogbox }/>
-*/

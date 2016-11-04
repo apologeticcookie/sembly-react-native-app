@@ -66,7 +66,6 @@ export default class NewEventModal extends Component {
   }
 
   handleFriendsInvite(invitedFriends) {
-    console.log('calling handleFriendsInvite with', invitedFriends);
     this.setState({
       invitedFriends
     });
@@ -190,7 +189,7 @@ export default class NewEventModal extends Component {
                 pointerEvents="none"
                 style={{color: 'white', fontWeight: 'bold'}}
               >
-                Choose Friends
+                CHOOSE FRIENDS
               </Text>
             </MKButton>
           </View>

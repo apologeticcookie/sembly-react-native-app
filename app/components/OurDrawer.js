@@ -26,14 +26,19 @@ export default class OurDrawer extends Component{
         content={<Menu user={this.props.user} _navigate={this.props._navigate}/>}
         tapToClose={true}
         open={false}
-        openDrawerOffset={0.3}
+        handleLeftPressOffset={0.3}
         panCloseMask={0.3}
         closedDrawerOffset={-3}
         styles={drawerStyles}
         tweenHandler={(ratio) => ({
                 main: { opacity:(2-ratio)/2 }
-        })}>
-         <TopBar topBarName={this.props.topBarName} topBarFilterVisible={this.props.topBarFilterVisible} openDrawer={() => {this._drawer.open()} }/>
+        })}
+      >
+        <TopBar
+          topBarName={this.props.topBarName}
+          topBarFilterVisible={this.props.topBarFilterVisible}
+          handleLeftPress={() => {this._drawer.open()} }
+        />
        	{this.props.children}
       </Drawer>
     );
@@ -43,9 +48,9 @@ export default class OurDrawer extends Component{
 
 const drawerStyles = {
   drawer: {
-  backgroundColor: 'white', 
-  shadowColor: '#000000', 
-  shadowOpacity: 0.8, 
+  backgroundColor: 'white',
+  shadowColor: '#000000',
+  shadowOpacity: 0.8,
   shadowRadius: 3,
   }
 }
