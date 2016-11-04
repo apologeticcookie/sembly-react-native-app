@@ -133,7 +133,7 @@ let getFriends = function(userId, token, callback) {
 
 let getUserData = function(userId, token, callback) {
 
-  let user = {};
+  let user = { facebookId: userId };
   let count = 0;
 
   getName(userId, token, name => {
@@ -155,7 +155,8 @@ let getUserData = function(userId, token, callback) {
   });
 
   getFriends(userId, token, friends => {
-    //user.friends = friends;
+    user.friends = friends;
+    user.facebookFriends = friends;
     count++;
   });
 

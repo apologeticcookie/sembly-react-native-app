@@ -8,9 +8,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Spinner from './Spinner.js';
-import configURL from './../config/config.js';
-
 import FacebookLogin from './FacebookLogin';
 
 const styles = StyleSheet.create({
@@ -37,60 +34,15 @@ button: {
 }
 });
 
-
-export default class LoginPage extends Component {
-  constructor(props){
-    super(props);
-    this.state = {loading: false};
-  }
-
-  _navigate() {
-    this.props.navigator.push({
-        name: 'Map'
-    });
-  }
-
-  componentWillMount () {
-    this.props.getLocation();
-  }
-
-  login() {
-    this.setState({loading: true});
-
-     fetch(configURL.loginURL,{
-       method: 'POST',
-       headers: { "Content-Type" : "application/json" },
-       body: JSON.stringify({email: 'spencer@test.com', password: 'tewst'})
-     })
-     .then(response => {
-       return response.json();
-     })
-     .then( user => {
-       this.props.setUser(user);
-       this._navigate();
-     });
-   }
-
-// onPress={(e)=>{this.login()}} 
-
-  render(){
-    if (this.state.loading) {
-      return (
-        <View style={styles.container}>
-          <Spinner/>
-        </View>);
-    } else {
-      return (
-        <View>
-          <View style={styles.container}>
-            <FacebookLogin />
-          </View>
-        </View>
-      );
-    }
-  }
+export default (props) => {
+  return (
+    <View>
+      <View style={styles.container}>
+        <FacebookLogin setUser={props.setUser} navigator={props.navigator} />
+      </View>
+      <View style={styles.container}>
+        <FacebookLogin setUser={props.setUser} navigator={props.navigator} />
+      </View>
+    </View>
+  );
 };
-
-// <TouchableOpacity onPress={(e)=>{this.login()}} style={styles.button}>
-//   <Text style={styles.buttonText}>Login</Text>
-// </TouchableOpacity>

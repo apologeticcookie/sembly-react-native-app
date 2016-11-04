@@ -18,6 +18,7 @@ import InviteFriends from './InviteFriends';
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.state = { user: null};
 
     this.getLocation = this.getLocation.bind(this);
     this.setUser = this.setUser.bind(this);
@@ -36,27 +37,40 @@ export default class App extends Component {
 
   setUser(user) {
     this.setState({user: user});
+    console.log('user is set to', user);
+  }
+
+  componentWillMount () {
+    this.getLocation();
   }
 
   renderScene(route, navigator) {
-    if (route.name === 'LoginPage') {
+    if (this.state.user === null) {
       return (
         <LoginPage
           getLocation={this.getLocation}
           setUser={this.setUser}
           navigator={navigator}
+          user={this.state.user}
         />
       );
-    }
-    if (route.name === 'Profile') {
+    } else if (route.name === 'LoginPage') {
+      return (
+        <LoginPage
+          getLocation={this.getLocation}
+          setUser={this.setUser}
+          navigator={navigator}
+          user={this.state.user}
+        />
+      );
+    } else if (route.name === 'Profile') {
       return (
         <Profile
           user={this.state.user}
           navigator={navigator}
         />
       );
-    }
-    if (route.name === 'Map') {
+    } else if (route.name === 'Map') {
       return (
         <Map
           user={this.state.user}
@@ -64,8 +78,7 @@ export default class App extends Component {
           navigator={navigator}
         />
       );
-    }
-    if (route.name === 'Feed') {
+    } else if (route.name === 'Feed') {
       return (
         <Feed
           name={route.name}
@@ -75,8 +88,7 @@ export default class App extends Component {
           navigator={navigator}
         />
       );
-    }
-    if (route.name === 'Invites') {
+    } else if (route.name === 'Invites') {
       return (
         <Feed
           name={'Invited To'}
@@ -85,8 +97,7 @@ export default class App extends Component {
           navigator={navigator}
         />
       );
-    }
-    if (route.name === 'Saved') {
+    } else if (route.name === 'Saved') {
       return (
         <Feed
           name={route.name}
@@ -95,8 +106,7 @@ export default class App extends Component {
           navigator={navigator}
         />
       );
-    }
-    if (route.name === 'InviteFriends') {
+    } else if (route.name === 'InviteFriends') {
       return (
         <InviteFriends
           name={route.name}

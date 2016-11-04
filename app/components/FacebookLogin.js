@@ -6,34 +6,57 @@ import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 
 import facebookAPI from './../util/facebookAPI';
 
-const loginHandler = {
-  
-  permissions: ['email', 'user_location', 'user_photos', 'user_friends'],
-  // Define Login Behavior here
-  // Can choose from Browser, Native, SystemAccount, Web
-  loginBehavior: FBLoginManager.LoginBehaviors.Native,
+import configURL from './../config/config.js';
 
-  onLogin: (data) => { 
+class FacebookLogin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      permissions: ['email', 'user_location', 'user_photos', 'user_friends'],
+      // Define Login Behavior here
+      // Can choose from Browser, Native, SystemAccount, Web
+      loginBehavior: FBLoginManager.LoginBehaviors.Native
+    };
+
+    this.onLogin = this.onLogin.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+    this.onLoginFound = this.onLoginFound.bind(this);
+    this.onLoginNotFound = this.onLoginNotFound.bind(this);
+    this.onError = this.onError.bind(this);
+    this.onCancel = this.onCancel.bind(this);
+    this.onPermissionsMissing = this.onPermissionsMissing.bind(this);
+
+  }
+  
+  onLogin(data) { 
     let userId = data.credentials.userId;
     let token = data.credentials.token;
+    let context = this;
 
+    /* facebookAPI helper functions run to get user data from Facebook Graph API */
     facebookAPI.getUserData(userId, token, function(userData) {
 
       /* get lat and long coordinates from navigator */
-
       navigator.geolocation.getCurrentPosition(latlong => {
         userData.location = [latlong.coords.longitude, latlong.coords.latitude];
-        userData.password = 'test';
+        userData.password = 'default';
 
         /* Do what you want to do with userData HERE */
         console.log('User Data ',JSON.stringify(userData));
-        fetch('http://tranquil-garden-43561.herokuapp.com/api/users/signup', {
+        fetch(configURL.userSignup, {
           method: 'POST',
           headers: { "Content-Type" : "application/json" },
           body: JSON.stringify(userData)
         })
         .then(response => {
           console.log('user signup success', response);
+
+          /* Set user as logged in user HERE */
+          context.props.setUser(userData);
+
+          /* Switch to Map view */
+          context.props.navigator.push({ name: 'Map'});
+
         })
         .catch(error => {
            console.log(error);
@@ -41,44 +64,85 @@ const loginHandler = {
 
       });
     });
-  },
+  }
 
-  onLogout: (data) => { console.log('logout', JSON.stringify(data)); },
+  onLogout(data) { 
+    console.log('logout', JSON.stringify(data));
 
-  onLoginFound: (data) => { console.log('loginFound', JSON.stringify(data)); },
+    /* Set user as null HERE */
+    let context = this;
+    context.props.setUser(null);
+  }
 
-  onLoginNotFound: (data) => { console.log('loginNotFound', JSON.stringify(data)); },
+  onLoginFound(data) { 
+  
+    console.log('loginFound', JSON.stringify(data));
+    console.log('userId is', data.credentials.userId);
 
-  onError: (data) => { console.log('error', JSON.stringify(data)); },
+    /* Set user as logged in user HERE */
+    this.onLogin(data);
+  }
 
-  onCancel: (data) => { console.log('cancel', JSON.stringify(data)); },
+  onLoginNotFound(data) { 
 
-  onPermissionsMissing: (data) => { console.log('permissionsMissing', JSON.stringify(data)); },
+    console.log('loginNotFound', JSON.stringify(data)); 
 
-};
+    /* Set user as null HERE */
+    let context = this;
+    context.props.setUser(null);
+  }
 
-class FacebookLogin extends Component {
+  onError(data) { 
+
+    console.log('error', JSON.stringify(data)); 
+
+    /* Set user as null HERE */
+    let context = this;
+    context.props.setUser(null);
+
+  }
+
+  onCancel(data) { 
+
+    console.log('cancel', JSON.stringify(data)); 
+
+    /* Set user as null HERE */
+    let context = this;
+    context.props.setUser(null);
+
+  }
+
+  onPermissionsMissing(data) { 
+
+    console.log('permissionsMissing', JSON.stringify(data)); 
+
+    /* Set user as null HERE */
+    let context = this;
+    context.props.setUser(null);
+
+  }
+
   render() {
     return (
       <FBLogin 
 
-        permissions={loginHandler.permissions}
+        permissions={this.state.permissions}
 
-        loginBehavior={loginHandler.loginBehavior}
+        loginBehavior={this.state.loginBehavior}
 
-        onLogin={loginHandler.onLogin}
+        onLogin={this.onLogin}
 
-        onLogout={loginHandler.onLogout}
+        onLogout={this.onLogout}
 
-        onLoginFound={loginHandler.onLoginFound}
+        onLoginFound={this.onLoginFound}
 
-        onLoginNotFound={loginHandler.onLoginNotFound}
+        onLoginNotFound={this.onLoginNotFound}
 
-        onError={loginHandler.onError}
+        onError={this.onError}
 
-        onCancel={loginHandler.onCancel}
+        onCancel={this.onCancel}
 
-        onPermissionsMissing={loginHandler.onPermissionsMissing}
+        onPermissionsMissing={this.onPermissionsMissing}
 
       />
     );
