@@ -11,17 +11,16 @@ import {
   DatePickerIOS
 } from 'react-native';
 
-import Modal from 'react-native-modalbox';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
 import InviteFriends from './InviteFriends';
 import _navigate from '../config/navigateConfig.js';
-
+import TopBar from './TopBar';
 
 const styles = StyleSheet.create({
-  modal: {
-    marginTop: 40
+  newEvent: {
+    backgroundColor: '#fff'
   },
   errorText: {
     fontSize: 16,
@@ -37,14 +36,6 @@ const styles = StyleSheet.create({
   closeButton: {
     color: 'grey',
     fontSize: 30
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold'
   },
   textInputContainer: {
     justifyContent: 'center',
@@ -96,8 +87,7 @@ export default class NewEvent extends Component {
     // receiving the below props, <NewEvent> seems to not need them anyway
     eventCoords: PropTypes.object,
     resetPin: PropTypes.func,
-    fetchNewEvents: PropTypes.func,
-    modalVisibility: PropTypes.bool
+    fetchNewEvents: PropTypes.func
   }
 
   constructor (props) {
@@ -108,11 +98,11 @@ export default class NewEvent extends Component {
       newEventName: '',
       newEventStartTime: new Date(),
       newEventTags: '',
-      errorText: '',
-      modalVisible: false
+      errorText: ''
     };
 
     this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
+    this.handleBack = this.handleBack.bind(this);
   }
 
   componentWillMount () {
@@ -197,20 +187,22 @@ export default class NewEvent extends Component {
     });
   }
 
+  handleBack() {
+    this.props.navigator.pop();
+  }
+
   render () {
     let context = this;
     return (
-      <Modal ref={'NewEvent'} style={styles.modal} isOpen={this.props.modalVisibility}>
+      <View ref={'NewEvent'} style={styles.newEvent}>
+        <TopBar
+          topBarName="Create a New Event"
+          handleLeftPress={this.handleBack}
+          iconName="arrow-back"
+        />
         <View>
           <View style={styles.closeButtonContainer}>
             <Text style={styles.errorText}>{this.state.errorText}</Text>
-            <TouchableOpacity onPress={() => context.refs.NewEvent.close()}>
-              <Icon style={styles.closeButton} name='close'/>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>Create a New Event!</Text>
           </View>
 
           <View style={styles.textInputContainer}>
@@ -288,7 +280,7 @@ export default class NewEvent extends Component {
           </View>
 
         </View>
-      </Modal>
+      </View>
     );
   }
 }
