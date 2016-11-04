@@ -187,6 +187,7 @@ export default class Map extends Component {
             </MapView>
             <NewEventFab onPress={this.openNewEventModal} />
             <NewEventModal
+              navigator={this.props.navigator}
               resetPin={this.setNewEventPinCoords}
               fetchNewEvents={this.fetchEvents}
               userId={this.props.user._id}

@@ -7,24 +7,30 @@ import {
   Navigator
 } from 'react-native';
 
-var app;
 import TopBar from './TopBar.js';
 import LoginPage from './LoginPage.js';
 import Main from './Main.js';
 import Map from './Map.js';
 import Profile from './Profile.js';
 import Feed from './Feed.js';
+import InviteFriends from './InviteFriends';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    app = this;
+
+    this.getLocation = this.getLocation.bind(this);
+    this.setUser = this.setUser.bind(this);
+    this.renderScene = this.renderScene.bind(this);
+    this.configureScene = this.configureScene.bind(this);
   }
 
   getLocation() {
-    let context = this;
     navigator.geolocation.getCurrentPosition(data => {
-      context.setState({currentLoc: [data.coords.latitude, data.coords.longitude], mongoLocation: [data.coords.longitude, data.coords.latitude]});
+      this.setState({
+        currentLoc: [data.coords.latitude, data.coords.longitude],
+        mongoLocation: [data.coords.longitude, data.coords.latitude]
+      });
     });
   }
 
@@ -32,39 +38,91 @@ export default class App extends Component {
     this.setState({user: user});
   }
 
-  renderScene(route, navigator){
-    if(route.name === 'LoginPage'){
-      return <LoginPage getLocation={app.getLocation.bind(app)} setUser={app.setUser.bind(app)} navigator={navigator}/>;
+  renderScene(route, navigator) {
+    if (route.name === 'LoginPage') {
+      return (
+        <LoginPage
+          getLocation={this.getLocation}
+          setUser={this.setUser}
+          navigator={navigator}
+        />
+      );
     }
-
-    if(route.name === 'Profile') {
-      return <Profile user={app.state.user} navigator={navigator}/>;
+    if (route.name === 'Profile') {
+      return (
+        <Profile
+          user={this.state.user}
+          navigator={navigator}
+        />
+      );
     }
-    if(route.name === 'Map') {
-      return <Map user={app.state.user} mongoLocation={app.state.mongoLocation} navigator={navigator}/>;
+    if (route.name === 'Map') {
+      return (
+        <Map
+          user={this.state.user}
+          mongoLocation={this.state.mongoLocation}
+          navigator={navigator}
+        />
+      );
     }
-    if(route.name === 'Feed') {
-      return <Feed name={route.name} user={app.state.user} mongoLocation={app.state.mongoLocation} page={'bundle'} navigator={navigator}/>;
+    if (route.name === 'Feed') {
+      return (
+        <Feed
+          name={route.name}
+          user={this.state.user}
+          mongoLocation={this.state.mongoLocation}
+          page={'bundle'}
+          navigator={navigator}
+        />
+      );
     }
-    if(route.name === 'Invites') {
-      return <Feed name={'Invited To'} user={app.state.user} page={'invited'} navigator={navigator}/>;
+    if (route.name === 'Invites') {
+      return (
+        <Feed
+          name={'Invited To'}
+          user={this.state.user}
+          page={'invited'}
+          navigator={navigator}
+        />
+      );
     }
-    if(route.name === 'Saved') {
-      return <Feed name={route.name} user={app.state.user} page={'saved'} navigator={navigator}/>;
+    if (route.name === 'Saved') {
+      return (
+        <Feed
+          name={route.name}
+          user={this.state.user}
+          page={'saved'}
+          navigator={navigator}
+        />
+      );
+    }
+    if (route.name === 'InviteFriends') {
+      return (
+        <InviteFriends
+          name={route.name}
+          user={this.state.user}
+          navigator={navigator}
+          {...route.passedProps}
+        />
+      );
     }
   }
 
-  configureScene(route, routeStack){
-   return Navigator.SceneConfigs.FadeAndroid;
+  configureScene(route, routeStack) {
+    if (route.name === 'InviteFriends') {
+      return Navigator.SceneConfigs.PushFromRight;
+    }
+    return Navigator.SceneConfigs.FadeAndroid;
   }
 
   render () {
     return (
       <Navigator
-        configureScene={ this.configureScene }
+        configureScene={this.configureScene}
         style={styles.container}
-        initialRoute={{name: 'LoginPage'}}
-        renderScene={this.renderScene}/>
+        initialRoute={{ name: 'LoginPage'} }
+        renderScene={this.renderScene}
+      />
     );
   }
 }
