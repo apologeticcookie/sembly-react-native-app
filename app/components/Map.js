@@ -46,7 +46,6 @@ export default class Map extends Component {
     this.state = {
       loading: true,
       markers: null,
-      NewEventVisible: false,
       eventModalVisible: false,
       eventModalId: 0
     };
@@ -98,8 +97,15 @@ export default class Map extends Component {
   }
 
   openNewEvent() {
-    this.setState({
-      NewEventVisible: true
+    this.props.navigator.push({
+      name: 'NewEvent',
+      passedProps: {
+        navigator: this.props.navigator,
+        resetPin: this.setNewEventPinCoords,
+        fetchNewEvents: this.fetchEvents,
+        userId: this.props.user._id,
+        eventCoords: this.state.x
+      }
     });
   }
 
@@ -199,14 +205,6 @@ export default class Map extends Component {
             }
             </MapView>
             <NewEventFab onPress={this.openNewEvent} />
-            <NewEvent
-              navigator={this.props.navigator}
-              resetPin={this.setNewEventPinCoords}
-              fetchNewEvents={this.fetchEvents}
-              userId={this.props.user._id}
-              eventCoords={this.state.x}
-              modalVisibility={this.state.NewEventVisible}
-            />
             {
               this.getEventModal()
             }
