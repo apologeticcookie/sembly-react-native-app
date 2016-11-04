@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingBottom: 20,
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: '#fff'
   },
   friendCheck: {
     alignItems: 'center',
@@ -106,7 +106,7 @@ export default class InviteFriends extends Component {
         >
           <Text
             pointerEvents="none"
-            style={{color: 'white', fontWeight: 'bold'}}
+            style={{color: '#fff', fontWeight: 'bold'}}
           >
             DONE
           </Text>
