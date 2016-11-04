@@ -15,6 +15,10 @@ import Profile from './Profile.js';
 import Feed from './Feed.js';
 import InviteFriends from './InviteFriends';
 
+const styles = StyleSheet.create({
+  container: {}
+});
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -126,7 +130,3 @@ export default class App extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {}
-});
