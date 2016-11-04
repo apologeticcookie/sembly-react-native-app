@@ -103,6 +103,34 @@ export default class NewEvent extends Component {
 
     this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
     this.handleBack = this.handleBack.bind(this);
+    this.handleInviteFriendsNavigate = this.handleInviteFriendsNavigate.bind(this);
+    this.handleChooseLocationNavigate = this.handleChooseLocationNavigate.bind(this);
+    this.handleCoordsSet = this.handleCoordsSet.bind(this);
+  }
+
+  handleInviteFriendsNavigate() {
+    this.props.navigator.push({
+      name: 'InviteFriends',
+      passedProps: {
+        friends: this.state.friends,
+        initialInvitedFriends: this.state.invitedFriends,
+        handleFriendsInvite: this.handleFriendsInvite
+      }
+    });
+  }
+
+  handleCoordsSet(coords) {
+    return;
+  }
+
+  handleChooseLocationNavigate() {
+    this.props.navigator.push({
+      name: 'ChooseLocation',
+      passedProps: {
+        handleCoordsSet: this.handleCoordsSet,
+        friends: this.state.friends
+      }
+    });
   }
 
   componentWillMount () {
@@ -130,7 +158,7 @@ export default class NewEvent extends Component {
     });
   }
 
-  handleSubmit () {
+  handleSubmit() {
     let context = this;
 
     if (this.state.newEventName === '') {
@@ -235,22 +263,31 @@ export default class NewEvent extends Component {
               shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={.7}
               shadowColor="black"
-              onPress={() => {
-                this.props.navigator.push({
-                  name: 'InviteFriends',
-                  passedProps: {
-                    friends: this.state.friends,
-                    initialInvitedFriends: this.state.invitedFriends,
-                    handleFriendsInvite: this.handleFriendsInvite
-                  }
-                });
-              }}
+              onPress={this.handleInviteFriendsNavigate}
             >
               <Text
                 pointerEvents="none"
                 style={{color: 'white', fontWeight: 'bold'}}
               >
                 CHOOSE FRIENDS
+              </Text>
+            </MKButton>
+          </View>
+
+          <View style={styles.createEventButtonContainer}>
+            <MKButton
+              style={styles.createEventButton}
+              shadowRadius={2}
+              shadowOffset={{ width: 0, height: 2 }}
+              shadowOpacity={.7}
+              shadowColor="black"
+              onPress={this.handleChooseLocationNavigate}
+            >
+              <Text
+                pointerEvents="none"
+                style={{color: 'white', fontWeight: 'bold'}}
+              >
+                CHOOSE LOCATION
               </Text>
             </MKButton>
           </View>
