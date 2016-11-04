@@ -40,9 +40,6 @@ export default (props) => {
       <View style={styles.container}>
         <FacebookLogin setUser={props.setUser} navigator={props.navigator} />
       </View>
-      <View style={styles.container}>
-        <FacebookLogin setUser={props.setUser} navigator={props.navigator} />
-      </View>
     </View>
   );
 };
