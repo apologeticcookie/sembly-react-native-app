@@ -22,6 +22,10 @@ import eventBus from '../util/eventBus';
 const styles = StyleSheet.create({
   map: {
     height: Dimensions.get('window').height - 60,
+  },
+  locationView: {
+    backgroundColor: '#fff',
+    flex: 1
   }
 });
 
@@ -76,7 +80,7 @@ export default class ChooseLocation extends Component {
 
   render () {
     return (
-      <View>
+      <View style={styles.locationView}>
         <TopBar
           topBarName="Set Event Location"
           handleLeftPress={this.handleDone}
@@ -84,6 +88,7 @@ export default class ChooseLocation extends Component {
         />
         {
           this.state.loadReady ?
+          // false ?
           (<MapView
             showsUserLocation={true}
             style={styles.map}
@@ -127,7 +132,8 @@ export default class ChooseLocation extends Component {
                 );
               })
             }
-          </MapView> ) :
+          </MapView>
+          ) :
           null
         }
 
