@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   TextInput,
   DatePickerIOS
@@ -14,6 +15,8 @@ import Modal from 'react-native-modalbox';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
+import InviteFriends from './InviteFriends';
+import _navigate from '../config/navigateConfig.js';
 
 export default class NewEventModal extends Component {
   static propTypes = {
@@ -32,11 +35,15 @@ export default class NewEventModal extends Component {
     super(props);
     this.state = {
       friends: [],
+      invitedFriends: [],
       newEventName: '',
       newEventStartTime: new Date(),
       newEventTags: '',
-      errorText: ''
+      errorText: '',
+      modalVisible: false
     };
+
+    this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
   }
 
   componentWillMount () {
@@ -57,11 +64,20 @@ export default class NewEventModal extends Component {
       console.log(error);
     });
   }
-  handleSubmit () {
 
+  handleFriendsInvite(invitedFriends) {
+    this.setState({
+      invitedFriends
+    });
+  }
+
+  handleSubmit () {
     let context = this;
-    if(this.state.newEventName === ''){
-      this.setState({errorText: 'Please enter an event name!'});
+
+    if(this.state.newEventName === '') {
+      this.setState({
+        errorText: 'Please enter an event name!'
+      });
       return;
     }
 
@@ -71,7 +87,7 @@ export default class NewEventModal extends Component {
       startTime: this.state.newEventStartTime,
       image: 'http://blogs-images.forbes.com/steveolenski/files/2015/07/Messe_Luzern_Corporate_Event.jpg',
       tags: [],
-      invitedUsers: [],
+      invitedUsers: this.state.invitedFriends,
       visibility: ''
     };
 
@@ -86,13 +102,7 @@ export default class NewEventModal extends Component {
 
     eventToBePosted.tags = this.state.newEventTags.split(' ');
 
-    this.state.friends.forEach((friend, index) => {
-      if(this.refs['friend' + index].state.checked){
-        eventToBePosted.invitedUsers.push(this.refs['friend' + index].props.friendCheckId);
-      }
-    });
-
-    fetch(configURL.getEvents,{
+    fetch(configURL.getEvents, {
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
       body: JSON.stringify(eventToBePosted)
@@ -117,6 +127,7 @@ export default class NewEventModal extends Component {
       console.log(error);
     });
   }
+
   render () {
     let context = this;
     return (
@@ -156,18 +167,31 @@ export default class NewEventModal extends Component {
             />
           </View>
 
-          <View style={styles.friendsCheckGroup}>
-            <Text>Invite your friends!</Text>
-            {this.state.friends.map((friend, index) => {
-              return (
-                <View style={styles.friendCheck} key={friend._id}>
-                  <MKCheckbox
-                    checked={false} ref={'friend' + index} friendCheckId={friend._id}
-                  />
-                  <Text>{friend.firstName + ' ' + friend.lastName}</Text>
-                </View>
-              )
-            })}
+          <View style={styles.createEventButtonContainer}>
+            <MKButton
+              style={styles.createEventButton}
+              shadowRadius={2}
+              shadowOffset={{width:0, height:2}}
+              shadowOpacity={.7}
+              shadowColor="black"
+              onPress={() => {
+                this.props.navigator.push({
+                  name: 'InviteFriends',
+                  passedProps: {
+                    friends: this.state.friends,
+                    initialInvitedFriends: this.state.invitedFriends,
+                    handleFriendsInvite: this.handleFriendsInvite
+                  }
+                });
+              }}
+            >
+              <Text
+                pointerEvents="none"
+                style={{color: 'white', fontWeight: 'bold'}}
+              >
+                CHOOSE FRIENDS
+              </Text>
+            </MKButton>
           </View>
 
           <View style={styles.visibilityCheck}>
@@ -193,10 +217,9 @@ export default class NewEventModal extends Component {
 
         </View>
       </Modal>
-    )
+    );
   }
 }
-
 
 const styles = StyleSheet.create({
   modal: {
@@ -240,20 +263,6 @@ const styles = StyleSheet.create({
     flex: 4,
     fontSize: 18,
     textAlign: 'left'
-  },
-  friendsCheckGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 5,
-    alignItems: 'center',
-  },
-  friendCheck: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
   },
   visibilityCheck:{
     paddingLeft: 10,
