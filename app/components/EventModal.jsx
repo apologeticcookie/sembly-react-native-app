@@ -1,7 +1,7 @@
 // EventModal.js
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
-  StatusBar,
+  // StatusBar,
   StyleSheet,
   Text,
   View,
@@ -164,117 +164,151 @@ export default class EventModal extends Component {
 
   getEvent() {
     fetch(configURL.getEvents + this.props.event)
-    .then(response => {
-      return response.json();
+    .then(response => response.json())
+    .then((event) => {
+      this.setState({ event: event, loading: false, users: event.invitedUsers });
     })
-    .then(event => {
-      this.setState({event: event, loading: false, users: event.invitedUsers});
-    })
-    .catch( error => {
-      console.log(error);
-    });
+    .catch(error => console.log(error));
   }
   changeUsers(type) {
-  	if (type === 'invited') {
-  		this.setState({
-  			users: this.state.event.invitedUsers,
-  			savedStyle: this.state.button,
-  			invitedStyle: this.state.selected,
-  			checkedStyle: this.state.button
-  		});
-  	} else if (type === 'saved') {
-  		this.setState({
-  			users: this.state.event.savedUsers,
-  			savedStyle: this.state.selected,
-  			invitedStyle: this.state.button,
-  			checkedStyle: this.state.button
+    if (type === 'invited') {
+      this.setState({
+        users: this.state.event.invitedUsers,
+        savedStyle: this.state.button,
+        invitedStyle: this.state.selected,
+        checkedStyle: this.state.button,
       });
-  	} else {
-  		this.setState({
-  			users: this.state.event.checkedInUsers,
-  			savedStyle: this.state.button,
-  			invitedStyle: this.state.button,
-  			checkedStyle: this.state.selected
+    } else if (type === 'saved') {
+      this.setState({
+        users: this.state.event.savedUsers,
+        savedStyle: this.state.selected,
+        invitedStyle: this.state.button,
+        checkedStyle: this.state.button,
       });
-  	}
+    } else {
+      this.setState({
+        users: this.state.event.checkedInUsers,
+        savedStyle: this.state.button,
+        invitedStyle: this.state.button,
+        checkedStyle: this.state.selected,
+      });
+    }
   }
   saveEvent() {
-  	fetch(configURL.saveEvent, {
+    fetch(configURL.saveEvent, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userId: this.props.user._id,
-        eventId: this.state.event._id
-      })
+        eventId: this.state.event._id,
+      }),
     })
-    .then(data => {
+    .then(() => {
       this.getEvent();
     });
   }
   checkIn() {
-  	fetch(configURL.checkinEvent, {
+    fetch(configURL.checkinEvent, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userId: this.props.user._id,
-        eventId: this.state.event._id
-      })
+        eventId: this.state.event._id,
+      }),
     })
-    .then(data => {
+    .then(() => {
       this.getEvent();
     });
   }
   getUsers() {
-  	if (this.state.users.length === 0) {
-  		return (<Text>No Users</Text>);
-  	} else {
-  		return this.state.users.map((user, index) => <UserCard key={index} user={user} index={index} friends={'users'} />);
-  	}
+    if (this.state.users.length === 0) {
+      return (<Text>No Users</Text>);
+    } else {
+      return this.state.users.map((user, index) => <UserCard key={index} user={user} index={index} friends={'users'} />);
+    }
   }
-  getRender () {
-  	if (this.state.loading === true) {
-  		this.getEvent();
-  		return (<Spinner/>);
-  	} else {
-  		return (
-  			<View>
-	  			<Image style={styles.image} source={{uri: this.state.event.image}}/>
-  				<View>
-	  				<Text style={styles.title} >{this.state.event.name}</Text>
-  				</View>
-  				<View>
-  				  <Text style={styles.description}>{this.transformDate(this.state.event.startTime)}</Text>
-  				</View>
-  				<View style={styles.flowRight}>
-  					<TouchableOpacity style={styles.actionButton} onPress={e => this.saveEvent()}><Text style={styles.buttonText}>Save Event!</Text></TouchableOpacity>
-  					<TouchableOpacity style={styles.actionButton} onPress={e => this.checkIn()}><Text style={styles.buttonText}>Check In!</Text></TouchableOpacity>
-  				</View>
-  				<View style={styles.flowRight}>
-  					<TouchableOpacity style={this.state.invitedStyle} onPress={e => this.changeUsers('invited')}><Text style={styles.buttonText}>Invited</Text></TouchableOpacity>
-  					<TouchableOpacity style={this.state.savedStyle} onPress={e => this.changeUsers('saved')}><Text style={styles.buttonText}>Saved</Text></TouchableOpacity>
-  					<TouchableOpacity style={this.state.checkedStyle} onPress={e => this.changeUsers('checkedin')}><Text style={styles.buttonText}>Checked In</Text></TouchableOpacity>
-  				</View>
-  				<ScrollView>
-  				{this.getUsers()}
-  				</ScrollView>
-  			</View>
-  			);
-  	}
+  getRender() {
+    if (this.state.loading === true) {
+      this.getEvent();
+      return (<Spinner/>);
+    } else {
+      return (
+        <View>
+          <Image style={styles.image} source={{ uri: this.state.event.image }} />
+          <View>
+            <Text style={styles.title} >{this.state.event.name}</Text>
+          </View>
+          <View>
+            <Text style={styles.description}>{this.transformDate(this.state.event.startTime)}</Text>
+          </View>
+          <View style={styles.flowRight}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => this.saveEvent()}
+            >
+              <Text style={styles.buttonText}>Save Event!</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => this.checkIn()}
+            >
+              <Text style={styles.buttonText}>Check In!</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.flowRight}>
+            <TouchableOpacity
+              style={this.state.invitedStyle}
+              onPress={() => this.changeUsers('invited')}
+            >
+              <Text style={styles.buttonText}>Invited</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={this.state.savedStyle}
+              onPress={() => this.changeUsers('saved')}
+            >
+              <Text style={styles.buttonText}>Saved</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={this.state.checkedStyle}
+              onPress={() => this.changeUsers('checkedin')}
+            >
+              <Text style={styles.buttonText}>Checked In</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView>
+            {this.getUsers()}
+          </ScrollView>
+        </View>
+      );
+    }
   }
-  render () {
-    let context = this;
+
+  render() {
+    const context = this;
     return (
-      <Modal ref={'EventModal'} onClosed={(e) => this.props.close()} style={styles.modal} isOpen={true}>
+      <Modal
+        // linter requested not to have literal references for ref
+        // Ref: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md
+        ref={(c) => { this.EventModal = c; }}
+        onClosed={() => this.props.close()}
+        style={styles.modal}
+        isOpen={true}
+      >
         <View style={styles.container}>
           {this.getRender()}
           <View style={styles.absoluteX}>
-	          <TouchableOpacity onPress={() => {this.props.close(); context.refs.EventModal.close()}}>
-	            <Icon style={styles.closeButton} name='close'/>
-	          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.close();
+                context.refs.EventModal.close();
+              }}
+            >
+              <Icon style={styles.closeButton} name="close" />
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -283,5 +317,6 @@ export default class EventModal extends Component {
 }
 // linting keeps breaking
 EventModal.propTypes = {
-  event: PropTypes.object.isRequired,
+  event: PropTypes.shape.isRequired,
+  close: PropTypes.func.isRequired,
 };
