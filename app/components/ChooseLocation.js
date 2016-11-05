@@ -124,19 +124,14 @@ export default class ChooseLocation extends Component {
                 };
 
                 return (
-                  <MapView.Marker
+                  <MapView.Circle
                     key={friend._id}
-                    coordinate={tempLoc}
-                    pinColor={MKColor.Indigo}
+                    center={tempLoc}
+                    fillColor={MKColor.Indigo}
+                    strokeColor={MKColor.Indigo}
+                    radius={50}
                   >
-                    <MapView.Callout width={40} height={40} >
-                      <TouchableHighlight
-                        underlayColor="transparent"
-                      >
-                        <Text>{friend.firstName + friend.lastName}</Text>
-                      </TouchableHighlight>
-                    </MapView.Callout>
-                  </MapView.Marker>
+                  </MapView.Circle>
                 );
               })
             }
