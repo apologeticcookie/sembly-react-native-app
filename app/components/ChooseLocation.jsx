@@ -1,23 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  StatusBar,
+  // StatusBar,
   StyleSheet,
   Text,
   View,
-  Navigator,
+  // Navigator,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 
 import {
   MKColor,
 } from 'react-native-material-kit';
 
-import TopBar from './TopBar';
 import MapView from 'react-native-maps';
+import TopBar from './TopBar';
 
-import configURL from './../config/config.js';
-import eventBus from '../util/eventBus';
+// import configURL from './../config/config.js';
+import eventBus from './../util/eventBus';
 
 const styles = StyleSheet.create({
   map: {
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
   },
   locationView: {
     backgroundColor: '#fff',
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default class ChooseLocation extends Component {
@@ -37,8 +37,8 @@ export default class ChooseLocation extends Component {
       loadReady: false,
       coords: {
         latitude: this.props.mongoLocation[1] + 0.0005,
-        longitude: this.props.mongoLocation[0] + 0.0005
-      }
+        longitude: this.props.mongoLocation[0] + 0.0005,
+      },
     };
 
     this.setPinCoords = this.setPinCoords.bind(this);
@@ -61,20 +61,21 @@ export default class ChooseLocation extends Component {
     this.unsubscribeFocus();
   }
 
-  loadMap() {
-    this.setState({
-      loadReady: true
-    });
-  }
 
   setPinCoords(coords) {
     this.setState({
       coords: {
         latitude: coords.latitude,
-        longitude: coords.longitude
-      }
+        longitude: coords.longitude,
+      },
     });
     return;
+  }
+
+  loadMap() {
+    this.setState({
+      loadReady: true,
+    });
   }
 
   handleDone() {
@@ -100,20 +101,20 @@ export default class ChooseLocation extends Component {
               latitude: this.props.mongoLocation[1],
               longitude: this.props.mongoLocation[0],
               latitudeDelta: 0.04,
-              longitudeDelta: 0.02
+              longitudeDelta: 0.02,
             }}
           >
             <MapView.Marker
               coordinate={this.state.coords}
-              pinColor='yellow'
-              title='The location of your next event!'
+              pinColor="yellow"
+              title="The location of your next event!"
             />
 
             {
-              this.props.friends.map(friend => {
-                var tempLoc = {
+              this.props.friends.map((friend) => {
+                const tempLoc = {
                   latitude: friend.location[1],
-                  longitude: friend.location[0]
+                  longitude: friend.location[0],
                 };
 
                 return (
@@ -144,9 +145,8 @@ export default class ChooseLocation extends Component {
 }
 
 ChooseLocation.propTypes = {
-  navigator: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  mongoLocation: PropTypes.array.isRequired,
-  friends: PropTypes.array.isRequired,
-  handleCoordsSet: PropTypes.func.isRequired
+  navigator: PropTypes.shape.isRequired,
+  mongoLocation: PropTypes.arrayOf.isRequired,
+  friends: PropTypes.arrayOf.isRequired,
+  handleCoordsSet: PropTypes.func.isRequired,
 };

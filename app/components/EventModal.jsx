@@ -8,62 +8,62 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from 'react-native';
-
-import Spinner from './Spinner.js';
-import UserCard from './UserCard.js';
 import Modal from 'react-native-modalbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import configURL from './../config/config.js';
+
+import Spinner from './Spinner';
+import UserCard from './UserCard';
+import configURL from './../config/config';
 
 const styles = StyleSheet.create({
   modal: {
     marginTop: 40,
-    flex: 1
+    flex: 1,
   },
   scroll: {
-  	flex: 1
+    flex: 1,
   },
   container: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
-  	fontSize: 40,
-  	color: 'black',
-  	alignSelf: 'center'
+    fontSize: 40,
+    color: 'black',
+    alignSelf: 'center',
   },
   absolute: {
     position: 'absolute',
     top: 40,
-    left: 15
+    left: 15,
   },
   absoluteX: {
     position: 'absolute',
     top: 10,
     right: 15,
   },
-  closeButton:{
+  closeButton: {
     fontSize: 30,
     zIndex: 3,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   description: {
     marginBottom: 10,
     fontSize: 18,
     textAlign: 'center',
-    color: '#656565'
+    color: '#656565',
   },
   flowRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'stretch'
+    alignSelf: 'stretch',
   },
   buttonText: {
     fontSize: 14,
     color: 'white',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   button: {
     height: 36,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   actionButton: {
-  	margin: 10,
+    margin: 10,
     height: 36,
     flex: 1,
     flexDirection: 'row',
@@ -106,60 +106,68 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   image: {
-    height:200,
+    height: 200,
     width: Dimensions.get('window').width,
     marginBottom: 20,
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 });
 
 export default class EventModal extends Component {
-  constructor (props) {
+
+  constructor(props) {
     super(props);
     this.state = {
-    	visible: false,
-    	loading: true,
-    	button: styles.button,
-    	selected: styles.selected,
-    	invitedStyle: styles.selected,
-    	savedStyle: styles.button,
-    	checkedStyle: styles.button
+      visible: false,
+      loading: true,
+      button: styles.button,
+      selected: styles.selected,
+      invitedStyle: styles.selected,
+      savedStyle: styles.button,
+      checkedStyle: styles.button,
     };
   }
-  componentWillMount() {
-  	this.setState({loading:true});
-  }
-  transformDate(dateStr){
-    var months = [ "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December" ];
-    var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    var dateUsed = new Date(dateStr);
 
-    var amOrPm = '';
-    var day = days[dateUsed.getDay() - 1] + ' ';
-    var dateArr = dateUsed.toString().split(' ');
-    var part1 = dateArr.slice(1,2).join('. ') + '. ';
-    var part2 = dateArr.slice(2, 3).toString() + ' at ';
-    var time = dateArr.slice(4, 5).toString();
-    var hour = +(time.split(':')[0]);
-    if(hour >= 12){
+  componentWillMount() {
+    this.setState({
+      loading: true,
+    });
+  }
+
+  transformDate(dateStr) {
+    // const months = ['January', 'February', 'March', 'April', 'May', 'June',
+    //   'July', 'August', 'September', 'October', 'November', 'December'];
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const dateUsed = new Date(dateStr);
+
+    let amOrPm = '';
+    const day = `${days[dateUsed.getDay() - 1]} `;
+    const dateArr = dateUsed.toString().split(' ');
+    const part1 = `${dateArr.slice(1, 2).join('. ')}. `;
+    const part2 = `${dateArr.slice(2, 3).toString()} at `;
+    const time = dateArr.slice(4, 5).toString();
+    let hour = +(time.split(':')[0]);
+
+    if (hour >= 12) {
       amOrPm = ' pm';
     } else {
       amOrPm = ' am';
     }
+
     hour = hour > 12 ? hour - 12 : hour;
-    var part4 = (dateArr.slice(4,5)).toString().split(':');
+    const part4 = (dateArr.slice(4, 5)).toString().split(':');
     part4.shift();
     part4.pop();
 
-    return day + part1 + part2 + hour + ':' + part4 + amOrPm;
+    return `${day}${part1}${part2}${hour}:${part4}${amOrPm}`;
   }
+
   getEvent() {
-  	fetch(configURL.getEvents + this.props.event)
+    fetch(configURL.getEvents + this.props.event)
     .then(response => {
       return response.json();
     })
-    .then( event => {
+    .then(event => {
       this.setState({event: event, loading: false, users: event.invitedUsers});
     })
     .catch( error => {
@@ -273,3 +281,7 @@ export default class EventModal extends Component {
     );
   }
 }
+// linting keeps breaking
+EventModal.propTypes = {
+  event: PropTypes.object.isRequired,
+};

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { user: null};
+    this.state = { user: null };
 
     this.getLocation = this.getLocation.bind(this);
     this.setUser = this.setUser.bind(this);
@@ -35,27 +35,40 @@ export default class App extends Component {
     this.onDidFocus = this.onDidFocus.bind(this);
   }
 
-  getLocation() {
-    navigator.geolocation.getCurrentPosition(data => {
-      this.setState({
-        currentLoc: [data.coords.latitude, data.coords.longitude],
-        mongoLocation: [data.coords.longitude, data.coords.latitude]
-      });
-    });
+  componentWillMount() {
+    this.getLocation();
   }
 
   onDidFocus() {
     eventBus.trigger('navigatorFocus');
   }
 
-  setUser(user) {
-    this.setState({
-      user: user
+  getLocation() {
+    navigator.geolocation.getCurrentPosition((data) => {
+      this.setState({
+        currentLoc: [data.coords.latitude, data.coords.longitude],
+        mongoLocation: [data.coords.longitude, data.coords.latitude],
+      });
     });
   }
 
-  componentWillMount () {
-    this.getLocation();
+  setUser(user) {
+    this.setState({
+      user: user,
+    });
+  }
+
+  configureScene(route) { // took out routeStack argument
+    if (route.name === 'InviteFriends') {
+      return Navigator.SceneConfigs.PushFromRight;
+    }
+    if (route.name === 'NewEvent') {
+      return Navigator.SceneConfigs.FloatFromBottom;
+    }
+    if (route.name === 'ChooseLocation') {
+      return Navigator.SceneConfigs.PushFromRight;
+    }
+    return Navigator.SceneConfigs.FadeAndroid;
   }
 
   renderScene(route, navigator) {
@@ -151,26 +164,13 @@ export default class App extends Component {
     }
   }
 
-  configureScene(route, routeStack) {
-    if (route.name === 'InviteFriends') {
-      return Navigator.SceneConfigs.PushFromRight;
-    }
-    if (route.name === 'NewEvent') {
-      return Navigator.SceneConfigs.FloatFromBottom;
-    }
-    if (route.name === 'ChooseLocation') {
-      return Navigator.SceneConfigs.PushFromRight;
-    }
-    return Navigator.SceneConfigs.FadeAndroid;
-  }
-
   render() {
     return (
       <Navigator
         onDidFocus={this.onDidFocus}
         configureScene={this.configureScene}
         style={styles.container}
-        initialRoute={{ name: 'LoginPage'} }
+        initialRoute={{ name: 'LoginPage' }}
         renderScene={this.renderScene}
       />
     );
