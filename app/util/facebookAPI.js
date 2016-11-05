@@ -1,10 +1,5 @@
 // let fetch = require('node-fetch'); // uncomment when testing with Node in local terminal
 
-let User = {
-  userId: '10107292935765083',
-  token: 'EAAEAM7Faw6YBAN41oLYWhQAlqldM21gtolZAs3NDGKWXyjrvguMjdwSwHm4BKAWD5hUaaDr6uiBI4b0nOTSTz70vA5r5f0dshTvUbOTj6ljwfycKWLJJcdQrZCjy4yLN9YZB6zDw5MV4CEdyCuyaolhoZCZBOkIjZChOHPmAD0pNaaQZAfzNsncJxM7IzUwZCDLZCJAudsyIrZA36v8utvFiwjJMZBktltDmZAMZD'
-};
-
 /*
 
 From Facebook API, extract the following:
@@ -23,7 +18,7 @@ let NameUrl = function(userId, token) {
 };
 
 let ProfilePicUrl = function(userId, token) {
-  return `https://graph.facebook.com/v2.8/${userId}/picture?access_token=${token}`;
+  return `https://graph.facebook.com/v2.8/${userId}/picture?type=large?access_token=${token}`;
 };
 
 let EmailUrl = function(userId, token) {

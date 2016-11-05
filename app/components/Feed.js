@@ -1,38 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Navigator,
-  TouchableHighlight,
-  TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 
 import Spinner from './Spinner.js';
-
-import Drawer from 'react-native-drawer';
 import NewEvent from './NewEvent.js';
 import EventModal from './EventModal.js';
 import NewEventFab from './NewEventFab.js';
-
-import TopBar from './TopBar.js';
 import OurDrawer from './OurDrawer.js';
-import Menu from './Menu.js';
-import EventCard from './EventCard';
+import EventCard from './EventCard.js';
+
 import configURL from './../config/config.js';
-
 import _navigate from './../config/navigateConfig.js';
-
-
-const drawerStyles = {
-  drawer: {
-    backgroundColor: 'red',
-    shadowColor: '#000000',
-    shadowOpacity: 0.8,
-    shadowRadius: 3,
-  }
-};
 
 const styles = StyleSheet.create({
   listElem: {
@@ -60,26 +41,19 @@ const styles = StyleSheet.create({
   spinner: {
     padding: 30,
     marginTop: 200,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 
 export default class Feed extends Component {
-  static propTypes = {
-    page: PropTypes.string.isRequired,
-    user: PropTypes.object.isRequired,
-    mongoLocation: PropTypes.array.isRequired,
-    name: PropTypes.string.isRequired,
-    navigator: PropTypes.object.isRequired
-  }
 
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       eventModal: false,
-      addEventModal: false
+      addEventModal: false,
     };
   }
 
@@ -94,65 +68,62 @@ export default class Feed extends Component {
   }
 
   openEvent(eventId) {
-    this.setState({eventModal: true, eventId: eventId, addEventModal: false});
+    this.setState({ eventModal: true, eventId: eventId, addEventModal: false });
   }
-  closeEvent () {
-    this.setState({eventModal: false});
+
+  closeEvent() {
+    this.setState({ eventModal: false });
   }
-  openModal () {
-    this.setState({addEventModal: true, eventModal: false});
+
+  openModal() {
+    this.setState({ addEventModal: true, eventModal: false });
   }
+
   getInvited() {
     fetch(configURL.eventsInvited, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({userId: this.props.user._id})
+      body: JSON.stringify({ userId: this.props.user._id }),
     })
-    .then(response => {
-      return response.json();
+    .then(response => response.json())
+    .then((events) => {
+      this.setState({ events: events, loading: false });
     })
-    .then( events => {
-      this.setState({events: events, loading: false});
-    })
-    .catch( error => {
-      console.log(error);
-    });
+    .catch(error => console.log(error));
   }
+
   getSaved() {
     fetch(configURL.savedEvents, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({userId: this.props.user._id})
+      body: JSON.stringify({ userId: this.props.user._id }),
     })
-    .then(response => {
-      return response.json();
-    })
-    .then(events => {
+    .then(response => response.json())
+    .then((events) => {
       this.setState({events: events, loading: false});
     })
-    .catch(error => {
-      console.log(error);
-    });
+    .catch(error => console.log(error));
   }
   getBundle() {
     fetch(configURL.eventBundle, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({userId: this.props.user._id, location: this.props.mongoLocation})
+      body: JSON.stringify({ userId: this.props.user._id, location: this.props.mongoLocation }),
     })
-    .then(response => {
-      return response.json();
+    .then(response => response.json())
+    .then((events) => {
+      this.setState({ events: events, loading: false });
     })
-    .then( events => {
-      this.setState({events: events, loading: false});
-    })
-    .catch( error => {
-      console.log(error);
-    });
+    .catch(error => console.log(error));
   }
   getModal() {
     if (this.state.eventModal) {
-      return (<EventModal close={this.closeEvent.bind(this)} user={this.props.user} visibility={this.state.eventModal} event={this.state.eventId}/>);
+      return (<EventModal
+        close={this.closeEvent.bind(this)}
+        user={this.props.user}
+        visibility={this.state.eventModal}
+        event={this.state.eventId}
+      />);
     } else {
       return (<View></View>);
     }
@@ -181,21 +152,37 @@ export default class Feed extends Component {
         _navigate={_navigate.bind(this)}
       >
         <ScrollView>
-          {this.state.events.map( (event, index) => <EventCard key={index} openModal={this.openEvent.bind(this)} event={event} index={index}/>)}
+          {this.state.events.map((event, index) =>
+            <EventCard
+              key={index}
+              openModal={this.openEvent.bind(this)}
+              event={event} index={index}
+            />)}
         </ScrollView>
-        <NewEventFab onPress={
-          () => {
-            this.props.navigator.resetTo({
-              name: 'Map'
-            });
+        <NewEventFab
+          onPress={
+            () => {
+              this.props.navigator.resetTo({
+                name: 'Map',
+              });
+            }
           }
-        }/>
+        />
         {this.getModal()}
         <NewEvent
           visibility={this.state.addEventModal}
           userId={this.props.user._id}
+          navigator={this.props.navigator}
         />
       </OurDrawer>
     );
   }
 }
+
+Feed.propTypes = {
+  page: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+  mongoLocation: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
+  navigator: PropTypes.object.isRequired,
+};
