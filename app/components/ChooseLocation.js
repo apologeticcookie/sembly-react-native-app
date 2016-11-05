@@ -30,13 +30,6 @@ const styles = StyleSheet.create({
 });
 
 export default class ChooseLocation extends Component {
-  static propTypes = {
-    navigator: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    mongoLocation: PropTypes.array.isRequired,
-    friends: PropTypes.array.isRequired,
-    handleCoordsSet: PropTypes.func.isRequired
-  }
 
   constructor(props) {
     super(props);
@@ -89,7 +82,7 @@ export default class ChooseLocation extends Component {
     this.props.navigator.pop();
   }
 
-  render () {
+  render() {
     return (
       <View style={styles.locationView}>
         <TopBar
@@ -106,8 +99,8 @@ export default class ChooseLocation extends Component {
             initialRegion={{
               latitude: this.props.mongoLocation[1],
               longitude: this.props.mongoLocation[0],
-              latitudeDelta: .04,
-              longitudeDelta: .02
+              latitudeDelta: 0.04,
+              longitudeDelta: 0.02
             }}
           >
             <MapView.Marker
@@ -149,3 +142,11 @@ export default class ChooseLocation extends Component {
     );
   }
 }
+
+ChooseLocation.propTypes = {
+  navigator: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  mongoLocation: PropTypes.array.isRequired,
+  friends: PropTypes.array.isRequired,
+  handleCoordsSet: PropTypes.func.isRequired
+};

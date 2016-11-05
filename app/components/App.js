@@ -20,7 +20,7 @@ import ChooseLocation from './ChooseLocation';
 import eventBus from '../util/eventBus';
 
 const styles = StyleSheet.create({
-  container: {}
+  container: {},
 });
 
 export default class App extends Component {
