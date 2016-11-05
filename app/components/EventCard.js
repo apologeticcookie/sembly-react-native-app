@@ -8,6 +8,8 @@ import {
   View,
 } from 'react-native';
 
+import transformDate from './../util/transformDate';
+
 const styles = StyleSheet.create({
   text: {
     alignItems: 'flex-start',
@@ -35,35 +37,18 @@ export default class EventCard extends Component {
 
   constructor(props) {
     super(props);
+
+    this.handleEventNavigate = this.handleEventNavigate.bind(this);
   }
 
-  transformDate(dateStr) {
-    // const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-    //  'August', 'September', 'October', 'November', 'December'];
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const dateUsed = new Date(dateStr);
-
-    let amOrPm = '';
-    const day = `${days[dateUsed.getDay() - 1]} `;
-    const dateArr = dateUsed.toString().split(' ');
-    const part1 = `${dateArr.slice(1, 2).join('. ')}. `;
-    const part2 = `${dateArr.slice(2, 3).toString()} at `;
-    const time = dateArr.slice(4, 5).toString();
-
-    let hour = +(time.split(':')[0]);
-
-    if (hour >= 12) {
-      amOrPm = ' pm';
-    } else {
-      amOrPm = ' am';
-    }
-
-    hour = hour > 12 ? hour - 12 : hour;
-    const part4 = (dateArr.slice(4, 5)).toString().split(':');
-    part4.shift();
-    part4.pop();
-
-    return `${day}${part1}${part2}${hour}:${part4}${amOrPm}`;
+  handleEventNavigate(eventId) {
+    // navigate to the event view and pass in the appropriate data
+    this.props.navigator.push({
+      name: 'EventDetails',
+      passedProps: {
+        eventId,
+      },
+    });
   }
 
   render() {
@@ -74,12 +59,12 @@ export default class EventCard extends Component {
     } else {
       time = this.props.event.startTime;
     }
-    time = this.transformDate(time);
+    time = transformDate(time);
     const background = this.props.index % 2 === 0 ? '#F5FCFF' : '#fff';
     return (
       <View>
         <TouchableOpacity
-          onPress={() => this.props.openModal(this.props.event._id)}
+          onPress={this.handleEventNavigate.bind(this, this.props.event._id)}
           key={this.props.event._id}
           style={{
             justifyContent: 'flex-start',
@@ -105,5 +90,5 @@ export default class EventCard extends Component {
 EventCard.propTypes = {
   event: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  openModal: PropTypes.func.isRequired,
+  navigator: PropTypes.object.isRequired,
 };

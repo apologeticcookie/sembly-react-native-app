@@ -5,15 +5,15 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Spinner from './Spinner.js';
-import NewEvent from './NewEvent.js';
-import EventModal from './EventModal.js';
-import NewEventFab from './NewEventFab.js';
-import OurDrawer from './OurDrawer.js';
-import EventCard from './EventCard.js';
+import Spinner from './Spinner';
+import NewEvent from './NewEvent';
+import EventDetails from './EventDetails';
+import NewEventFab from './NewEventFab';
+import OurDrawer from './OurDrawer';
+import EventCard from './EventCard';
 
-import configURL from './../config/config.js';
-import _navigate from './../config/navigateConfig.js';
+import configURL from './../config/config';
+import _navigate from './../config/navigateConfig';
 
 const styles = StyleSheet.create({
   listElem: {
@@ -53,7 +53,7 @@ export default class Feed extends Component {
     this.state = {
       loading: true,
       eventModal: false,
-      addEventModal: false,
+      addEventDetails: false,
     };
   }
 
@@ -68,7 +68,7 @@ export default class Feed extends Component {
   }
 
   openEvent(eventId) {
-    this.setState({ eventModal: true, eventId: eventId, addEventModal: false });
+    this.setState({ eventModal: true, eventId: eventId, addEventDetails: false });
   }
 
   closeEvent() {
@@ -76,7 +76,7 @@ export default class Feed extends Component {
   }
 
   openModal() {
-    this.setState({ addEventModal: true, eventModal: false });
+    this.setState({ addEventDetails: true, eventModal: false });
   }
 
   getInvited() {
@@ -87,7 +87,7 @@ export default class Feed extends Component {
     })
     .then(response => response.json())
     .then((events) => {
-      this.setState({ events: events, loading: false });
+      this.setState({ events, loading: false });
     })
     .catch(error => console.log(error));
   }
@@ -100,7 +100,7 @@ export default class Feed extends Component {
     })
     .then(response => response.json())
     .then((events) => {
-      this.setState({events: events, loading: false});
+      this.setState({ events, loading: false});
     })
     .catch(error => console.log(error));
   }
@@ -112,21 +112,9 @@ export default class Feed extends Component {
     })
     .then(response => response.json())
     .then((events) => {
-      this.setState({ events: events, loading: false });
+      this.setState({ events, loading: false });
     })
     .catch(error => console.log(error));
-  }
-  getModal() {
-    if (this.state.eventModal) {
-      return (<EventModal
-        close={this.closeEvent.bind(this)}
-        user={this.props.user}
-        visibility={this.state.eventModal}
-        event={this.state.eventId}
-      />);
-    } else {
-      return (<View></View>);
-    }
   }
 
   render() {
@@ -144,6 +132,7 @@ export default class Feed extends Component {
         </OurDrawer>
       );
     }
+
     return (
       <OurDrawer
         user={this.props.user}
@@ -157,6 +146,7 @@ export default class Feed extends Component {
               key={index}
               openModal={this.openEvent.bind(this)}
               event={event} index={index}
+              navigator={this.props.navigator}
             />)}
         </ScrollView>
         <NewEventFab
@@ -167,12 +157,6 @@ export default class Feed extends Component {
               });
             }
           }
-        />
-        {this.getModal()}
-        <NewEvent
-          visibility={this.state.addEventModal}
-          userId={this.props.user._id}
-          navigator={this.props.navigator}
         />
       </OurDrawer>
     );

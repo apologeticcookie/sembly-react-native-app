@@ -4,15 +4,16 @@ import {
   Navigator,
 } from 'react-native';
 
-import LoginPage from './LoginPage.js';
-import Map from './Map.js';
-import Profile from './Profile.js';
-import Feed from './Feed.js';
-import InviteFriends from './InviteFriends.js';
-import NewEvent from './NewEvent.js';
-import ChooseLocation from './ChooseLocation.js';
+import LoginPage from './LoginPage';
+import Map from './Map';
+import Profile from './Profile';
+import Feed from './Feed';
+import InviteFriends from './InviteFriends';
+import NewEvent from './NewEvent';
+import ChooseLocation from './ChooseLocation';
+import EventDetails from './EventDetails';
 
-import eventBus from '../util/eventBus.js';
+import eventBus from '../util/eventBus';
 
 const styles = StyleSheet.create({
   container: {},
@@ -49,7 +50,7 @@ export default class App extends Component {
 
   setUser(user) {
     this.setState({
-      user: user,
+      user,
     });
   }
 
@@ -61,6 +62,9 @@ export default class App extends Component {
       return Navigator.SceneConfigs.FloatFromBottom;
     }
     if (route.name === 'ChooseLocation') {
+      return Navigator.SceneConfigs.PushFromRight;
+    }
+    if (route.name === 'EventDetails') {
       return Navigator.SceneConfigs.PushFromRight;
     }
     return Navigator.SceneConfigs.FadeAndroid;
@@ -155,6 +159,15 @@ export default class App extends Component {
           user={this.state.user}
           navigator={navigator}
           mongoLocation={this.state.mongoLocation}
+          {...route.passedProps}
+        />
+      );
+    } else if (route.name === 'EventDetails') {
+      return (
+        <EventDetails
+          name={route.name}
+          user={this.state.user}
+          navigator={navigator}
           {...route.passedProps}
         />
       );

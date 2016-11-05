@@ -10,7 +10,7 @@ import {
 import MapView from 'react-native-maps';
 
 import Spinner from './Spinner';
-import EventModal from './EventModal';
+import EventDetails from './EventDetails';
 import OurDrawer from './OurDrawer';
 import NewEventFab from './NewEventFab';
 
@@ -42,8 +42,8 @@ export default class Map extends Component {
     this.setNewEventPinCoords = this.setNewEventPinCoords.bind(this);
     this.fetchEvents = this.fetchEvents.bind(this);
     this.openNewEvent = this.openNewEvent.bind(this);
-    this.openEventModal = this.openEventModal.bind(this);
-    this.closeEventModal = this.closeEventModal.bind(this);
+    this.openEventDetails = this.openEventDetails.bind(this);
+    this.closeEventDetails = this.closeEventDetails.bind(this);
   }
 
   componentWillMount() {
@@ -60,12 +60,12 @@ export default class Map extends Component {
     });
   }
 
-  getEventModal() {
+  getEventDetails() {
     if (this.state.eventModalVisible) {
       return (
-        <EventModal
+        <EventDetails
           key={this.state.eventModalId}
-          close={this.closeEventModal}
+          close={this.closeEventDetails}
           user={this.props.user}
           visibility={this.state.eventModalVisible}
           event={this.state.eventModalId}
@@ -75,13 +75,13 @@ export default class Map extends Component {
     return null;
   }
 
-  closeEventModal() {
+  closeEventDetails() {
     this.setState({
       eventModalVisible: false,
     });
   }
 
-  openEventModal(id) {
+  openEventDetails(id) {
     this.setState({
       eventModalVisible: true,
       eventModalId: id,
@@ -174,7 +174,7 @@ export default class Map extends Component {
                     <MapView.Callout width={40} height={40} >
                       <TouchableHighlight
                         underlayColor="transparent"
-                        onPress={this.openEventModal.bind(this, marker._id)}
+                        onPress={this.openEventDetails.bind(this, marker._id)}
                       >
                         <Text>{marker.name}</Text>
                       </TouchableHighlight>
@@ -186,7 +186,7 @@ export default class Map extends Component {
           </MapView>
           <NewEventFab onPress={this.openNewEvent} />
           {
-            this.getEventModal()
+            this.getEventDetails()
           }
         </View>
       </OurDrawer>
