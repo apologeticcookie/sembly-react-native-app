@@ -125,6 +125,7 @@ export default class EventDetails extends Component {
       invitedStyle: styles.selected,
       savedStyle: styles.button,
       checkedStyle: styles.button,
+      users: [],
     };
 
     this.getEvent = this.getEvent.bind(this);
@@ -208,10 +209,14 @@ export default class EventDetails extends Component {
   }
 
   getUsers() {
-    if (this.state.users.length === 0) {
-      return (<Text>No Users</Text>);
-    }
-    return this.state.users.map((user, index) => <UserCard key={index} user={user} index={index} friends={'users'} />);
+    return this.state.users.map((user, index) => (
+      <UserCard
+        key={index}
+        user={user}
+        index={index}
+        friends={'users'}
+      />
+    ));
   }
 
   checkIn() {

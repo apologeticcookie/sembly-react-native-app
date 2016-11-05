@@ -96,14 +96,6 @@ export default class App extends Component {
           navigator={navigator}
         />
       );
-    } else if (route.name === 'Map') {
-      return (
-        <Map
-          user={this.state.user}
-          mongoLocation={this.state.mongoLocation}
-          navigator={navigator}
-        />
-      );
     } else if (route.name === 'Feed') {
       return (
         <Feed
@@ -172,6 +164,15 @@ export default class App extends Component {
         />
       );
     }
+
+    // Default: render <Map>
+    return (
+      <Map
+        user={this.state.user}
+        mongoLocation={this.state.mongoLocation}
+        navigator={navigator}
+      />
+    );
   }
 
   render() {

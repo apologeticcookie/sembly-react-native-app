@@ -9,12 +9,12 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Spinner from './Spinner.js';
-import OurDrawer from './OurDrawer.js';
-import UserCard from './UserCard.js';
+import Spinner from './Spinner';
+import OurDrawer from './OurDrawer';
+import UserCard from './UserCard';
 
-import configURL from './../config/config.js';
-import _navigate from './../config/navigateConfig.js';
+import configURL from './../config/config';
+import _navigate from './../config/navigateConfig';
 
 const styles = StyleSheet.create({
   description: {
@@ -99,21 +99,17 @@ class Profile extends Component {
       view: 'Friends',
       friendS: styles.selected,
       userS: styles.button,
-      requestS: styles.button,
     };
   }
 
   componentWillMount() {
     this.getFriends();
-    this.getNewRequests();
   }
 
   onSearchGo() {
     if (this.state.view === 'Friends') {
       this.getFriends(this.state.searchString);
     }
-    // if (this.state.view === 'Requests') {
-    // }
     if (this.state.view === 'Users') {
       this.searchUsers(this.state.searchString);
     }
@@ -121,25 +117,6 @@ class Profile extends Component {
 
   onSearchTextChange(event) {
     this.setState({ searchString: event.nativeEvent.text });
-  }
-
-  // need a better way to get the rest of refreshed version of friend requests
-  // every time we go back in we use the old version of the user when we logged in, not
-  // the new version in the database
-  // set new user each time a change is done?
-  getNewRequests() { // omit context argument
-    fetch(configURL.getRequests, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: this.props.user._id }),
-    })
-    .then(response => response.json())
-    .then((requests) => {
-      this.setState({
-        requests: requests,
-      });
-    })
-    .catch(error => console.log(error));
   }
 
   getFriends(search) {
@@ -159,12 +136,10 @@ class Profile extends Component {
       } else if (searchTerm.length === 0) {
         this.setState({
           feed: friends,
-          friends: friends,
+          friends,
           loading: false,
         });
       }
-
-      // alert(this.props.user.friends.length)
     })
     .catch(error => console.log(error));
   }
@@ -174,7 +149,6 @@ class Profile extends Component {
     fetch(configURL.getUsers + searchTerm, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      // body: JSON.stringify({userId: this.props.user._id, search: searchTerm}),
     })
     .then(response => response.json())
     .then((users) => {
@@ -191,7 +165,6 @@ class Profile extends Component {
     this.setState({
       feed: this.state.friends,
       friendS: styles.selected,
-      requestS: styles.button,
       userS: styles.button,
     });
   }
@@ -201,18 +174,7 @@ class Profile extends Component {
     this.setState({
       feed: [],
       friendS: styles.button,
-      requestS: styles.button,
       userS: styles.selected,
-    });
-  }
-
-  filterRequests() {
-    this.setState({ view: 'Requests' });
-    this.setState({
-      feed: this.state.requests,
-      friendS: styles.button,
-      requestS: styles.selected,
-      userS: styles.button,
     });
   }
 
@@ -252,9 +214,6 @@ class Profile extends Component {
             <TouchableOpacity onPress={this.filterUsers.bind(this)} style={this.state.userS}>
               <Text style={styles.buttonText}>Search Users</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.filterRequests.bind(this)} style={this.state.requestS}>
-              <Text style={styles.buttonText}>Friend Requests</Text>
-            </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
             <TextInput
@@ -268,27 +227,19 @@ class Profile extends Component {
           </View>
         </View>
         <ScrollView>
-          {this.state.feed.map(
-            (friend, index) => (
-              <UserCard
-                key={index}
-                refreshUserFriends={
-                  () => {
-                    this.setState({ view: 'Friends' });
-                    this.getFriends();
-                  }
-                }
-                getNewRequests={
-                  (context) => { this.getNewRequests(context); }
-                }
-                currentUserId={this.props.user._id}
-                view={this.state.view}
-                user={friend}
-                index={index}
-                friends="users"
-              />
+          {
+            this.state.feed.map(
+              (friend, index) => (
+                <UserCard
+                  key={index}
+                  view={this.state.view}
+                  user={friend}
+                  index={index}
+                  friends="users"
+                />
+              )
             )
-          )}
+          }
         </ScrollView>
       </OurDrawer>
     );
