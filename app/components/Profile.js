@@ -53,7 +53,7 @@ var styles = StyleSheet.create({
   button: {
     height: 36,
     flex: 1,
-    backgroundColor: '#F44336',
+    backgroundColor: '#7924B8',
     flexDirection: 'row',
     marginBottom: 10,
     alignSelf: 'stretch',
@@ -74,7 +74,7 @@ var styles = StyleSheet.create({
     alignSelf: 'stretch',
     margin: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#F44336',
+    borderBottomColor: '#7924B8',
   },
   searchInput: {
     height: 36,

@@ -164,7 +164,7 @@ export default class App extends Component {
     return Navigator.SceneConfigs.FadeAndroid;
   }
 
-  render () {
+  render() {
     return (
       <Navigator
         onDidFocus={this.onDidFocus}

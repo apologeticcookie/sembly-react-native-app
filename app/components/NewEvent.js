@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#F44336'
+    borderBottomColor: '#7924B8'
   },
   textInput: {
     flex: 1,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#F44336',
+    backgroundColor: '#7924B8',
     width: 150,
     height: 40,
   }

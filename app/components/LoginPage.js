@@ -14,24 +14,24 @@ const styles = StyleSheet.create({
   container: {
     padding: 30,
     marginTop: 200,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   button: {
     height: 36,
     flex: 1,
-    backgroundColor: '#F44336',
-    borderColor: '#F44336',
+    backgroundColor: '#7924B8',
+    borderColor: '#7924B8',
     borderWidth: 1,
     marginBottom: 10,
     alignSelf: 'stretch',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 const Login = (props) => {
