@@ -1,27 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  StatusBar,
   StyleSheet,
   Text,
   View,
-  Navigator,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 
 import {
   MKColor,
 } from 'react-native-material-kit';
-
-import Spinner from './Spinner.js';
-import configURL from './../config/config.js';
-
 import MapView from 'react-native-maps';
-import NewEvent from './NewEvent.js';
+
+import Spinner from './Spinner';
 import EventModal from './EventModal';
-import OurDrawer from './OurDrawer.js';
-import _navigate from './../config/navigateConfig.js';
-import NewEventFab from './NewEventFab.js';
+import OurDrawer from './OurDrawer';
+import NewEventFab from './NewEventFab';
+
+import configURL from './../config/config';
+import _navigate from './../config/navigateConfig';
 
 const styles = StyleSheet.create({
   map: {
@@ -30,16 +27,11 @@ const styles = StyleSheet.create({
   spinner: {
     padding: 30,
     marginTop: 200,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default class Map extends Component {
-  static propTypes = {
-    navigator: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    mongoLocation: PropTypes.array.isRequired
-  }
 
   constructor(props) {
     super(props);
@@ -47,7 +39,7 @@ export default class Map extends Component {
       loading: true,
       markers: null,
       eventModalVisible: false,
-      eventModalId: 0
+      eventModalId: 0,
     };
 
     this.setNewEventPinCoords = this.setNewEventPinCoords.bind(this);
@@ -57,68 +49,17 @@ export default class Map extends Component {
     this.closeEventModal = this.closeEventModal.bind(this);
   }
 
-  setNewEventPinCoords() {
-    this.setState({
-      x: {
-        latitude: this.props.mongoLocation[1] + 0.0005,
-        longitude: this.props.mongoLocation[0] + 0.0005
-      }
-    });
-  }
-
-  fetchEvents () {
-    fetch(configURL.eventBundle, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userId: this.props.user._id,
-        location: this.props.mongoLocation
-      })
-    })
-    .then(data => {
-      return data.json();
-    })
-    .then(data => {
-      this.setState({
-        markers: data,
-        loading: false
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-
   componentWillMount() {
     this.setNewEventPinCoords();
     this.fetchEvents();
   }
 
-  openNewEvent() {
-    this.props.navigator.push({
-      name: 'NewEvent',
-      passedProps: {
-        navigator: this.props.navigator,
-        resetPin: this.setNewEventPinCoords,
-        fetchNewEvents: this.fetchEvents,
-        userId: this.props.user._id,
-        eventCoords: this.state.x
-      }
-    });
-  }
-
-  openEventModal(id) {
+  setNewEventPinCoords() {
     this.setState({
-      eventModalVisible: true,
-      eventModalId: id
-    });
-  }
-
-  closeEventModal() {
-    this.setState({
-      eventModalVisible: false
+      x: {
+        latitude: this.props.mongoLocation[1] + 0.0005,
+        longitude: this.props.mongoLocation[0] + 0.0005,
+      },
     });
   }
 
@@ -134,14 +75,63 @@ export default class Map extends Component {
         />
       );
     }
-
     return null;
   }
 
-  render () {
+  closeEventModal() {
+    this.setState({
+      eventModalVisible: false,
+    });
+  }
+
+  openEventModal(id) {
+    this.setState({
+      eventModalVisible: true,
+      eventModalId: id,
+    });
+  }
+
+  openNewEvent() {
+    this.props.navigator.push({
+      name: 'NewEvent',
+      passedProps: {
+        navigator: this.props.navigator,
+        resetPin: this.setNewEventPinCoords,
+        fetchNewEvents: this.fetchEvents,
+        userId: this.props.user._id,
+        eventCoords: this.state.x,
+      },
+    });
+  }
+
+  fetchEvents() {
+    fetch(configURL.eventBundle, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: this.props.user._id,
+        location: this.props.mongoLocation,
+      }),
+    })
+    .then(data => data.json())
+    .then((data) => {
+      this.setState({
+        markers: data,
+        loading: false,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  render() {
     if (this.state.loading) {
       return (
-        <OurDrawer user={this.props.user}
+        <OurDrawer
+          user={this.props.user}
           topBarFilterVisible={true}
           topBarName={'Map'}
           _navigate={_navigate.bind(this)}
@@ -166,43 +156,42 @@ export default class Map extends Component {
               initialRegion={{
                 latitude: this.props.mongoLocation[1],
                 longitude: this.props.mongoLocation[0],
-                latitudeDelta: .04,
-                longitudeDelta: .02
+                latitudeDelta: 0.04,
+                longitudeDelta: 0.02,
               }}
             >
-            <MapView.Marker
-              draggable
-              coordinate={this.state.x}
-              pinColor='yellow'
-              title='The location of your next event!'
-              onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })}
-            />
+              <MapView.Marker
+                draggable
+                coordinate={this.state.x}
+                pinColor="yellow"
+                title="The location of your next event!"
+                onDragEnd={e => this.setState({ x: e.nativeEvent.coordinate })}
+              />
+              {
+                this.state.markers.map((marker) => {
+                  const tempLoc = {
+                    latitude: marker.location[1],
+                    longitude: marker.location[0],
+                  };
 
-            {
-              this.state.markers.map(marker => {
-                var tempLoc = {
-                  latitude: marker.location[1],
-                  longitude: marker.location[0]
-                };
-
-                return (
-                  <MapView.Marker
-                    key={marker._id}
-                    coordinate={tempLoc}
-                    pinColor={MKColor.Indigo}
-                  >
-                    <MapView.Callout width={40} height={40} >
-                      <TouchableHighlight
-                        underlayColor="transparent"
-                        onPress={this.openEventModal.bind(this, marker._id)}
-                      >
-                        <Text>{marker.name}</Text>
-                      </TouchableHighlight>
-                    </MapView.Callout>
-                  </MapView.Marker>
-                );
-              })
-            }
+                  return (
+                    <MapView.Marker
+                      key={marker._id}
+                      coordinate={tempLoc}
+                      pinColor={MKColor.Indigo}
+                    >
+                      <MapView.Callout width={40} height={40} >
+                        <TouchableHighlight
+                          underlayColor="transparent"
+                          onPress={this.openEventModal.bind(this, marker._id)}
+                        >
+                          <Text>{marker.name}</Text>
+                        </TouchableHighlight>
+                      </MapView.Callout>
+                    </MapView.Marker>
+                  );
+                })
+              }
             </MapView>
             <NewEventFab onPress={this.openNewEvent} />
             {
@@ -214,3 +203,9 @@ export default class Map extends Component {
     }
   }
 }
+
+Map.propTypes = {
+  navigator: PropTypes.shape.isRequired,
+  user: PropTypes.shape.isRequired,
+  mongoLocation: PropTypes.arrayOf.isRequired,
+};
