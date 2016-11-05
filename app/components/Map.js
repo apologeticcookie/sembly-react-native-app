@@ -10,7 +10,6 @@ import {
 import MapView from 'react-native-maps';
 
 import Spinner from './Spinner';
-import EventModal from './EventModal';
 import OurDrawer from './OurDrawer';
 import NewEventFab from './NewEventFab';
 
@@ -26,6 +25,11 @@ const styles = StyleSheet.create({
     marginTop: 200,
     alignItems: 'center',
   },
+  eventMarker: {
+    height: 20,
+    width: 100,
+    alignItems: 'center',
+  },
 });
 
 export default class Map extends Component {
@@ -35,15 +39,12 @@ export default class Map extends Component {
     this.state = {
       loading: true,
       markers: null,
-      eventModalVisible: false,
-      eventModalId: 0,
     };
 
     this.setNewEventPinCoords = this.setNewEventPinCoords.bind(this);
     this.fetchEvents = this.fetchEvents.bind(this);
-    this.openNewEvent = this.openNewEvent.bind(this);
-    this.openEventModal = this.openEventModal.bind(this);
-    this.closeEventModal = this.closeEventModal.bind(this);
+    this.handleNewEventNavigate = this.handleNewEventNavigate.bind(this);
+    this.handleEventNavigate = this.handleEventNavigate.bind(this);
   }
 
   componentWillMount() {
@@ -60,35 +61,16 @@ export default class Map extends Component {
     });
   }
 
-  getEventModal() {
-    if (this.state.eventModalVisible) {
-      return (
-        <EventModal
-          key={this.state.eventModalId}
-          close={this.closeEventModal}
-          user={this.props.user}
-          visibility={this.state.eventModalVisible}
-          event={this.state.eventModalId}
-        />
-      );
-    }
-    return null;
-  }
-
-  closeEventModal() {
-    this.setState({
-      eventModalVisible: false,
+  handleEventNavigate(eventId) {
+    this.props.navigator.push({
+      name: 'EventDetails',
+      passedProps: {
+        eventId,
+      },
     });
   }
 
-  openEventModal(id) {
-    this.setState({
-      eventModalVisible: true,
-      eventModalId: id,
-    });
-  }
-
-  openNewEvent() {
+  handleNewEventNavigate() {
     this.props.navigator.push({
       name: 'NewEvent',
       passedProps: {
@@ -171,10 +153,10 @@ export default class Map extends Component {
                     coordinate={tempLoc}
                     pinColor={'#5976e3'}
                   >
-                    <MapView.Callout width={40} height={40} >
+                    <MapView.Callout style={styles.eventMarker}>
                       <TouchableHighlight
                         underlayColor="transparent"
-                        onPress={this.openEventModal.bind(this, marker._id)}
+                        onPress={this.handleEventNavigate.bind(this, marker._id)}
                       >
                         <Text>{marker.name}</Text>
                       </TouchableHighlight>
@@ -184,10 +166,7 @@ export default class Map extends Component {
               })
             }
           </MapView>
-          <NewEventFab onPress={this.openNewEvent} />
-          {
-            this.getEventModal()
-          }
+          <NewEventFab onPress={this.handleNewEventNavigate} />
         </View>
       </OurDrawer>
     );

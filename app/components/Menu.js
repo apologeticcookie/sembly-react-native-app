@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 26,
     marginRight: 10,
-    color: 'gray',
+    color: '#7924B8',
   },
   image: {
     borderRadius: 50,

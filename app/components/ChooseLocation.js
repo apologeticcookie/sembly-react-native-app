@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  // StatusBar,
   StyleSheet,
-  Text,
   View,
-  // Navigator,
   Dimensions,
   Image,
 } from 'react-native';
 import MapView from 'react-native-maps';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import TopBar from './TopBar';
 import eventBus from './../util/eventBus';
@@ -31,6 +29,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
+  },
+  centerMarkerIcon: {
+    fontSize: 26,
+    color: '#7924B8',
   },
   friendMarker: {
     width: 30,
@@ -145,7 +147,11 @@ export default class ChooseLocation extends Component {
           style={styles.centerMarker}
           pointerEvents="none"
         >
-          <Text pointerEvents="none">9</Text>
+          <Icon
+            name="flag"
+            pointerEvents="none"
+            style={styles.centerMarkerIcon}
+          />
         </View>
       </View>
     );
