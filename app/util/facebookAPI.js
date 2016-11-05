@@ -5,7 +5,7 @@ let User = {
   token: 'EAAEAM7Faw6YBAN41oLYWhQAlqldM21gtolZAs3NDGKWXyjrvguMjdwSwHm4BKAWD5hUaaDr6uiBI4b0nOTSTz70vA5r5f0dshTvUbOTj6ljwfycKWLJJcdQrZCjy4yLN9YZB6zDw5MV4CEdyCuyaolhoZCZBOkIjZChOHPmAD0pNaaQZAfzNsncJxM7IzUwZCDLZCJAudsyIrZA36v8utvFiwjJMZBktltDmZAMZD'
 };
 
-/* 
+/*
 
 From Facebook API, extract the following:
 -name
@@ -155,7 +155,7 @@ let getUserData = function(userId, token, callback) {
   });
 
   getFriends(userId, token, friends => {
-    user.friends = friends;
+    // user.friends = friends;
     user.facebookFriends = friends;
     count++;
   });
@@ -186,5 +186,5 @@ module.exports = {
   getProfilePic: getProfilePic,
   getFriends: getFriends,
   getLocation: getLocation,
-  getUserData: getUserData 
+  getUserData: getUserData
 };

@@ -17,14 +17,26 @@ import Spinner from './Spinner.js';
 import configURL from './../config/config.js';
 
 import MapView from 'react-native-maps';
-import NewEventModal from './NewEventModal.js';
+import NewEvent from './NewEvent.js';
 import EventModal from './EventModal';
 import OurDrawer from './OurDrawer.js';
 import _navigate from './../config/navigateConfig.js';
 import NewEventFab from './NewEventFab.js';
 
+const styles = StyleSheet.create({
+  map: {
+    height: Dimensions.get('window').height - 60,
+  },
+  spinner: {
+    padding: 30,
+    marginTop: 200,
+    alignItems: 'center'
+  }
+});
+
 export default class Map extends Component {
   static propTypes = {
+    navigator: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     mongoLocation: PropTypes.array.isRequired
   }
@@ -34,14 +46,13 @@ export default class Map extends Component {
     this.state = {
       loading: true,
       markers: null,
-      newEventModalVisible: false,
       eventModalVisible: false,
       eventModalId: 0
     };
 
     this.setNewEventPinCoords = this.setNewEventPinCoords.bind(this);
     this.fetchEvents = this.fetchEvents.bind(this);
-    this.openNewEventModal = this.openNewEventModal.bind(this);
+    this.openNewEvent = this.openNewEvent.bind(this);
     this.openEventModal = this.openEventModal.bind(this);
     this.closeEventModal = this.closeEventModal.bind(this);
   }
@@ -85,9 +96,16 @@ export default class Map extends Component {
     this.fetchEvents();
   }
 
-  openNewEventModal() {
-    this.setState({
-      newEventModalVisible: true
+  openNewEvent() {
+    this.props.navigator.push({
+      name: 'NewEvent',
+      passedProps: {
+        navigator: this.props.navigator,
+        resetPin: this.setNewEventPinCoords,
+        fetchNewEvents: this.fetchEvents,
+        userId: this.props.user._id,
+        eventCoords: this.state.x
+      }
     });
   }
 
@@ -133,8 +151,7 @@ export default class Map extends Component {
           </View>
         </OurDrawer>
       );
-    }
-    else {
+    } else {
       return (
         <OurDrawer
           user={this.props.user}
@@ -151,7 +168,8 @@ export default class Map extends Component {
                 longitude: this.props.mongoLocation[0],
                 latitudeDelta: .04,
                 longitudeDelta: .02
-            }}>
+              }}
+            >
             <MapView.Marker
               draggable
               coordinate={this.state.x}
@@ -165,7 +183,8 @@ export default class Map extends Component {
                 var tempLoc = {
                   latitude: marker.location[1],
                   longitude: marker.location[0]
-                }
+                };
+
                 return (
                   <MapView.Marker
                     key={marker._id}
@@ -185,15 +204,7 @@ export default class Map extends Component {
               })
             }
             </MapView>
-            <NewEventFab onPress={this.openNewEventModal} />
-            <NewEventModal
-              navigator={this.props.navigator}
-              resetPin={this.setNewEventPinCoords}
-              fetchNewEvents={this.fetchEvents}
-              userId={this.props.user._id}
-              eventCoords={this.state.x}
-              modalVisibility={this.state.newEventModalVisible}
-            />
+            <NewEventFab onPress={this.openNewEvent} />
             {
               this.getEventModal()
             }
@@ -203,14 +214,3 @@ export default class Map extends Component {
     }
   }
 }
-
-const styles = StyleSheet.create({
-  map: {
-    height: Dimensions.get('window').height - 60,
-  },
-  spinner: {
-    padding: 30,
-    marginTop: 200,
-    alignItems: 'center'
-  }
-});

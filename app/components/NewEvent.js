@@ -11,24 +11,84 @@ import {
   DatePickerIOS
 } from 'react-native';
 
-import Modal from 'react-native-modalbox';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
 import InviteFriends from './InviteFriends';
 import _navigate from './../config/navigateConfig.js';
+import TopBar from './TopBar';
 
-export default class NewEventModal extends Component {
+
+const styles = StyleSheet.create({
+  newEvent: {
+    backgroundColor: '#fff'
+  },
+  errorText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'red',
+    paddingLeft: 10
+  },
+  closeButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  closeButton: {
+    color: 'grey',
+    fontSize: 30
+  },
+  textInputContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F44336'
+  },
+  textInput: {
+    flex: 1,
+    height: 36,
+    padding: 4,
+    marginRight: 5,
+    flex: 4,
+    fontSize: 18,
+    textAlign: 'left'
+  },
+  visibilityCheck: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  createEventButtonContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  createEventButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#F44336',
+    width: 150,
+    height: 40,
+  }
+});
+
+export default class NewEvent extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
+    navigator: PropTypes.object.isRequired,
     // Marking these as non-required for now; <Feed> doesn't seem to pass these
     // props down to it, and no errors seem to be present without these props
-    // In other words, in the place where <NewEventModal> is used without
-    // receiving the below props, <NewEventModal> seems to not need them anyway
+    // In other words, in the place where <NewEvent> is used without
+    // receiving the below props, <NewEvent> seems to not need them anyway
     eventCoords: PropTypes.object,
     resetPin: PropTypes.func,
-    fetchEvents: PropTypes.func,
-    modalVisibility: PropTypes.bool
+    fetchNewEvents: PropTypes.func
   }
 
   constructor (props) {
@@ -40,16 +100,47 @@ export default class NewEventModal extends Component {
       newEventStartTime: new Date(),
       newEventTags: '',
       errorText: '',
-      modalVisible: false
+      eventCoords: []
     };
 
     this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+    this.handleInviteFriendsNavigate = this.handleInviteFriendsNavigate.bind(this);
+    this.handleChooseLocationNavigate = this.handleChooseLocationNavigate.bind(this);
+    this.handleCoordsSet = this.handleCoordsSet.bind(this);
+  }
+
+  handleInviteFriendsNavigate() {
+    this.props.navigator.push({
+      name: 'InviteFriends',
+      passedProps: {
+        friends: this.state.friends,
+        initialInvitedFriends: this.state.invitedFriends,
+        handleFriendsInvite: this.handleFriendsInvite
+      }
+    });
+  }
+
+  handleCoordsSet(coords) {
+    this.setState({
+      eventCoords: coords
+    });
+  }
+
+  handleChooseLocationNavigate() {
+    this.props.navigator.push({
+      name: 'ChooseLocation',
+      passedProps: {
+        handleCoordsSet: this.handleCoordsSet,
+        friends: this.state.friends
+      }
+    });
   }
 
   componentWillMount () {
     fetch(configURL.getFriends, {
       method: 'POST',
-      headers: { "Content-Type" : "application/json" },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({userId: this.props.userId, search: ''})
     })
     .then(response => {
@@ -71,10 +162,10 @@ export default class NewEventModal extends Component {
     });
   }
 
-  handleSubmit () {
+  handleSubmit() {
     let context = this;
 
-    if(this.state.newEventName === '') {
+    if (this.state.newEventName === '') {
       this.setState({
         errorText: 'Please enter an event name!'
       });
@@ -91,10 +182,10 @@ export default class NewEventModal extends Component {
       visibility: ''
     };
 
-    eventToBePosted.location[0] = this.props.eventCoords.longitude;
-    eventToBePosted.location[1] = this.props.eventCoords.latitude;
+    eventToBePosted.location[0] = this.state.eventCoords.longitude;
+    eventToBePosted.location[1] = this.state.eventCoords.latitude;
 
-    if(this.refs.visibilityCheckbox.state.checked) {
+    if (this.refs.visibilityCheckbox.state.checked) {
       eventToBePosted.visibility = 'invite';
     } else {
       eventToBePosted.visibility = 'public';
@@ -104,7 +195,7 @@ export default class NewEventModal extends Component {
 
     fetch(configURL.getEvents, {
       method: 'POST',
-      headers: { "Content-Type" : "application/json" },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(eventToBePosted)
     })
     .then(response => {
@@ -115,7 +206,7 @@ export default class NewEventModal extends Component {
         newEventTags: '',
       });
       setTimeout(() => {
-        context.refs.newEventModal.close();
+        this.handleBack();
         context.setState({
           errorText: ''
         });
@@ -128,20 +219,22 @@ export default class NewEventModal extends Component {
     });
   }
 
+  handleBack() {
+    this.props.navigator.pop();
+  }
+
   render () {
     let context = this;
     return (
-      <Modal ref={'newEventModal'} style={styles.modal} isOpen={this.props.modalVisibility}>
+      <View ref={'NewEvent'} style={styles.newEvent}>
+        <TopBar
+          topBarName="Create a New Event"
+          handleLeftPress={this.handleBack}
+          iconName="arrow-back"
+        />
         <View>
           <View style={styles.closeButtonContainer}>
             <Text style={styles.errorText}>{this.state.errorText}</Text>
-            <TouchableOpacity onPress={() => context.refs.newEventModal.close()}>
-              <Icon style={styles.closeButton} name='close'/>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.headerContainer}>
-            <Text style={styles.header}>Create a New Event!</Text>
           </View>
 
           <View style={styles.textInputContainer}>
@@ -163,7 +256,7 @@ export default class NewEventModal extends Component {
           <View style={styles.dateInputContainer}>
             <DatePickerIOS
               date={this.state.newEventStartTime}
-              onDateChange={(d) => {this.setState({newEventStartTime:d})}}
+              onDateChange={(d) => { this.setState({newEventStartTime: d}); }}
             />
           </View>
 
@@ -171,25 +264,34 @@ export default class NewEventModal extends Component {
             <MKButton
               style={styles.createEventButton}
               shadowRadius={2}
-              shadowOffset={{width:0, height:2}}
+              shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={.7}
               shadowColor="black"
-              onPress={() => {
-                this.props.navigator.push({
-                  name: 'InviteFriends',
-                  passedProps: {
-                    friends: this.state.friends,
-                    initialInvitedFriends: this.state.invitedFriends,
-                    handleFriendsInvite: this.handleFriendsInvite
-                  }
-                });
-              }}
+              onPress={this.handleInviteFriendsNavigate}
             >
               <Text
                 pointerEvents="none"
                 style={{color: 'white', fontWeight: 'bold'}}
               >
                 CHOOSE FRIENDS
+              </Text>
+            </MKButton>
+          </View>
+
+          <View style={styles.createEventButtonContainer}>
+            <MKButton
+              style={styles.createEventButton}
+              shadowRadius={2}
+              shadowOffset={{ width: 0, height: 2 }}
+              shadowOpacity={.7}
+              shadowColor="black"
+              onPress={this.handleChooseLocationNavigate}
+            >
+              <Text
+                pointerEvents="none"
+                style={{color: 'white', fontWeight: 'bold'}}
+              >
+                CHOOSE LOCATION
               </Text>
             </MKButton>
           </View>
@@ -203,87 +305,23 @@ export default class NewEventModal extends Component {
             <MKButton
               style={styles.createEventButton}
               shadowRadius={2}
-              shadowOffset={{width:0, height:2}}
+              shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={.7}
               shadowColor="black"
               onPress={this.handleSubmit.bind(this)}
               >
               <Text pointerEvents="none"
-                    style={{color: 'white', fontWeight: 'bold',}}>
+                    style={{
+                      color: 'white',
+                      fontWeight: 'bold'
+                    }}>
                 CREATE EVENT
               </Text>
             </MKButton>
           </View>
 
         </View>
-      </Modal>
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  modal: {
-    marginTop: 40
-  },
-  errorText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'red',
-    paddingLeft: 10
-  },
-  closeButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  closeButton:{
-    color: 'grey',
-    fontSize: 30
-  },
-  headerContainer:{
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold'
-  },
-  textInputContainer: {
-    justifyContent:'center',
-    alignItems:'center',
-    margin: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F44336'
-  },
-  textInput: {
-    flex:1,
-    height: 36,
-    padding: 4,
-    marginRight: 5,
-    flex: 4,
-    fontSize: 18,
-    textAlign: 'left'
-  },
-  visibilityCheck:{
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    alignItems: 'center',
-    flexDirection:'row',
-    justifyContent: 'flex-start'
-  },
-  createEventButtonContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  createEventButton: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: '#F44336',
-    width: 150,
-    height: 40,
-  }
-})

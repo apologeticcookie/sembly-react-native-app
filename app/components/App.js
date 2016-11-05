@@ -7,13 +7,21 @@ import {
   Navigator
 } from 'react-native';
 
-import TopBar from './TopBar.js';
-import LoginPage from './LoginPage.js';
-import Main from './Main.js';
-import Map from './Map.js';
-import Profile from './Profile.js';
-import Feed from './Feed.js';
+import TopBar from './TopBar';
+import LoginPage from './LoginPage';
+import Main from './Main';
+import Map from './Map';
+import Profile from './Profile';
+import Feed from './Feed';
 import InviteFriends from './InviteFriends';
+import NewEvent from './NewEvent';
+import ChooseLocation from './ChooseLocation';
+
+import eventBus from '../util/eventBus';
+
+const styles = StyleSheet.create({
+  container: {}
+});
 
 export default class App extends Component {
   constructor(props) {
@@ -24,6 +32,7 @@ export default class App extends Component {
     this.setUser = this.setUser.bind(this);
     this.renderScene = this.renderScene.bind(this);
     this.configureScene = this.configureScene.bind(this);
+    this.onDidFocus = this.onDidFocus.bind(this);
   }
 
   getLocation() {
@@ -35,9 +44,14 @@ export default class App extends Component {
     });
   }
 
+  onDidFocus() {
+    eventBus.trigger('navigatorFocus');
+  }
+
   setUser(user) {
-    this.setState({user: user});
-    console.log('user is set to', user);
+    this.setState({
+      user: user
+    });
   }
 
   componentWillMount () {
@@ -115,11 +129,36 @@ export default class App extends Component {
           {...route.passedProps}
         />
       );
+    } else if (route.name === 'NewEvent') {
+      return (
+        <NewEvent
+          name={route.name}
+          user={this.state.user}
+          navigator={navigator}
+          {...route.passedProps}
+        />
+      );
+    } else if (route.name === 'ChooseLocation') {
+      return (
+        <ChooseLocation
+          name={route.name}
+          user={this.state.user}
+          navigator={navigator}
+          mongoLocation={this.state.mongoLocation}
+          {...route.passedProps}
+        />
+      );
     }
   }
 
   configureScene(route, routeStack) {
     if (route.name === 'InviteFriends') {
+      return Navigator.SceneConfigs.PushFromRight;
+    }
+    if (route.name === 'NewEvent') {
+      return Navigator.SceneConfigs.FloatFromBottom;
+    }
+    if (route.name === 'ChooseLocation') {
       return Navigator.SceneConfigs.PushFromRight;
     }
     return Navigator.SceneConfigs.FadeAndroid;
@@ -128,6 +167,7 @@ export default class App extends Component {
   render () {
     return (
       <Navigator
+        onDidFocus={this.onDidFocus}
         configureScene={this.configureScene}
         style={styles.container}
         initialRoute={{ name: 'LoginPage'} }
@@ -136,7 +176,3 @@ export default class App extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {}
-});
