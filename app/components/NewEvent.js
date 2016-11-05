@@ -55,12 +55,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-  createEventButtonContainer: {
+  actionButtonContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    marginTop: 20,
   },
-  createEventButton: {
+  actionButton: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -233,9 +234,9 @@ export default class NewEvent extends Component {
             />
           </View>
 
-          <View style={styles.createEventButtonContainer}>
+          <View style={styles.actionButtonContainer}>
             <MKButton
-              style={styles.createEventButton}
+              style={styles.actionButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={0.7}
@@ -249,11 +250,9 @@ export default class NewEvent extends Component {
                 CHOOSE FRIENDS
               </Text>
             </MKButton>
-          </View>
 
-          <View style={styles.createEventButtonContainer}>
             <MKButton
-              style={styles.createEventButton}
+              style={styles.actionButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={0.7}
@@ -275,9 +274,9 @@ export default class NewEvent extends Component {
             <MKCheckbox ref="visibilityCheckbox" checked={false} />
           </View>
 
-          <View style={styles.createEventButtonContainer}>
+          <View style={styles.actionButtonContainer}>
             <MKButton
-              style={styles.createEventButton}
+              style={styles.actionButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={0.7}
