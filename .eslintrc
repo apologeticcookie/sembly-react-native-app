@@ -11,6 +11,9 @@
     "react-native",
     "jsx-a11y",
     "import"
+  ],  
+  "ecmaFeatures": {
+    "jsx": true
   ],
   "rules": {
     "react/forbid-prop-types": 0,
