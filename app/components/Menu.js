@@ -26,8 +26,8 @@ export default class Menu extends Component {
               { this.props.user ? <Image style={styles.image} source={{uri: this.props.user.photoUrl}}/> : <Text></Text>}
           </View>
           <Text style={styles.description}>
-             {this.props.user ? this.props.user.firstName + ' ' + this.props.user.lastName : <Text></Text>}
-          </Text> 
+             {this.props.user ? this.props.user.firstName + ' ' : <Text></Text>}
+          </Text>
         </TouchableOpacity>
         <View style={styles.menuView}>
           <TouchableOpacity style={styles.flowRight} onPress={()=> {this.props._navigate('Profile')}} >
@@ -45,13 +45,13 @@ export default class Menu extends Component {
           <TouchableOpacity style={styles.flowRight} onPress={()=> {this.props._navigate('Feed')}} >
             <Icon name='format-list-bulleted' style={styles.icon}></Icon>
             <View style={styles.listTouchable}>
-            	<Text style={styles.listElem}>Feed</Text>
+          	<Text style={styles.listElem}>Feed</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.flowRight} onPress={()=> {this.props._navigate('Invites')}} >
             <Icon name='mail' style={styles.icon}></Icon>
             <View style={styles.listTouchable}>
-            	<Text style={styles.listElem}>Invites</Text>
+          	<Text style={styles.listElem}>Invites</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.flowRight} onPress={()=> {this.props._navigate('Saved')}} >
@@ -60,7 +60,7 @@ export default class Menu extends Component {
             	<Text style={styles.listElem}>Saved</Text>
             </View>
           </TouchableOpacity>
-        </View> 
+        </View>
       </View>
     );
   }
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 50,
-    height: 100, 
-    width: 100, 
+    height: 100,
+    width: 100,
     marginRight:10,
     marginBottom: 20
   },

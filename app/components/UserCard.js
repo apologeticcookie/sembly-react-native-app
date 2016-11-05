@@ -1,5 +1,5 @@
 // UserCard.js
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,20 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
 
 export default class UserCard extends Component {
+
+  static propTypes = {
+    navigator: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    currentUserId: PropTypes.object.isRequired,
+    view: PropTypes.object.isRequired,
+    mongoLocation: PropTypes.array.isRequired,
+    friends: PropTypes.array.isRequired,
+    handleCoordsSet: PropTypes.func.isRequired,
+    refreshUserFriends: PropTypes.func.isRequired,
+    getNewRequests: PropTypes.func.isRequired,
+    index: PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props);
 
@@ -56,7 +70,7 @@ export default class UserCard extends Component {
   }
 
   acceptRequest() {
-  	// alert('acceptRequest')
+
     fetch(configURL.acceptRequest,{
       method: 'POST',
       headers: { "Content-Type" : "application/json" },
@@ -102,44 +116,44 @@ export default class UserCard extends Component {
     	message = 'Accept ' + this.props.user.firstName +'\'s friend request?';
     }
     return (
-      	  // <Modal>
-      	  // 	<View>
-	      	 //  	<Text> {message} </Text>
-	      	 //  	<TouchableOpacity></TouchableOpacity>
-	      	 //  	<TouchableOpacity></TouchableOpacity>
-      	  // 	</View>
-      	  // </Modal>
+// <Modal>
+// 	<View>
+//  	<Text> {message} </Text>
+//  	<TouchableOpacity></TouchableOpacity>
+//  	<TouchableOpacity></TouchableOpacity>
+// 	</View>
+// </Modal>
       <View>
-	      <TouchableOpacity key={this.props.user._id} style={{
-	        justifyContent: 'flex-start',
-	        flexDirection: 'row',
-	        backgroundColor: background,
-	        padding: 10,
-	        borderBottomColor: 'grey',
-	        borderBottomWidth: 1
-	      }}>
-	        <Image style={styles.image} source={{uri: this.props.user.photoUrl}}/>
-	        <View style={styles.text}>
-	          <Text style={styles.title}>{this.props.user.firstName+' '+this.props.user.lastName}</Text>
-	          <Text style={styles.instructions}>{this.props.user.email}</Text>
-	          <Text style={styles.states}>{this.props.user.friends.length + ' Friends'}</Text>
-          </View>
-          <View style={styles.buttons}>
-            <TouchableOpacity onPress={this.removeFriend.bind(this)}>
-              {this.props.view === 'Friends' ? <Text></Text> : <Text></Text>}
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.addFriend.bind(this)}>
-              {this.props.view === 'Users' ? <Icon name='person-add' style={styles.icon}></Icon> : <Text></Text>}
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.acceptRequest.bind(this)}>
-              {this.props.view === 'Requests' ? <Icon name='person-add' style={styles.icon}></Icon> : <Text></Text>}
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.rejectRequest.bind(this)}>
-              {this.props.view === 'Requests' ? <Icon name='cancel' style={styles.icon}></Icon> : <Text></Text>}
-            </TouchableOpacity>
-          </View>
-	      </TouchableOpacity>
+      <TouchableOpacity key={this.props.user._id} style={{
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        backgroundColor: background,
+        padding: 10,
+        borderBottomColor: 'grey',
+        borderBottomWidth: 1
+      }}>
+      <Image style={styles.image} source={{uri: this.props.user.photoUrl}}/>
+      <View style={styles.text}>
+        <Text style={styles.title}>{this.props.user.firstName}</Text>
+        <Text style={styles.instructions}>{this.props.user.email}</Text>
+        <Text style={styles.states}>{this.props.user.friends.length + ' Friends'}</Text>
       </View>
+        <View style={styles.buttons}>
+          <TouchableOpacity onPress={this.removeFriend.bind(this)}>
+            {this.props.view === 'Friends' ? <Text></Text> : <Text></Text>}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.addFriend.bind(this)}>
+            {this.props.view === 'Users' ? <Icon name='person-add' style={styles.icon}></Icon> : <Text></Text>}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.acceptRequest.bind(this)}>
+            {this.props.view === 'Requests' ? <Icon name='person-add' style={styles.icon}></Icon> : <Text></Text>}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.rejectRequest.bind(this)}>
+            {this.props.view === 'Requests' ? <Icon name='cancel' style={styles.icon}></Icon> : <Text></Text>}
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    </View>
     );
   }
 };
@@ -162,10 +176,10 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   image: {
-  	borderRadius: 25,
-  	height: 50,
-  	width: 50,
-  	marginRight:10
+    borderRadius: 25,
+    height: 50,
+    width: 50,
+    marginRight:10
   },
   buttons: {
     flexDirection: 'row',

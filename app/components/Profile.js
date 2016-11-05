@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -97,6 +97,12 @@ var styles = StyleSheet.create({
 });
 
 export default class Profile extends Component {
+
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+  }
+
+
   constructor(props){
     super(props);
     this.state = {
@@ -193,7 +199,7 @@ export default class Profile extends Component {
   filterFriends(){
     this.setState({view: 'Friends'});
     this.setState({feed: this.state.friends,
-    friendS: styles.selected,
+      friendS: styles.selected,
       requestS: styles.button,
       userS:styles.button});
   }
@@ -211,7 +217,7 @@ export default class Profile extends Component {
   filterRequests(){
     this.setState({view: 'Requests'});
     this.setState({feed: this.state.requests,
-    friendS: styles.button,
+      friendS: styles.button,
       requestS: styles.selected,
       userS:styles.button});
   }
@@ -240,7 +246,7 @@ export default class Profile extends Component {
             <Spinner/>
           </View>
         </OurDrawer>
-        )
+      );
     }
 
 
@@ -249,7 +255,7 @@ export default class Profile extends Component {
         <View style={styles.container}>
           <Image style={styles.image} source={{uri: this.props.user.photoUrl}}/>
           <Text style={styles.description}>
-            {this.props.user.firstName + ' ' + this.props.user.lastName}
+            {this.props.user.firstName}
           </Text>
           <Text style={styles.description}>
             {this.props.user.email}
@@ -295,11 +301,11 @@ export default class Profile extends Component {
                   view={this.state.view}
                   user={friend}
                   index={index}/>
-              )
+              );
             }
           )}
         </ScrollView>
       </OurDrawer>
-    )
+    );
   }
-};
+}

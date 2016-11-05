@@ -91,7 +91,7 @@ export default class InviteFriends extends Component {
                 }
                 onCheckedChange={e => this.handleCheckedChange(e, friend._id)}
               />
-              <Text>{friend.firstName + ' ' + friend.lastName}</Text>
+              <Text>{friend.firstName }</Text>
             </View>
           ))
         }
