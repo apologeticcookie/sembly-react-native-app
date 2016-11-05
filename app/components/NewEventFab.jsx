@@ -1,12 +1,7 @@
-import React from 'react';
-const MK = require('react-native-material-kit');
+import MK from 'react-native-material-kit';
 
 import {
   StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Image,
 } from 'react-native';
 
 const {
@@ -29,7 +24,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.7,
     shadowColor: 'black',
-    elevation: 4
+    elevation: 4,
   },
 });
 
