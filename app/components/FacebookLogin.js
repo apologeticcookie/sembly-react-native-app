@@ -38,6 +38,7 @@ class FacebookLogin extends Component {
 
       /* get lat and long coordinates from navigator */
       navigator.geolocation.getCurrentPosition((latlong) => {
+        console.log('inputData', inputData);
         inputData.location = [latlong.coords.longitude, latlong.coords.latitude];
         inputData.password = 'default';
 

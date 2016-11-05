@@ -35,7 +35,12 @@ class OurDrawer extends Component{
       <Drawer
         ref={(ref) => this._drawer = ref}
         type="overlay"
-        content={<Menu user={this.props.user} _navigate={this.props._navigate} />}
+        content={<Menu 
+          user={this.props.user} 
+          _navigate={this.props._navigate}
+          setUser={this.props.setUser}
+          navigator={this.props.navigator}
+        />}
         tapToClose={true}
         open={false}
         handleLeftPressOffset={0.3}
