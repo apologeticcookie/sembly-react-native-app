@@ -42,7 +42,6 @@ export default class EventCard extends Component {
   }
 
   handleEventNavigate(eventId) {
-    // navigate to the event view and pass in the appropriate data
     this.props.navigator.push({
       name: 'EventDetails',
       passedProps: {
