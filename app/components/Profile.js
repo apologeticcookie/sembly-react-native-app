@@ -21,7 +21,7 @@ import OurDrawer from './OurDrawer.js';
 import Menu from './Menu.js';
 import UserCard from './UserCard.js';
 
-import _navigate from '../config/navigateConfig.js';
+import _navigate from './../config/navigateConfig.js';
 
 var styles = StyleSheet.create({
   description: {

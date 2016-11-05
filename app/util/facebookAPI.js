@@ -174,7 +174,6 @@ let getUserData = function(userId, token, callback) {
 
 };
 
-
 // getName(User.userId, User.token, name => console.log(name));
 // getEmail(User.userId, User.token, email => console.log(email));
 // getProfilePic(User.userId, User.token, pic => console.log(pic));
