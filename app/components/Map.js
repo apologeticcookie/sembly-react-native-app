@@ -20,7 +20,7 @@ import MapView from 'react-native-maps';
 import NewEvent from './NewEvent.js';
 import EventModal from './EventModal';
 import OurDrawer from './OurDrawer.js';
-import _navigate from '../config/navigateConfig.js';
+import _navigate from './../config/navigateConfig.js';
 import NewEventFab from './NewEventFab.js';
 
 const styles = StyleSheet.create({

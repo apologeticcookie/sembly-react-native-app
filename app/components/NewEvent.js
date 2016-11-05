@@ -15,8 +15,9 @@ import { MKCheckbox, MKButton } from 'react-native-material-kit';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import configURL from './../config/config.js';
 import InviteFriends from './InviteFriends';
-import _navigate from '../config/navigateConfig.js';
+import _navigate from './../config/navigateConfig.js';
 import TopBar from './TopBar';
+
 
 const styles = StyleSheet.create({
   newEvent: {

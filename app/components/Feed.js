@@ -21,7 +21,8 @@ import OurDrawer from './OurDrawer.js';
 import Menu from './Menu.js';
 import EventCard from './EventCard';
 import configURL from './../config/config.js';
-import _navigate from '../config/navigateConfig.js';
+
+import _navigate from './../config/navigateConfig.js';
 
 
 const drawerStyles = {

@@ -14,7 +14,7 @@ import TopBar from './TopBar.js';
 import OurDrawer from './OurDrawer.js';
 import Menu from './Menu.js';
 
-import _navigate from '../config/navigateConfig.js';
+import _navigate from './../config/navigateConfig.js';
 
 export default class Main extends Component {
   constructor(props){
