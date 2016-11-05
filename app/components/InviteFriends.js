@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react';
+
 import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
-import TopBar from './TopBar';
+
+import TopBar from './TopBar.js';
 
 const styles = StyleSheet.create({
   friendsCheckGroup: {
@@ -16,36 +18,30 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingBottom: 20,
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   friendCheck: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   createEventButton: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#F44336',
+    backgroundColor: '#7924B8',
     width: 150,
     height: 40,
-  }
+  },
 });
 
 export default class InviteFriends extends Component {
-  static propTypes = {
-    navigator: PropTypes.object.isRequired,
-    friends: PropTypes.array.isRequired,
-    initialInvitedFriends: PropTypes.array.isRequired,
-    handleFriendsInvite: PropTypes.func.isRequired
-  }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      friendsToInvite: props.initialInvitedFriends
+      friendsToInvite: props.initialInvitedFriends,
     };
 
     this.handleCheckedChange = this.handleCheckedChange.bind(this);
@@ -55,13 +51,13 @@ export default class InviteFriends extends Component {
   handleCheckedChange(e, friendId) {
     if (e.checked) {
       this.setState({
-        friendsToInvite: this.state.friendsToInvite.concat(friendId)
+        friendsToInvite: this.state.friendsToInvite.concat(friendId),
       });
     } else {
       this.setState({
         friendsToInvite: this.state.friendsToInvite.filter(id =>
           id !== friendId
-        )
+        ),
       });
     }
   }
@@ -80,20 +76,18 @@ export default class InviteFriends extends Component {
           iconName="arrow-back"
         />
         <ScrollView>
-        {
-          this.props.friends.map((friend, index) => (
-            <View style={styles.friendCheck} key={friend._id}>
-              <MKCheckbox
-                checked={
-                  this.state.friendsToInvite.indexOf(friend._id) === -1 ?
-                  false :
-                  true
-                }
-                onCheckedChange={e => this.handleCheckedChange(e, friend._id)}
-              />
-              <Text>{friend.firstName + ' ' + friend.lastName}</Text>
-            </View>
-          ))
+          {
+            this.props.friends.map(friend => ( // omit argument index to appease linter
+              <View style={styles.friendCheck} key={friend._id}>
+                <MKCheckbox
+                  checked={
+                    !(this.state.friendsToInvite.indexOf(friend._id) === -1)
+                  }
+                  onCheckedChange={e => this.handleCheckedChange(e, friend._id)}
+                />
+                <Text>{friend.firstName }</Text>
+              </View>
+            ))
         }
         </ScrollView>
         <MKButton
@@ -106,7 +100,7 @@ export default class InviteFriends extends Component {
         >
           <Text
             pointerEvents="none"
-            style={{color: '#fff', fontWeight: 'bold'}}
+            style={{ color: '#fff', fontWeight: 'bold' }}
           >
             DONE
           </Text>
@@ -115,3 +109,10 @@ export default class InviteFriends extends Component {
     );
   }
 }
+
+InviteFriends.propTypes = {
+  navigator: PropTypes.object.isRequired,
+  friends: PropTypes.array.isRequired,
+  initialInvitedFriends: PropTypes.array.isRequired,
+  handleFriendsInvite: PropTypes.func.isRequired,
+};

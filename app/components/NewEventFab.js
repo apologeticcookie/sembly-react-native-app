@@ -1,18 +1,11 @@
-import React from 'react';
-const MK = require('react-native-material-kit');
+import {
+  MKButton,
+  MKColor,
+} from 'react-native-material-kit';
 
 import {
   StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Image,
 } from 'react-native';
-
-const {
-  MKButton,
-  MKColor,
-} = MK;
 
 const styles = StyleSheet.create({
   buttonText: {
@@ -29,7 +22,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0.5 },
     shadowOpacity: 0.7,
     shadowColor: 'black',
-    elevation: 4
+    elevation: 4,
   },
 });
 
@@ -37,7 +30,7 @@ const ColoredFab = MKButton.coloredFab()
   .withStyle(styles.fab)
   .withText('+')
   .withTextStyle(styles.buttonText)
-  .withBackgroundColor(MKColor.Indigo)
+  .withBackgroundColor('#5976e3')
   .build();
 
 module.exports = ColoredFab;

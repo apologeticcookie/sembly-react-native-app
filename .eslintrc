@@ -2,11 +2,19 @@
   "parser": "babel-eslint",
   "extends": [
     "./node_modules/eslint-config-hackreactor/index.js",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "airbnb"
   ],
   "ecmaVersion": 6,
   "plugins": [
     "react",
-    "react-native"
-  ]
+    "react-native",
+    "jsx-a11y",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-prop-types": 0,
+    "react/jsx-filename-extension": 0,
+    "no-underscore-dangle": 0
+  }
 }
