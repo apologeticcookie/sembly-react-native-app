@@ -1,4 +1,3 @@
-// UserCard.js
 import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
@@ -59,8 +58,6 @@ export default class UserCard extends Component {
   }
 
   render() {
-    // const background = this.props.index % 2 === 0 ? '#F5FCFF' : '#fff';
-
     return (
       <View style={styles.card}>
         <Image style={styles.image} source={{ uri: this.props.user.photoUrl }} />
@@ -74,13 +71,8 @@ export default class UserCard extends Component {
   }
 }
 
-// props which are not used are commented out
 UserCard.propTypes = {
-  // navigator: PropTypes.shape.isRequired,
   user: PropTypes.object.isRequired,
-  // mongoLocation: PropTypes.array.isRequired,
   friends: PropTypes.string.isRequired,
-  // handleCoordsSet: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
   view: PropTypes.string,
 };
