@@ -6,7 +6,7 @@ import {
   Image,
 } from 'react-native';
 import MapView from 'react-native-maps';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import mapMarker from './../assets/rock-on.png';
 
 import TopBar from './TopBar';
 import eventBus from './../util/eventBus';
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   centerMarkerIcon: {
-    fontSize: 26,
-    color: '#7924B8',
+    width: 30,
+    height: 30,
   },
   friendMarker: {
     width: 30,
@@ -96,6 +96,7 @@ export default class ChooseLocation extends Component {
   }
 
   render() {
+    console.log(this.props.friends);
     return (
       <View style={styles.locationView}>
         <TopBar
@@ -147,9 +148,8 @@ export default class ChooseLocation extends Component {
           style={styles.centerMarker}
           pointerEvents="none"
         >
-          <Icon
-            name="flag"
-            pointerEvents="none"
+          <Image
+            source={mapMarker}
             style={styles.centerMarkerIcon}
           />
         </View>
