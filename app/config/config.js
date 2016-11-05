@@ -13,5 +13,5 @@ module.exports = {
   rejectRequest: 'http://tranquil-garden-43561.herokuapp.com/api/friends/rejectRequest',
   savedEvents: 'http://tranquil-garden-43561.herokuapp.com/api/events/saved',
   eventsInvited: 'http://tranquil-garden-43561.herokuapp.com/api/events/invited',
-  userSignup: 'http://tranquil-garden-43561.herokuapp.com/api/users/signup'
+  userSignup: 'http://tranquil-garden-43561.herokuapp.com/api/users/signup',
 };

@@ -10,7 +10,6 @@ import {
 import MapView from 'react-native-maps';
 
 import Spinner from './Spinner';
-import EventDetails from './EventDetails';
 import OurDrawer from './OurDrawer';
 import NewEventFab from './NewEventFab';
 
@@ -44,7 +43,7 @@ export default class Map extends Component {
 
     this.setNewEventPinCoords = this.setNewEventPinCoords.bind(this);
     this.fetchEvents = this.fetchEvents.bind(this);
-    this.openNewEvent = this.openNewEvent.bind(this);
+    this.handleNewEventNavigate = this.handleNewEventNavigate.bind(this);
     this.handleEventNavigate = this.handleEventNavigate.bind(this);
   }
 
@@ -71,7 +70,7 @@ export default class Map extends Component {
     });
   }
 
-  openNewEvent() {
+  handleNewEventNavigate() {
     this.props.navigator.push({
       name: 'NewEvent',
       passedProps: {
@@ -167,7 +166,7 @@ export default class Map extends Component {
               })
             }
           </MapView>
-          <NewEventFab onPress={this.openNewEvent} />
+          <NewEventFab onPress={this.handleNewEventNavigate} />
         </View>
       </OurDrawer>
     );

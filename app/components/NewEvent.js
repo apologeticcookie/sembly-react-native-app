@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 
-import TopBar from './TopBar.js';
+import TopBar from './TopBar';
 
-import configURL from './../config/config.js';
+import configURL from './../config/config';
 
 const styles = StyleSheet.create({
   newEvent: {
@@ -100,7 +100,7 @@ export default class NewEvent extends Component {
     .then(response => response.json())
     .then((friends) => {
       this.setState({
-        friends: friends,
+        friends,
       });
     })
     .catch(error => console.log(error));
@@ -188,8 +188,6 @@ export default class NewEvent extends Component {
           errorText: '',
         });
       }, 1000);
-      this.props.resetPin();
-      this.props.fetchNewEvents();
     })
     .catch(error => console.log(error));
   }
@@ -307,11 +305,4 @@ export default class NewEvent extends Component {
 NewEvent.propTypes = {
   userId: PropTypes.string.isRequired,
   navigator: PropTypes.object.isRequired,
-  // Marking these as non-required for now; <Feed> doesn't seem to pass these
-  // props down to it, and no errors seem to be present without these props
-  // In other words, in the place where <NewEvent> is used without
-  // receiving the below props, <NewEvent> seems to not need them anyway
-  // eventCoords: PropTypes.shape, // eventCoords is never used
-  resetPin: PropTypes.func,
-  fetchNewEvents: PropTypes.func,
 };

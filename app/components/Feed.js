@@ -6,8 +6,6 @@ import {
 } from 'react-native';
 
 import Spinner from './Spinner';
-import NewEvent from './NewEvent';
-import EventDetails from './EventDetails';
 import NewEventFab from './NewEventFab';
 import OurDrawer from './OurDrawer';
 import EventCard from './EventCard';
@@ -55,31 +53,24 @@ export default class Feed extends Component {
       eventModal: false,
       addEventDetails: false,
     };
+
+    this.getInvitedEvents = this.getInvitedEvents.bind(this);
+    this.getSavedEvents = this.getSavedEvents.bind(this);
+    this.getAllEvents = this.getAllEvents.bind(this);
+    this.handleNewEventNavigation = this.handleNewEventNavigation.bind(this);
   }
 
   componentWillMount() {
     if (this.props.page === 'bundle') {
-      this.getBundle();
+      this.getAllEvents();
     } else if (this.props.page === 'invited') {
-      this.getInvited();
+      this.getInvitedEvents();
     } else if (this.props.page === 'saved') {
-      this.getSaved();
+      this.getSavedEvents();
     }
   }
 
-  openEvent(eventId) {
-    this.setState({ eventModal: true, eventId: eventId, addEventDetails: false });
-  }
-
-  closeEvent() {
-    this.setState({ eventModal: false });
-  }
-
-  openModal() {
-    this.setState({ addEventDetails: true, eventModal: false });
-  }
-
-  getInvited() {
+  getInvitedEvents() {
     fetch(configURL.eventsInvited, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -92,7 +83,7 @@ export default class Feed extends Component {
     .catch(error => console.log(error));
   }
 
-  getSaved() {
+  getSavedEvents() {
     fetch(configURL.savedEvents, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -100,11 +91,15 @@ export default class Feed extends Component {
     })
     .then(response => response.json())
     .then((events) => {
-      this.setState({ events, loading: false});
+      this.setState({
+        events,
+        loading: false,
+      });
     })
     .catch(error => console.log(error));
   }
-  getBundle() {
+
+  getAllEvents() {
     fetch(configURL.eventBundle, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -112,9 +107,25 @@ export default class Feed extends Component {
     })
     .then(response => response.json())
     .then((events) => {
-      this.setState({ events, loading: false });
+      this.setState({
+        events,
+        loading: false,
+      });
     })
     .catch(error => console.log(error));
+  }
+
+  handleNewEventNavigation() {
+    this.props.navigator.push({
+      name: 'NewEvent',
+      passedProps: {
+        navigator: this.props.navigator,
+        resetPin: this.setNewEventPinCoords,
+        fetchNewEvents: this.fetchEvents,
+        userId: this.props.user._id,
+        eventCoords: this.state.x,
+      },
+    });
   }
 
   render() {
@@ -144,19 +155,12 @@ export default class Feed extends Component {
           {this.state.events.map((event, index) =>
             <EventCard
               key={index}
-              openModal={this.openEvent.bind(this)}
               event={event} index={index}
               navigator={this.props.navigator}
             />)}
         </ScrollView>
         <NewEventFab
-          onPress={
-            () => {
-              this.props.navigator.resetTo({
-                name: 'Map',
-              });
-            }
-          }
+          onPress={this.handleNewEventNavigation}
         />
       </OurDrawer>
     );
