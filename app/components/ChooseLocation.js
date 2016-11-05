@@ -6,15 +6,12 @@ import {
   View,
   // Navigator,
   Dimensions,
-  TouchableHighlight,
+  Image,
 } from 'react-native';
-import {
-  MKColor,
-} from 'react-native-material-kit';
 import MapView from 'react-native-maps';
 
-import TopBar from './TopBar.js';
-import eventBus from './../util/eventBus.js';
+import TopBar from './TopBar';
+import eventBus from './../util/eventBus';
 
 const styles = StyleSheet.create({
   map: {
@@ -23,6 +20,22 @@ const styles = StyleSheet.create({
   locationView: {
     backgroundColor: '#fff',
     flex: 1,
+  },
+  centerMarker: {
+    position: 'absolute',
+    // 60 is height of the <TopBar>
+    top: 60,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  friendMarker: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
 });
 
@@ -92,7 +105,7 @@ export default class ChooseLocation extends Component {
           this.state.loadReady ?
           (<MapView
             onRegionChangeComplete={this.setPinCoords}
-            showsUserLocation={true}
+            showsUserLocation
             style={styles.map}
             initialRegion={{
               latitude: this.props.mongoLocation[1],
@@ -101,12 +114,6 @@ export default class ChooseLocation extends Component {
               longitudeDelta: 0.02,
             }}
           >
-            <MapView.Marker
-              coordinate={this.state.coords}
-              pinColor="yellow"
-              title="The location of your next event!"
-            />
-
             {
               this.props.friends.map((friend) => {
                 const tempLoc = {
@@ -118,15 +125,13 @@ export default class ChooseLocation extends Component {
                   <MapView.Marker
                     key={friend._id}
                     coordinate={tempLoc}
-                    pinColor={MKColor.Indigo}
                   >
-                    <MapView.Callout width={40} height={40} >
-                      <TouchableHighlight
-                        underlayColor="transparent"
-                      >
-                        <Text>{friend.firstName}</Text>
-                      </TouchableHighlight>
-                    </MapView.Callout>
+                    <Image
+                      source={{
+                        uri: friend.photoUrl,
+                      }}
+                      style={styles.friendMarker}
+                    />
                   </MapView.Marker>
                 );
               })
@@ -136,6 +141,12 @@ export default class ChooseLocation extends Component {
           null
         }
 
+        <View
+          style={styles.centerMarker}
+          pointerEvents="none"
+        >
+          <Text pointerEvents="none">9</Text>
+        </View>
       </View>
     );
   }

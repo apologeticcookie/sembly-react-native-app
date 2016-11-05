@@ -7,18 +7,15 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-import {
-  MKColor,
-} from 'react-native-material-kit';
 import MapView from 'react-native-maps';
 
-import Spinner from './Spinner.js';
-import EventModal from './EventModal.js';
-import OurDrawer from './OurDrawer.js';
-import NewEventFab from './NewEventFab.js';
+import Spinner from './Spinner';
+import EventModal from './EventModal';
+import OurDrawer from './OurDrawer';
+import NewEventFab from './NewEventFab';
 
-import configURL from './../config/config.js';
-import _navigate from './../config/navigateConfig.js';
+import configURL from './../config/config';
+import _navigate from './../config/navigateConfig';
 
 const styles = StyleSheet.create({
   map: {
@@ -132,7 +129,7 @@ export default class Map extends Component {
       return (
         <OurDrawer
           user={this.props.user}
-          topBarFilterVisible={true}
+          topBarFilterVisible
           topBarName={'Map'}
           _navigate={_navigate.bind(this)}
         >
@@ -141,66 +138,59 @@ export default class Map extends Component {
           </View>
         </OurDrawer>
       );
-    } else {
-      return (
-        <OurDrawer
-          user={this.props.user}
-          topBarFilterVisible={true}
-          topBarName={'Map'}
-          _navigate={_navigate.bind(this)}
-        >
-          <View>
-            <MapView
-              showsUserLocation={true}
-              style={styles.map}
-              initialRegion={{
-                latitude: this.props.mongoLocation[1],
-                longitude: this.props.mongoLocation[0],
-                latitudeDelta: 0.04,
-                longitudeDelta: 0.02,
-              }}
-            >
-              <MapView.Marker
-                draggable
-                coordinate={this.state.x}
-                pinColor="yellow"
-                title="The location of your next event!"
-                onDragEnd={e => this.setState({ x: e.nativeEvent.coordinate })}
-              />
-              {
-                this.state.markers.map((marker) => {
-                  const tempLoc = {
-                    latitude: marker.location[1],
-                    longitude: marker.location[0],
-                  };
-
-                  return (
-                    <MapView.Marker
-                      key={marker._id}
-                      coordinate={tempLoc}
-                      pinColor={MKColor.Indigo}
-                    >
-                      <MapView.Callout width={40} height={40} >
-                        <TouchableHighlight
-                          underlayColor="transparent"
-                          onPress={this.openEventModal.bind(this, marker._id)}
-                        >
-                          <Text>{marker.name}</Text>
-                        </TouchableHighlight>
-                      </MapView.Callout>
-                    </MapView.Marker>
-                  );
-                })
-              }
-            </MapView>
-            <NewEventFab onPress={this.openNewEvent} />
-            {
-              this.getEventModal()
-            }
-          </View>
-        </OurDrawer>
-      );
     }
+
+    return (
+      <OurDrawer
+        user={this.props.user}
+        topBarFilterVisible
+        topBarName={'Map'}
+        _navigate={_navigate.bind(this)}
+      >
+        <View>
+          <MapView
+            showsUserLocation
+            style={styles.map}
+            initialRegion={{
+              latitude: this.props.mongoLocation[1],
+              longitude: this.props.mongoLocation[0],
+              latitudeDelta: 0.04,
+              longitudeDelta: 0.02,
+            }}
+          >
+            {
+              this.state.markers.map((marker) => {
+                const tempLoc = {
+                  latitude: marker.location[1],
+                  longitude: marker.location[0],
+                };
+
+                return (
+                  <MapView.Marker
+                    key={marker._id}
+                    coordinate={tempLoc}
+                    pinColor={'#5976e3'}
+                  >
+                    <MapView.Callout width={40} height={40} >
+                      <TouchableHighlight
+                        underlayColor="transparent"
+                        onPress={this.openEventModal.bind(this, marker._id)}
+                      >
+                        <Text>{marker.name}</Text>
+                      </TouchableHighlight>
+                    </MapView.Callout>
+                  </MapView.Marker>
+                );
+              })
+            }
+          </MapView>
+          <NewEventFab onPress={this.openNewEvent} />
+          {
+            this.getEventModal()
+          }
+        </View>
+      </OurDrawer>
+    );
   }
 }
 
