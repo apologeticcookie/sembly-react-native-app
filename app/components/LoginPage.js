@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,30 +11,30 @@ import {
 import FacebookLogin from './FacebookLogin';
 
 const styles = StyleSheet.create({
-container: {
-  padding: 30,
-  marginTop: 200,
-  alignItems: 'center'
-},
-buttonText: {
-  fontSize: 20,
-  fontWeight: 'bold',
-  color: 'white',
-  alignSelf: 'center'
-},
-button: {
-  height: 36,
-  flex: 1,
-  backgroundColor: '#F44336',
-  borderColor: '#F44336',
-  borderWidth: 1,
-  marginBottom: 10,
-  alignSelf: 'stretch',
-  justifyContent: 'center'
-}
+  container: {
+    padding: 30,
+    marginTop: 200,
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+    alignSelf: 'center'
+  },
+  button: {
+    height: 36,
+    flex: 1,
+    backgroundColor: '#F44336',
+    borderColor: '#F44336',
+    borderWidth: 1,
+    marginBottom: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
+  }
 });
 
-export default (props) => {
+const Login = (props) => {
   return (
     <View>
       <View style={styles.container}>
@@ -43,3 +43,10 @@ export default (props) => {
     </View>
   );
 };
+
+Login.propTypes = {
+  navigator: PropTypes.object.isRequired,
+  setUser: PropTypes.func.isRequired
+};
+
+export default Login;

@@ -104,7 +104,6 @@ class FacebookLogin extends Component {
     /* Set user as null HERE */
     let context = this;
     context.props.setUser(null);
-
   }
 
   onCancel(data) {
