@@ -128,8 +128,7 @@ export default class App extends Component {
           {...route.passedProps}
         />
       );
-    }
-    if (route.name === 'NewEvent') {
+    } else if (route.name === 'NewEvent') {
       return (
         <NewEvent
           name={route.name}
@@ -138,8 +137,7 @@ export default class App extends Component {
           {...route.passedProps}
         />
       );
-    }
-    if (route.name === 'ChooseLocation') {
+    } else if (route.name === 'ChooseLocation') {
       return (
         <ChooseLocation
           name={route.name}

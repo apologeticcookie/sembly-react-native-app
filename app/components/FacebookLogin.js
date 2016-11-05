@@ -27,8 +27,8 @@ class FacebookLogin extends Component {
     this.onPermissionsMissing = this.onPermissionsMissing.bind(this);
 
   }
-  
-  onLogin(data) { 
+
+  onLogin(data) {
     let userId = data.credentials.userId;
     let token = data.credentials.token;
     let context = this;
@@ -42,31 +42,36 @@ class FacebookLogin extends Component {
         userData.password = 'default';
 
         /* Do what you want to do with userData HERE */
-        console.log('User Data ',JSON.stringify(userData));
-        fetch(configURL.userSignup, {
+        console.log('User Data ', JSON.stringify(userData));
+        fetch(configURL.loginURL, {
           method: 'POST',
-          headers: { "Content-Type" : "application/json" },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(userData)
+        })
+        .then(response => {
+          // console.log('response.json', response.json());
+          return response.json();
         })
         .then(response => {
           console.log('user signup success', response);
 
+          console.log('response', response);
           /* Set user as logged in user HERE */
-          context.props.setUser(userData);
+          context.props.setUser(response);
 
           /* Switch to Map view */
           context.props.navigator.push({ name: 'Map'});
 
         })
         .catch(error => {
-           console.log(error);
+          console.log('Error in login:', error);
         });
 
       });
     });
   }
 
-  onLogout(data) { 
+  onLogout(data) {
     console.log('logout', JSON.stringify(data));
 
     /* Set user as null HERE */
@@ -74,8 +79,8 @@ class FacebookLogin extends Component {
     context.props.setUser(null);
   }
 
-  onLoginFound(data) { 
-  
+  onLoginFound(data) {
+
     console.log('loginFound', JSON.stringify(data));
     console.log('userId is', data.credentials.userId);
 
@@ -83,28 +88,18 @@ class FacebookLogin extends Component {
     this.onLogin(data);
   }
 
-  onLoginNotFound(data) { 
+  onLoginNotFound(data) {
 
-    console.log('loginNotFound', JSON.stringify(data)); 
+    console.log('loginNotFound', JSON.stringify(data));
 
     /* Set user as null HERE */
     let context = this;
     context.props.setUser(null);
   }
 
-  onError(data) { 
+  onError(data) {
 
-    console.log('error', JSON.stringify(data)); 
-
-    /* Set user as null HERE */
-    let context = this;
-    context.props.setUser(null);
-
-  }
-
-  onCancel(data) { 
-
-    console.log('cancel', JSON.stringify(data)); 
+    console.log('error', JSON.stringify(data));
 
     /* Set user as null HERE */
     let context = this;
@@ -112,9 +107,19 @@ class FacebookLogin extends Component {
 
   }
 
-  onPermissionsMissing(data) { 
+  onCancel(data) {
 
-    console.log('permissionsMissing', JSON.stringify(data)); 
+    console.log('cancel', JSON.stringify(data));
+
+    /* Set user as null HERE */
+    let context = this;
+    context.props.setUser(null);
+
+  }
+
+  onPermissionsMissing(data) {
+
+    console.log('permissionsMissing', JSON.stringify(data));
 
     /* Set user as null HERE */
     let context = this;
@@ -124,7 +129,7 @@ class FacebookLogin extends Component {
 
   render() {
     return (
-      <FBLogin 
+      <FBLogin
 
         permissions={this.state.permissions}
 
