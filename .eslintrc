@@ -11,5 +11,8 @@
     "react-native",
     "jsx-a11y",
     "import"
-  ]
+  ],  
+  "ecmaFeatures": {
+    "jsx": true
+  }
 }
