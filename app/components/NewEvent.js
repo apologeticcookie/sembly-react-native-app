@@ -98,7 +98,8 @@ export default class NewEvent extends Component {
       newEventName: '',
       newEventStartTime: new Date(),
       newEventTags: '',
-      errorText: ''
+      errorText: '',
+      eventCoords: []
     };
 
     this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
@@ -120,7 +121,9 @@ export default class NewEvent extends Component {
   }
 
   handleCoordsSet(coords) {
-    return;
+    this.setState({
+      eventCoords: coords
+    });
   }
 
   handleChooseLocationNavigate() {
@@ -178,8 +181,8 @@ export default class NewEvent extends Component {
       visibility: ''
     };
 
-    eventToBePosted.location[0] = this.props.eventCoords.longitude;
-    eventToBePosted.location[1] = this.props.eventCoords.latitude;
+    eventToBePosted.location[0] = this.state.eventCoords.longitude;
+    eventToBePosted.location[1] = this.state.eventCoords.latitude;
 
     if (this.refs.visibilityCheckbox.state.checked) {
       eventToBePosted.visibility = 'invite';
@@ -202,7 +205,7 @@ export default class NewEvent extends Component {
         newEventTags: '',
       });
       setTimeout(() => {
-        context.refs.NewEvent.close();
+        this.handleBack();
         context.setState({
           errorText: ''
         });

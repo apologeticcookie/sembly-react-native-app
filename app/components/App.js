@@ -49,8 +49,9 @@ export default class App extends Component {
   }
 
   setUser(user) {
-    this.setState({user: user});
-    console.log('user is set to', user);
+    this.setState({
+      user: user
+    });
   }
 
   componentWillMount () {

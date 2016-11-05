@@ -53,9 +53,6 @@ class FacebookLogin extends Component {
           return response.json();
         })
         .then(response => {
-          console.log('user signup success', response);
-
-          console.log('response', response);
           /* Set user as logged in user HERE */
           context.props.setUser(response);
 
@@ -82,7 +79,6 @@ class FacebookLogin extends Component {
   onLoginFound(data) {
 
     console.log('loginFound', JSON.stringify(data));
-    console.log('userId is', data.credentials.userId);
 
     /* Set user as logged in user HERE */
     this.onLogin(data);

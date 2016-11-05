@@ -41,15 +41,14 @@ export default class ChooseLocation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: [],
       loadReady: false,
-      x: {
+      coords: {
         latitude: this.props.mongoLocation[1] + 0.0005,
         longitude: this.props.mongoLocation[0] + 0.0005
       }
     };
 
-    this.getPinCoords = this.getPinCoords.bind(this);
+    this.setPinCoords = this.setPinCoords.bind(this);
     this.handleDone = this.handleDone.bind(this);
     this.loadMap = this.loadMap.bind(this);
   }
@@ -75,13 +74,18 @@ export default class ChooseLocation extends Component {
     });
   }
 
-  getPinCoords() {
+  setPinCoords(coords) {
+    this.setState({
+      coords: {
+        latitude: coords.latitude,
+        longitude: coords.longitude
+      }
+    });
     return;
   }
 
   handleDone() {
-    var pinCoords = this.getPinCoords();
-    this.props.handleCoordsSet(pinCoords);
+    this.props.handleCoordsSet(this.state.coords);
     this.props.navigator.pop();
   }
 
@@ -95,8 +99,8 @@ export default class ChooseLocation extends Component {
         />
         {
           this.state.loadReady ?
-          // false ?
           (<MapView
+            onRegionChangeComplete={this.setPinCoords}
             showsUserLocation={true}
             style={styles.map}
             initialRegion={{
@@ -107,32 +111,29 @@ export default class ChooseLocation extends Component {
             }}
           >
             <MapView.Marker
-              draggable
-              coordinate={this.state.x}
+              coordinate={this.state.coords}
               pinColor='yellow'
               title='The location of your next event!'
-              onDragEnd={(e) => this.setState({ x: e.nativeEvent.coordinate })}
             />
 
             {
-              this.state.markers.map(marker => {
+              this.props.friends.map(friend => {
                 var tempLoc = {
-                  latitude: marker.location[1],
-                  longitude: marker.location[0]
+                  latitude: friend.location[1],
+                  longitude: friend.location[0]
                 };
 
                 return (
                   <MapView.Marker
-                    key={marker._id}
+                    key={friend._id}
                     coordinate={tempLoc}
                     pinColor={MKColor.Indigo}
                   >
                     <MapView.Callout width={40} height={40} >
                       <TouchableHighlight
                         underlayColor="transparent"
-                        onPress={this.openEventModal.bind(this, marker._id)}
                       >
-                        <Text>{marker.name}</Text>
+                        <Text>{friend.firstName + friend.lastName}</Text>
                       </TouchableHighlight>
                     </MapView.Callout>
                   </MapView.Marker>
