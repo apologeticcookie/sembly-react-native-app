@@ -1,11 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Navigator,
-  TouchableHighlight,
-  TouchableOpacity
 } from 'react-native';
 
 import FacebookLogin from './FacebookLogin';
@@ -34,19 +30,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = (props) => {
-  return (
-    <View>
-      <View style={styles.container}>
-        <FacebookLogin setUser={props.setUser} navigator={props.navigator} />
-      </View>
+const Login = props => (
+  <View>
+    <View style={styles.container}>
+      <FacebookLogin setUser={props.setUser} navigator={props.navigator} />
     </View>
-  );
-};
+  </View>
+);
 
 Login.propTypes = {
-  navigator: PropTypes.object.isRequired,
-  setUser: PropTypes.func.isRequired
+  navigator: PropTypes.shape.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default Login;
