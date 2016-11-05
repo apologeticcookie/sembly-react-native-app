@@ -1,13 +1,11 @@
-import MK from 'react-native-material-kit';
+import {
+  MKButton,
+  MKColor,
+} from 'react-native-material-kit';
 
 import {
   StyleSheet,
 } from 'react-native';
-
-const {
-  MKButton,
-  MKColor,
-} = MK;
 
 const styles = StyleSheet.create({
   buttonText: {

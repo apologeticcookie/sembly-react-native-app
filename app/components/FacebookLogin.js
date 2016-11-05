@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 
-import facebookAPI from './../util/facebookAPI';
+import facebookAPI from './../util/facebookAPI.js';
 
-import configURL from './../config/config';
+import configURL from './../config/config.js';
 
 class FacebookLogin extends Component {
   constructor(props) {

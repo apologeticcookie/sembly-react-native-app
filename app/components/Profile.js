@@ -9,12 +9,12 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Spinner from './Spinner';
-import OurDrawer from './OurDrawer';
-import UserCard from './UserCard';
+import Spinner from './Spinner.js';
+import OurDrawer from './OurDrawer.js';
+import UserCard from './UserCard.js';
 
-import configURL from './../config/config';
-import _navigate from './../config/navigateConfig';
+import configURL from './../config/config.js';
+import _navigate from './../config/navigateConfig.js';
 
 const styles = StyleSheet.create({
   description: {
@@ -151,13 +151,12 @@ class Profile extends Component {
     })
     .then(response => response.json())
     .then((friends) => {
-      if (search.length > 0) {
+      if (searchTerm.length > 0) {
         this.setState({
           feed: friends,
           loading: false,
         });
-      }
-      if (search.length === 0) {
+      } else if (searchTerm.length === 0) {
         this.setState({
           feed: friends,
           friends: friends,
@@ -175,7 +174,7 @@ class Profile extends Component {
     fetch(configURL.getUsers + searchTerm, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      // body: JSON.stringify({userId: this.props.user._id, search: search}),
+      // body: JSON.stringify({userId: this.props.user._id, search: searchTerm}),
     })
     .then(response => response.json())
     .then((users) => {
@@ -222,7 +221,7 @@ class Profile extends Component {
       return (
         <OurDrawer
           topBarFilterVisible={false}
-          topBarName={'Feed'}
+          topBarName={'Profile'}
           _navigate={_navigate.bind(this)}
         >
           <View style={styles.spinner}>
@@ -286,6 +285,7 @@ class Profile extends Component {
                 view={this.state.view}
                 user={friend}
                 index={index}
+                friends="users"
               />
             )
           )}
@@ -296,7 +296,7 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  user: PropTypes.shape.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default Profile;

@@ -12,13 +12,13 @@ import {
 } from 'react-native-material-kit';
 import MapView from 'react-native-maps';
 
-import Spinner from './Spinner';
-import EventModal from './EventModal';
-import OurDrawer from './OurDrawer';
-import NewEventFab from './NewEventFab';
+import Spinner from './Spinner.js';
+import EventModal from './EventModal.js';
+import OurDrawer from './OurDrawer.js';
+import NewEventFab from './NewEventFab.js';
 
-import configURL from './../config/config';
-import _navigate from './../config/navigateConfig';
+import configURL from './../config/config.js';
+import _navigate from './../config/navigateConfig.js';
 
 const styles = StyleSheet.create({
   map: {
@@ -205,7 +205,7 @@ export default class Map extends Component {
 }
 
 Map.propTypes = {
-  navigator: PropTypes.shape.isRequired,
-  user: PropTypes.shape.isRequired,
-  mongoLocation: PropTypes.arrayOf.isRequired,
+  navigator: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  mongoLocation: PropTypes.array.isRequired,
 };

@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
-import TopBar from './TopBar';
+
+import TopBar from './TopBar.js';
 
 const styles = StyleSheet.create({
   friendsCheckGroup: {
@@ -110,8 +111,8 @@ export default class InviteFriends extends Component {
 }
 
 InviteFriends.propTypes = {
-  navigator: PropTypes.shape.isRequired,
-  friends: PropTypes.arrayOf.isRequired,
-  initialInvitedFriends: PropTypes.shape.isRequired,
+  navigator: PropTypes.object.isRequired,
+  friends: PropTypes.array.isRequired,
+  initialInvitedFriends: PropTypes.array.isRequired,
   handleFriendsInvite: PropTypes.func.isRequired,
 };

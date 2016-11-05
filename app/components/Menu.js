@@ -108,7 +108,7 @@ const Menu = props => (
 );
 
 Menu.propTypes = {
-  user: PropTypes.shape.isRequired,
+  user: PropTypes.object,
   _navigate: PropTypes.func.isRequired,
 };
 

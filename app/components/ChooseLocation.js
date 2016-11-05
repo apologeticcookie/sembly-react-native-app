@@ -8,16 +8,13 @@ import {
   Dimensions,
   TouchableHighlight,
 } from 'react-native';
-
 import {
   MKColor,
 } from 'react-native-material-kit';
-
 import MapView from 'react-native-maps';
-import TopBar from './TopBar';
 
-// import configURL from './../config/config.js';
-import eventBus from './../util/eventBus';
+import TopBar from './TopBar.js';
+import eventBus from './../util/eventBus.js';
 
 const styles = StyleSheet.create({
   map: {
@@ -145,8 +142,8 @@ export default class ChooseLocation extends Component {
 }
 
 ChooseLocation.propTypes = {
-  navigator: PropTypes.shape.isRequired,
-  mongoLocation: PropTypes.arrayOf.isRequired,
-  friends: PropTypes.arrayOf.isRequired,
+  navigator: PropTypes.object.isRequired,
+  mongoLocation: PropTypes.array.isRequired,
+  friends: PropTypes.array.isRequired,
   handleCoordsSet: PropTypes.func.isRequired,
 };

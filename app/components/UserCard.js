@@ -10,7 +10,7 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import configURL from './../config/config';
+import configURL from './../config/config.js';
 
 const styles = StyleSheet.create({
   text: {
@@ -160,15 +160,15 @@ class UserCard extends Component {
 // props which are not used are commented out
 UserCard.propTypes = {
   // navigator: PropTypes.shape.isRequired,
-  user: PropTypes.shape.isRequired,
-  currentUserId: PropTypes.shape.isRequired,
-  view: PropTypes.shape.isRequired,
-  // mongoLocation: PropTypes.arrayOf.isRequired,
-  friends: PropTypes.arrayOf.isRequired,
+  user: PropTypes.object.isRequired,
+  currentUserId: PropTypes.string.isRequired, // changed to string
+  view: PropTypes.string.isRequired, // changed to string
+  // mongoLocation: PropTypes.array.isRequired,
+  friends: PropTypes.string.isRequired, // changed to string
   // handleCoordsSet: PropTypes.func.isRequired,
   refreshUserFriends: PropTypes.func.isRequired,
   getNewRequests: PropTypes.func.isRequired,
-  index: PropTypes.shape.isRequired,
+  index: PropTypes.number.isRequired, // changed to number
 };
 
 export default UserCard;

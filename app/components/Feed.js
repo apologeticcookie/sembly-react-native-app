@@ -5,15 +5,15 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Spinner from './Spinner';
-import NewEvent from './NewEvent';
-import EventModal from './EventModal';
-import NewEventFab from './NewEventFab';
-import OurDrawer from './OurDrawer';
-import EventCard from './EventCard';
+import Spinner from './Spinner.js';
+import NewEvent from './NewEvent.js';
+import EventModal from './EventModal.js';
+import NewEventFab from './NewEventFab.js';
+import OurDrawer from './OurDrawer.js';
+import EventCard from './EventCard.js';
 
-import configURL from './../config/config';
-import _navigate from './../config/navigateConfig';
+import configURL from './../config/config.js';
+import _navigate from './../config/navigateConfig.js';
 
 const styles = StyleSheet.create({
   listElem: {
@@ -172,6 +172,7 @@ export default class Feed extends Component {
         <NewEvent
           visibility={this.state.addEventModal}
           userId={this.props.user._id}
+          navigator={this.props.navigator}
         />
       </OurDrawer>
     );
@@ -180,8 +181,8 @@ export default class Feed extends Component {
 
 Feed.propTypes = {
   page: PropTypes.string.isRequired,
-  user: PropTypes.shape.isRequired,
-  mongoLocation: PropTypes.arrayOf.isRequired,
+  user: PropTypes.object.isRequired,
+  mongoLocation: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
-  navigator: PropTypes.shape.isRequired,
+  navigator: PropTypes.object.isRequired,
 };

@@ -103,7 +103,7 @@ export default class EventCard extends Component {
 }
 
 EventCard.propTypes = {
-  event: PropTypes.shape.isRequired,
+  event: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   openModal: PropTypes.func.isRequired,
 };

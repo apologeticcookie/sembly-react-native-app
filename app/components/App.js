@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
 import {
-  StatusBar,
   StyleSheet,
-  Text,
-  View,
-  Navigator
+  Navigator,
 } from 'react-native';
 
-import TopBar from './TopBar';
-import LoginPage from './LoginPage';
-import Main from './Main';
-import Map from './Map';
-import Profile from './Profile';
-import Feed from './Feed';
-import InviteFriends from './InviteFriends';
-import NewEvent from './NewEvent';
-import ChooseLocation from './ChooseLocation';
+import LoginPage from './LoginPage.js';
+import Map from './Map.js';
+import Profile from './Profile.js';
+import Feed from './Feed.js';
+import InviteFriends from './InviteFriends.js';
+import NewEvent from './NewEvent.js';
+import ChooseLocation from './ChooseLocation.js';
 
-import eventBus from '../util/eventBus';
+import eventBus from '../util/eventBus.js';
 
 const styles = StyleSheet.create({
   container: {},
@@ -120,6 +115,7 @@ export default class App extends Component {
         <Feed
           name={'Invited To'}
           user={this.state.user}
+          mongoLocation={this.state.mongoLocation}
           page={'invited'}
           navigator={navigator}
         />
@@ -129,6 +125,7 @@ export default class App extends Component {
         <Feed
           name={route.name}
           user={this.state.user}
+          mongoLocation={this.state.mongoLocation}
           page={'saved'}
           navigator={navigator}
         />

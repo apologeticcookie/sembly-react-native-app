@@ -12,8 +12,8 @@ import {
 
 import Drawer from 'react-native-drawer';
 
-import Menu from './Menus';
-import TopBar from './TopBar';
+import Menu from './Menu.js';
+import TopBar from './TopBar.js';
 
 const drawerStyles = {
   drawer: {

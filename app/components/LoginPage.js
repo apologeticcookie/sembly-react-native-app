@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native';
 
-import FacebookLogin from './FacebookLogin';
+import FacebookLogin from './FacebookLogin.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +39,7 @@ const Login = props => (
 );
 
 Login.propTypes = {
-  navigator: PropTypes.shape.isRequired,
+  navigator: PropTypes.object.isRequired,
   setUser: PropTypes.func.isRequired,
 };
 

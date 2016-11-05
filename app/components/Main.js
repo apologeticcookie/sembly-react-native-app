@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import OurDrawer from './OurDrawer';
+import OurDrawer from './OurDrawer.js';
 
-import _navigate from './../config/navigateConfig';
+import _navigate from './../config/navigateConfig.js';
 
 const styles = StyleSheet.create({
   listElem: {

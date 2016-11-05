@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 
-import TopBar from './TopBar';
+import TopBar from './TopBar.js';
 
-import configURL from './../config/config';
+import configURL from './../config/config.js';
 
 const styles = StyleSheet.create({
   newEvent: {
@@ -202,7 +202,7 @@ export default class NewEvent extends Component {
     return (
       // linter requested not to have literal references for ref
       // Ref: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md
-      <View ref={(c) => { this.NewEvent = c; }} style={styles.newEvent}>
+      <View ref="NewEvent" style={styles.newEvent}>
         <TopBar
           topBarName="Create a New Event"
           handleLeftPress={this.handleBack}
@@ -274,7 +274,7 @@ export default class NewEvent extends Component {
           <View style={styles.visibilityCheck}>
             <Text>Make your event invite only?</Text>
 
-            <MKCheckbox ref={(c) => { this.visibilityCheckbox = c; }} checked={false} />
+            <MKCheckbox ref="visibilityCheckbox" checked={false} />
           </View>
 
           <View style={styles.createEventButtonContainer}>
@@ -306,7 +306,7 @@ export default class NewEvent extends Component {
 
 NewEvent.propTypes = {
   userId: PropTypes.string.isRequired,
-  navigator: PropTypes.shape.isRequired,
+  navigator: PropTypes.object.isRequired,
   // Marking these as non-required for now; <Feed> doesn't seem to pass these
   // props down to it, and no errors seem to be present without these props
   // In other words, in the place where <NewEvent> is used without
