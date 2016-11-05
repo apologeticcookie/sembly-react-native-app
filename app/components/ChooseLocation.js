@@ -26,6 +26,17 @@ const styles = StyleSheet.create({
   locationView: {
     backgroundColor: '#fff',
     flex: 1
+  },
+  centerMarker: {
+    position: 'absolute',
+    // 60 is height of the <TopBar>
+    top: 60,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
   }
 });
 
@@ -110,12 +121,6 @@ export default class ChooseLocation extends Component {
               longitudeDelta: .02
             }}
           >
-            <MapView.Marker
-              coordinate={this.state.coords}
-              pinColor='yellow'
-              title='The location of your next event!'
-            />
-
             {
               this.props.friends.map(friend => {
                 var tempLoc = {
@@ -140,6 +145,12 @@ export default class ChooseLocation extends Component {
           null
         }
 
+        <View
+          style={styles.centerMarker}
+          pointerEvents="none"
+        >
+          <Text pointerEvents="none">9</Text>
+        </View>
       </View>
     );
   }
