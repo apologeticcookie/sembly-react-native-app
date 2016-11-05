@@ -133,7 +133,7 @@ export default class ChooseLocation extends Component {
                       <TouchableHighlight
                         underlayColor="transparent"
                       >
-                        <Text>{friend.firstName + friend.lastName}</Text>
+                        <Text>{friend.firstName}</Text>
                       </TouchableHighlight>
                     </MapView.Callout>
                   </MapView.Marker>
