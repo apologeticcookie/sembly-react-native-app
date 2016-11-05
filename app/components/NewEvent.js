@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
 
-import TopBar from './TopBar.js';
+import TopBar from './TopBar';
 
-import configURL from './../config/config.js';
+import configURL from './../config/config';
 
 const styles = StyleSheet.create({
   newEvent: {
@@ -55,12 +55,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
-  createEventButtonContainer: {
+  actionButtonContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    marginTop: 20,
   },
-  createEventButton: {
+  actionButton: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -100,7 +101,7 @@ export default class NewEvent extends Component {
     .then(response => response.json())
     .then((friends) => {
       this.setState({
-        friends: friends,
+        friends,
       });
     })
     .catch(error => console.log(error));
@@ -188,8 +189,6 @@ export default class NewEvent extends Component {
           errorText: '',
         });
       }, 1000);
-      this.props.resetPin();
-      this.props.fetchNewEvents();
     })
     .catch(error => console.log(error));
   }
@@ -235,9 +234,9 @@ export default class NewEvent extends Component {
             />
           </View>
 
-          <View style={styles.createEventButtonContainer}>
+          <View style={styles.actionButtonContainer}>
             <MKButton
-              style={styles.createEventButton}
+              style={styles.actionButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={0.7}
@@ -251,11 +250,9 @@ export default class NewEvent extends Component {
                 CHOOSE FRIENDS
               </Text>
             </MKButton>
-          </View>
 
-          <View style={styles.createEventButtonContainer}>
             <MKButton
-              style={styles.createEventButton}
+              style={styles.actionButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={0.7}
@@ -277,9 +274,9 @@ export default class NewEvent extends Component {
             <MKCheckbox ref="visibilityCheckbox" checked={false} />
           </View>
 
-          <View style={styles.createEventButtonContainer}>
+          <View style={styles.actionButtonContainer}>
             <MKButton
-              style={styles.createEventButton}
+              style={styles.actionButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
               shadowOpacity={0.7}
@@ -307,11 +304,4 @@ export default class NewEvent extends Component {
 NewEvent.propTypes = {
   userId: PropTypes.string.isRequired,
   navigator: PropTypes.object.isRequired,
-  // Marking these as non-required for now; <Feed> doesn't seem to pass these
-  // props down to it, and no errors seem to be present without these props
-  // In other words, in the place where <NewEvent> is used without
-  // receiving the below props, <NewEvent> seems to not need them anyway
-  // eventCoords: PropTypes.shape, // eventCoords is never used
-  resetPin: PropTypes.func,
-  fetchNewEvents: PropTypes.func,
 };

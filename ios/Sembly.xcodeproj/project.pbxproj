@@ -19,6 +19,7 @@
 		048B7A8D1DCAEA66007C834F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B7A8C1DCAEA66007C834F /* FBSDKCoreKit.framework */; };
 		048B7A8F1DCAEA72007C834F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B7A8E1DCAEA72007C834F /* FBSDKLoginKit.framework */; };
 		048B7A911DCAEA82007C834F /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B7A901DCAEA82007C834F /* FBSDKShareKit.framework */; };
+		04E609AC1DCE5D30003A96AA /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04E609AB1DCE5D30003A96AA /* Images-2.xcassets */; };
 		070AA8B11DC1359D008D27C7 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 070AA8A91DC1359D008D27C7 /* Entypo.ttf */; };
 		070AA8B21DC1359D008D27C7 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 070AA8AA1DC1359D008D27C7 /* EvilIcons.ttf */; };
 		070AA8B31DC1359D008D27C7 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 070AA8AB1DC1359D008D27C7 /* FontAwesome.ttf */; };
@@ -217,6 +218,7 @@
 		048B7A8C1DCAEA66007C834F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		048B7A8E1DCAEA72007C834F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		048B7A901DCAEA82007C834F /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		04E609AB1DCE5D30003A96AA /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "Sembly/Images-2.xcassets"; sourceTree = "<group>"; };
 		070AA8A91DC1359D008D27C7 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		070AA8AA1DC1359D008D27C7 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		070AA8AB1DC1359D008D27C7 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				04E609AB1DCE5D30003A96AA /* Images-2.xcassets */,
 			);
 			name = Sembly;
 			sourceTree = "<group>";
@@ -810,6 +813,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0755A2071DC1AB8E002A7FE5 /* AirMaps in Resources */,
+				04E609AC1DCE5D30003A96AA /* Images-2.xcassets in Resources */,
 				070AA8B11DC1359D008D27C7 /* Entypo.ttf in Resources */,
 				070AA8B21DC1359D008D27C7 /* EvilIcons.ttf in Resources */,
 				070AA8B31DC1359D008D27C7 /* FontAwesome.ttf in Resources */,
@@ -923,6 +927,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = Sembly/Sembly.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -955,6 +960,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = Sembly/Sembly.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;

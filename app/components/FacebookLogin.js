@@ -42,6 +42,8 @@ class FacebookLogin extends Component {
         inputData.location = [latlong.coords.longitude, latlong.coords.latitude];
         inputData.password = 'default';
 
+        console.log('inputData', inputData);
+
         /* Do what you want to do with userData HERE */
         fetch(configURL.loginURL, {
           method: 'POST',
