@@ -1,58 +1,50 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  StatusBar,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  TouchableHighlight,
-  ScrollView,
   TextInput,
-  DatePickerIOS
+  DatePickerIOS,
 } from 'react-native';
-
 import { MKCheckbox, MKButton } from 'react-native-material-kit';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import configURL from './../config/config.js';
-import InviteFriends from './InviteFriends';
-import _navigate from './../config/navigateConfig.js';
+
 import TopBar from './TopBar';
 
+import configURL from './../config/config';
 
 const styles = StyleSheet.create({
   newEvent: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   errorText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'red',
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   closeButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   closeButton: {
     color: 'grey',
-    fontSize: 30
+    fontSize: 30,
   },
   textInputContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#7924B8'
+    borderBottomColor: '#7924B8',
   },
   textInput: {
-    flex: 1,
     height: 36,
     padding: 4,
     marginRight: 5,
     flex: 4,
     fontSize: 18,
-    textAlign: 'left'
+    textAlign: 'left',
   },
   visibilityCheck: {
     paddingLeft: 10,
@@ -61,12 +53,12 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   createEventButtonContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   createEventButton: {
     alignItems: 'center',
@@ -75,23 +67,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#7924B8',
     width: 150,
     height: 40,
-  }
+  },
 });
 
 export default class NewEvent extends Component {
-  static propTypes = {
-    userId: PropTypes.string.isRequired,
-    navigator: PropTypes.object.isRequired,
-    // Marking these as non-required for now; <Feed> doesn't seem to pass these
-    // props down to it, and no errors seem to be present without these props
-    // In other words, in the place where <NewEvent> is used without
-    // receiving the below props, <NewEvent> seems to not need them anyway
-    eventCoords: PropTypes.object,
-    resetPin: PropTypes.func,
-    fetchNewEvents: PropTypes.func
-  }
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       friends: [],
@@ -100,7 +81,7 @@ export default class NewEvent extends Component {
       newEventStartTime: new Date(),
       newEventTags: '',
       errorText: '',
-      eventCoords: []
+      eventCoords: [],
     };
 
     this.handleFriendsInvite = this.handleFriendsInvite.bind(this);
@@ -110,20 +91,35 @@ export default class NewEvent extends Component {
     this.handleCoordsSet = this.handleCoordsSet.bind(this);
   }
 
+  componentWillMount() {
+    fetch(configURL.getFriends, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: this.props.userId, search: '' }),
+    })
+    .then(response => response.json())
+    .then((friends) => {
+      this.setState({
+        friends: friends,
+      });
+    })
+    .catch(error => console.log(error));
+  }
+
   handleInviteFriendsNavigate() {
     this.props.navigator.push({
       name: 'InviteFriends',
       passedProps: {
         friends: this.state.friends,
         initialInvitedFriends: this.state.invitedFriends,
-        handleFriendsInvite: this.handleFriendsInvite
-      }
+        handleFriendsInvite: this.handleFriendsInvite,
+      },
     });
   }
 
   handleCoordsSet(coords) {
     this.setState({
-      eventCoords: coords
+      eventCoords: coords,
     });
   }
 
@@ -132,54 +128,35 @@ export default class NewEvent extends Component {
       name: 'ChooseLocation',
       passedProps: {
         handleCoordsSet: this.handleCoordsSet,
-        friends: this.state.friends
-      }
-    });
-  }
-
-  componentWillMount () {
-    fetch(configURL.getFriends, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({userId: this.props.userId, search: ''})
-    })
-    .then(response => {
-      return response.json();
-    })
-    .then(friends => {
-      this.setState({
-        friends: friends
-      });
-    })
-    .catch(error => {
-      console.log(error);
+        friends: this.state.friends,
+      },
     });
   }
 
   handleFriendsInvite(invitedFriends) {
     this.setState({
-      invitedFriends
+      invitedFriends,
     });
   }
 
   handleSubmit() {
-    let context = this;
+    const context = this;
 
     if (this.state.newEventName === '') {
       this.setState({
-        errorText: 'Please enter an event name!'
+        errorText: 'Please enter an event name!',
       });
       return;
     }
 
-    let eventToBePosted = {
+    const eventToBePosted = {
       name: this.state.newEventName,
       location: [],
       startTime: this.state.newEventStartTime,
       image: 'http://blogs-images.forbes.com/steveolenski/files/2015/07/Messe_Luzern_Corporate_Event.jpg',
       tags: [],
       invitedUsers: this.state.invitedFriends,
-      visibility: ''
+      visibility: '',
     };
 
     eventToBePosted.location[0] = this.state.eventCoords.longitude;
@@ -196,9 +173,9 @@ export default class NewEvent extends Component {
     fetch(configURL.getEvents, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(eventToBePosted)
+      body: JSON.stringify(eventToBePosted),
     })
-    .then(response => {
+    .then(() => {
       this.setState({
         errorText: 'Event created succesfully!',
         newEventName: '',
@@ -208,25 +185,24 @@ export default class NewEvent extends Component {
       setTimeout(() => {
         this.handleBack();
         context.setState({
-          errorText: ''
+          errorText: '',
         });
       }, 1000);
       this.props.resetPin();
       this.props.fetchNewEvents();
     })
-    .catch( error => {
-      console.log(error);
-    });
+    .catch(error => console.log(error));
   }
 
   handleBack() {
     this.props.navigator.pop();
   }
 
-  render () {
-    let context = this;
+  render() {
     return (
-      <View ref={'NewEvent'} style={styles.newEvent}>
+      // linter requested not to have literal references for ref
+      // Ref: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md
+      <View ref={(c) => { this.NewEvent = c; }} style={styles.newEvent}>
         <TopBar
           topBarName="Create a New Event"
           handleLeftPress={this.handleBack}
@@ -236,27 +212,26 @@ export default class NewEvent extends Component {
           <View style={styles.closeButtonContainer}>
             <Text style={styles.errorText}>{this.state.errorText}</Text>
           </View>
-
           <View style={styles.textInputContainer}>
             <TextInput
               style={styles.textInput}
-              placeholder='Enter a title for your Event'
-              onChangeText={(text) => this.setState({newEventName: text})}
-              />
+              placeholder="Enter a title for your Event"
+              onChangeText={(text) => { this.setState({ newEventName: text }); }}
+            />
           </View>
 
           <View style={styles.textInputContainer}>
             <TextInput
               style={styles.textInput}
-              placeholder='Enter tags, separated by a space'
-              onChangeText={(text) => this.setState({newEventTags: text})}
-              />
+              placeholder="Enter tags, separated by a space"
+              onChangeText={(text) => { this.setState({ newEventTags: text }); }}
+            />
           </View>
 
           <View style={styles.dateInputContainer}>
             <DatePickerIOS
               date={this.state.newEventStartTime}
-              onDateChange={(d) => { this.setState({newEventStartTime: d}); }}
+              onDateChange={(d) => { this.setState({ newEventStartTime: d }); }}
             />
           </View>
 
@@ -265,13 +240,13 @@ export default class NewEvent extends Component {
               style={styles.createEventButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
-              shadowOpacity={.7}
+              shadowOpacity={0.7}
               shadowColor="black"
               onPress={this.handleInviteFriendsNavigate}
             >
               <Text
                 pointerEvents="none"
-                style={{color: 'white', fontWeight: 'bold'}}
+                style={{ color: 'white', fontWeight: 'bold' }}
               >
                 CHOOSE FRIENDS
               </Text>
@@ -283,13 +258,13 @@ export default class NewEvent extends Component {
               style={styles.createEventButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
-              shadowOpacity={.7}
+              shadowOpacity={0.7}
               shadowColor="black"
               onPress={this.handleChooseLocationNavigate}
             >
               <Text
                 pointerEvents="none"
-                style={{color: 'white', fontWeight: 'bold'}}
+                style={{ color: 'white', fontWeight: 'bold' }}
               >
                 CHOOSE LOCATION
               </Text>
@@ -298,7 +273,8 @@ export default class NewEvent extends Component {
 
           <View style={styles.visibilityCheck}>
             <Text>Make your event invite only?</Text>
-            <MKCheckbox ref={'visibilityCheckbox'} checked={false}/>
+
+            <MKCheckbox ref={(c) => { this.visibilityCheckbox = c; }} checked={false} />
           </View>
 
           <View style={styles.createEventButtonContainer}>
@@ -306,15 +282,17 @@ export default class NewEvent extends Component {
               style={styles.createEventButton}
               shadowRadius={2}
               shadowOffset={{ width: 0, height: 2 }}
-              shadowOpacity={.7}
+              shadowOpacity={0.7}
               shadowColor="black"
               onPress={this.handleSubmit.bind(this)}
+            >
+              <Text
+                pointerEvents="none"
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                }}
               >
-              <Text pointerEvents="none"
-                    style={{
-                      color: 'white',
-                      fontWeight: 'bold'
-                    }}>
                 CREATE EVENT
               </Text>
             </MKButton>
@@ -325,3 +303,15 @@ export default class NewEvent extends Component {
     );
   }
 }
+
+NewEvent.propTypes = {
+  userId: PropTypes.string.isRequired,
+  navigator: PropTypes.shape.isRequired,
+  // Marking these as non-required for now; <Feed> doesn't seem to pass these
+  // props down to it, and no errors seem to be present without these props
+  // In other words, in the place where <NewEvent> is used without
+  // receiving the below props, <NewEvent> seems to not need them anyway
+  // eventCoords: PropTypes.shape, // eventCoords is never used
+  resetPin: PropTypes.func,
+  fetchNewEvents: PropTypes.func,
+};
