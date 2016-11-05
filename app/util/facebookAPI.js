@@ -23,7 +23,7 @@ let NameUrl = function(userId, token) {
 };
 
 let ProfilePicUrl = function(userId, token) {
-  return `https://graph.facebook.com/v2.8/${userId}/picture?access_token=${token}`;
+  return `https://graph.facebook.com/v2.8/${userId}/picture?type=large?access_token=${token}`;
 };
 
 let EmailUrl = function(userId, token) {
