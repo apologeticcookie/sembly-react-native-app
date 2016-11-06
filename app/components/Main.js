@@ -35,11 +35,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Main = () => (
-  <OurDrawer _navigate={_navigate.bind(this)}>
+const Main = (props) => (
+  <OurDrawer 
+    _navigate={_navigate.bind(this)}
+    setUser={props.setUser}
+    navigator={props.navigator}
+  >
     <View>
       <TouchableOpacity>
-        <Text style={styles.button}>MAIN TEST</Text>
+        <Text style={styles.button}>Drawer</Text>
       </TouchableOpacity>
     </View>
   </OurDrawer>

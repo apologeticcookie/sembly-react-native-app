@@ -14,6 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* SemblyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SemblyTests.m */; };
 		041A25881DCBAFF700A5C8D0 /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 041A25751DCBAFC000A5C8D0 /* libRCTFBLogin.a */; };
+		042962A61DCE830500F41B8A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 042962A51DCE830500F41B8A /* LaunchScreen.xib */; };
 		048B7A8B1DCAEA59007C834F /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B7A8A1DCAEA59007C834F /* Bolts.framework */; };
 		048B7A8D1DCAEA66007C834F /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B7A8C1DCAEA66007C834F /* FBSDKCoreKit.framework */; };
 		048B7A8F1DCAEA72007C834F /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048B7A8E1DCAEA72007C834F /* FBSDKLoginKit.framework */; };
@@ -33,7 +34,6 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
@@ -212,6 +212,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* SemblyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SemblyTests.m; sourceTree = "<group>"; };
 		041A256E1DCBAFC000A5C8D0 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
+		042962A51DCE830500F41B8A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		046BFC5E1DCBEF66006E0888 /* Sembly.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Sembly.entitlements; path = Sembly/Sembly.entitlements; sourceTree = "<group>"; };
 		048B7A8A1DCAEA59007C834F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
 		048B7A8C1DCAEA66007C834F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -234,7 +235,6 @@
 		13B07F961A680F5B00A75B9A /* Sembly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sembly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Sembly/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Sembly/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Sembly/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sembly/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Sembly/main.m; sourceTree = "<group>"; };
@@ -416,12 +416,12 @@
 			isa = PBXGroup;
 			children = (
 				046BFC5E1DCBEF66006E0888 /* Sembly.entitlements */,
+				042962A51DCE830500F41B8A /* LaunchScreen.xib */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				04E609AB1DCE5D30003A96AA /* Images-2.xcassets */,
 			);
@@ -817,6 +817,7 @@
 				070AA8B11DC1359D008D27C7 /* Entypo.ttf in Resources */,
 				070AA8B21DC1359D008D27C7 /* EvilIcons.ttf in Resources */,
 				070AA8B31DC1359D008D27C7 /* FontAwesome.ttf in Resources */,
+				042962A61DCE830500F41B8A /* LaunchScreen.xib in Resources */,
 				070AA8B41DC1359D008D27C7 /* Foundation.ttf in Resources */,
 				070AA8B51DC1359D008D27C7 /* Ionicons.ttf in Resources */,
 				070AA8B61DC1359D008D27C7 /* MaterialIcons.ttf in Resources */,
@@ -824,7 +825,6 @@
 				070AA8B71DC1359D008D27C7 /* Octicons.ttf in Resources */,
 				070AA8B81DC1359D008D27C7 /* Zocial.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,18 +874,6 @@
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = Sembly;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
