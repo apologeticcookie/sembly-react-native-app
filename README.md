@@ -1,6 +1,8 @@
-# sembly-react-native-app
+# Sembly
 
 ![Sembly](https://raw.githubusercontent.com/apologeticcookie/sembly-react-native-app/master/demo.png "Sembly")
+
+Sembly is an event planning and coordination tool with Facebook integration, built with React Native for iOS devices..
 
 ###Installing Dependencies
 
